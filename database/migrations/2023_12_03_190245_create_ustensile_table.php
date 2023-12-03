@@ -12,17 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('ustensile', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
-            $table->string('prenom');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->date('date_inscription');
-            $table->date('date_derniere_connexion');
             $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
         });
     }
 
@@ -31,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('ustensiles');
     }
 };

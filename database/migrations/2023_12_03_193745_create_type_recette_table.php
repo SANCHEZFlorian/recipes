@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('failed_jobs', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+        Schema::create('type_recette', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+            $table->string('nom');
+            $table->foreign('categorie_recette_id')->references('id')->on('categorie_recette')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('type_recettes');
     }
 };
