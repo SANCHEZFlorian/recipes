@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ustensile_recettes');
+        Schema::dropIfExists('ustensile_recette');
     }
 };

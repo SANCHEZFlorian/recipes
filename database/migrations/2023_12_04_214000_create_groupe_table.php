@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_cuisson', function (Blueprint $table) {
+        Schema::create('groupe', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
+            $table->string('prenom');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_cuisson');
+        Schema::dropIfExists('groupe');
     }
 };

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('type_cuisson_id')->references('id')->on('type_cuisson')->onDelete('restrict')->onUpdate('restrict')->nullable();
             $table->foreign('prix_id')->references('id')->on('prix')->onDelete('restrict')->onUpdate('restrict')->nullable();
             $table->foreign('difficulte_id')->references('id')->on('difficulte')->onDelete('restrict')->onUpdate('restrict')->nullable();
+            $table->foreign('groupe_id')->references('id')->on('groupe')->onDelete('restrict')->onUpdate('restrict')->nullable();
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recettes');
+        Schema::dropIfExists('recette');
     }
 };

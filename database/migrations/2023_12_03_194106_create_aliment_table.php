@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_cuisson', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+        Schema::create('aliment', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
+            $table->foreign('type_ingredient_id')->references('id')->on('type_ingredient')->onDelete('restrict')->onUpdate('restrict')->nullable();
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_cuisson');
+        Schema::dropIfExists('aliment');
     }
 };

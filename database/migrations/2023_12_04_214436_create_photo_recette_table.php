@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('etape_recette', function (Blueprint $table) {
+        Schema::create('photo_recette', function (Blueprint $table) {
             $table->id()->unique();
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
-            $table->integer('numero');
-            $table->longText('description');
+            $table->integer('position')->nullable();
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('etape_recette');
+        Schema::dropIfExists('photo_recette');
     }
 };

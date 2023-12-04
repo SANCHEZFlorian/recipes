@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id()->unique();
             $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
             $table->integer('quantite');
-            $table->foreign('liste_ingredient_id')->references('id')->on('liste_ingredient')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('aliment_id')->references('id')->on('aliment')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('dosage_id')->references('id')->on('dosage')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('etape_id')->references('id')->on('etape')->onDelete('restrict')->onUpdate('restrict')->nullable();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recette_ingredients');
+        Schema::dropIfExists('recette_ingredient');
     }
 };
