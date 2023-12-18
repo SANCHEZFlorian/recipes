@@ -18,10 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'pseudo',
         'email',
         'password',
+        'photo_id',
+        'date_inscription',
+        'date_derniere_connexion'
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,13 +47,24 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function recettes()
-    {
-        return $this->hasMany(Recette::class);
-    }
 
     public function photo()
     {
-        return $this->hasOne(Photo::class);
+        return $this->hasOne(Photo::class, 'id', 'photo_id');
+    }
+
+    public function userPhotos()
+    {
+        return $this->hasMany(UserPhoto::class, 'users_id', 'id');
+    }
+
+    public function recettes()
+    {
+        return $this->hasMany(Recette::class, 'users_id', 'id');
+    }
+
+    public function groupes()
+    {
+        return $this->belongsToMany(Groupe::class, 'user_groupe', 'users_id', 'groupe_id')->withTimestamps();
     }
 }

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('photo_user', function (Blueprint $table) {
+        Schema::create('recette_categorie', function (Blueprint $table) {
             $table->id()->unique();
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict');
+            $table->string('nom');
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('photo_user');
+        Schema::dropIfExists('recette_categorie');
     }
 };

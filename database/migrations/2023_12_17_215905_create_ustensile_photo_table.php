@@ -9,15 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('recette_ustensile', function (Blueprint $table) {
+        Schema::create('ustensile_photo', function (Blueprint $table) {
             $table->id()->unique();
-            $table->unsignedBigInteger('recette_id');
+            $table->unsignedBigInteger('photo_id');
             $table->unsignedBigInteger('ustensile_id');
 
-            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('ustensile_id')->references('id')->on('ustensile')->onDelete('restrict')->onUpdate('restrict');
         });
     }
@@ -25,8 +24,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('ustensile_recette');
+        Schema::dropIfExists('ustensile_photo');
     }
 };

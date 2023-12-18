@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('type_recette', function (Blueprint $table) {
+        Schema::create('recette_type', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('nom');
-            $table->foreign('categorie_recette_id')->references('id')->on('categorie_recette')->onDelete('restrict')->onUpdate('restrict');
+            $table->string('nom')->unique();
+            $table->unsignedBigInteger('recette_categorie_id');
+
+            $table->foreign('recette_categorie_id')->references('id')->on('recette_categorie')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_recette');
+        Schema::dropIfExists('recette_type');
     }
 };

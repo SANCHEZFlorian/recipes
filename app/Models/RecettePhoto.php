@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\Photo;
 use App\Models\Recette;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Commentaire extends Model
+class RecettePhoto extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'users_id',
-        'recette_id',
-        'note',
-        'commentaire'
+        'position',
+        'photo_id',
+        'recette_id'
     ];
 
-    public function user()
+    public function photo()
     {
-        return $this->belongsTo(User::class, 'users_id', 'id');
+        return $this->belongsTo(Photo::class, 'photo_id', 'id');
     }
 
     public function recette()

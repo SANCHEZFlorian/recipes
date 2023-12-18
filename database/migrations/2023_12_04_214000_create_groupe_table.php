@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('groupe', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
-            $table->string('prenom');
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->unsignedBigInteger('owner_users_id');
+
+            $table->foreign('owner_users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 

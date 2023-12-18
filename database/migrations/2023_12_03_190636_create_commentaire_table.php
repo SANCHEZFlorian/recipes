@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('commentaire', function (Blueprint $table) {
             $table->id()->unique();
-            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict')->nullable();
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict')->nullable();
+            $table->unsignedBigInteger('users_id');
+            $table->unsignedBigInteger('recette_id');
             $table->integer('note');
             $table->longText('commentaire');
+            $table->timestamp('date_insertion');
+
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 

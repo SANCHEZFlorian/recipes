@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id()->unique();
             $table->string('nom_fichier');
             $table->string('type');
-            $table->timestamps();
+            $table->timestamp('date_insertion');
         });
     }
 

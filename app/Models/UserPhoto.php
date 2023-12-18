@@ -3,19 +3,17 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Recette;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Commentaire extends Model
+class UserPhoto extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'users_id',
-        'recette_id',
-        'note',
-        'commentaire'
+        'photo_id'
     ];
 
     public function user()
@@ -23,8 +21,8 @@ class Commentaire extends Model
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
-    public function recette()
+    public function photo()
     {
-        return $this->belongsTo(Recette::class, 'recette_id', 'id');
+        return $this->belongsTo(Photo::class, 'photo_id', 'id');
     }
 }

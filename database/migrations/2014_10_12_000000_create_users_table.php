@@ -14,15 +14,14 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('users', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('nom');
-            $table->string('prenom');
+            $table->string('pseudo');
             $table->string('email')->unique();
             $table->string('password');
-            $table->date('date_inscription');
-            $table->date('date_derniere_connexion');
-            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('date_inscription');
+            $table->timestamp('date_derniere_connexion')->nullable();
+            $table->unsignedBigInteger('photo_id')->nullable();
+            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict');
+
         });
     }
 

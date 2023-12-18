@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\RecetteEtape;
+use App\Models\Aliment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TypeCuisson extends Model
+class AlimentType extends Model
 {
     use HasFactory;
 
     protected $fillable = ['nom'];
 
-    public function recetteEtapes()
+    public function aliments()
     {
-        return $this->hasMany(RecetteEtape::class, 'type_cuisson_id', 'id');
+        return $this->hasMany(Aliment::class, 'aliment_type_id', 'id');
     }
 }

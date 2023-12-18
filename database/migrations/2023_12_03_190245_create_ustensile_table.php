@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('ustensile', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
+            $table->unsignedBigInteger('photo_id')->nullable();
             $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict')->nullable();
         });
     }
