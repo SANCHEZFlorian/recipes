@@ -30,8 +30,7 @@ return new class extends Migration
             $table->foreign('type_cuisson_id')->references('id')->on('type_cuisson')->onDelete('restrict')->onUpdate('restrict')->nullable();
             $table->foreign('difficulte_id')->references('id')->on('difficulte')->onDelete('restrict')->onUpdate('restrict')->nullable();
 
-            $table->timestamp('date_insertion');
-            $table->timestamp('date_modification');
+            $table->timestamps();
         });
     }
 
