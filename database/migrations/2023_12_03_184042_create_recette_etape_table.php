@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('recette_ingredient_id');
             $table->integer('numero');
             $table->text('description');
+
             $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('type_cuisson_id')->references('id')->on('type_cuisson')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('recette_ingredient_id')->references('id')->on('recette_ingredient')->onDelete('restrict')->onUpdate('restrict');

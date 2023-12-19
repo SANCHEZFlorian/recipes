@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('recette_photo', function (Blueprint $table) {
             $table->id()->unique();
             $table->integer('position');

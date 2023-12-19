@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('ustensile_photo', function (Blueprint $table) {
             $table->id()->unique();
             $table->unsignedBigInteger('photo_id');

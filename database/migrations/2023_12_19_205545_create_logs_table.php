@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recette_id');
-            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('cascade')->onUpdate('cascade');
             $table->text('modification');
             $table->timestamps();
+
+            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

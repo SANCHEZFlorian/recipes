@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('date_inscription');
             $table->timestamp('date_derniere_connexion')->nullable();
             $table->unsignedBigInteger('photo_id')->nullable();
-            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict');
 
+            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 
