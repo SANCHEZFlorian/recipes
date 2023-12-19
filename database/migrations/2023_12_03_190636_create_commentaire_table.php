@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('recette_id');
             $table->integer('note');
             $table->longText('commentaire');
-            $table->timestamp('date_insertion');
+            $table->timestamps();
 
             $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');

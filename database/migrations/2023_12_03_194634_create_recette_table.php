@@ -31,6 +31,7 @@ return new class extends Migration
             $table->foreign('difficulte_id')->references('id')->on('difficulte')->onDelete('restrict')->onUpdate('restrict')->nullable();
 
             $table->timestamp('date_insertion');
+            $table->timestamp('date_modification');
         });
     }
 

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('photo', function (Blueprint $table) {
-            $table->id()->unique();
-            $table->string('nom_fichier');
-            $table->string('type');
+        Schema::create('logs', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('recette_id');
+            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('cascade')->onUpdate('cascade');
+            $table->text('modification');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('photo');
+        Schema::dropIfExists('logs');
     }
 };

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Logs;
 use App\Models\Prix;
 use App\Models\User;
 use App\Models\Groupe;
 use App\Models\Difficulte;
-use App\Models\TypeCuisson;
 use App\Models\RecetteType;
+use App\Models\TypeCuisson;
 use App\Models\RecetteEtape;
 use App\Models\RecettePhoto;
 use App\Models\RecetteUstensile;
@@ -76,5 +77,11 @@ class Recette extends Model
     public function recetteEtapes()
     {
         return $this->hasMany(RecetteEtape::class, 'recette_id', 'id');
+    }
+
+    // Relation avec la table 'logs'
+    public function logs()
+    {
+        return $this->hasMany(Logs::class, 'recette_id');
     }
 }
