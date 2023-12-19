@@ -18,11 +18,21 @@ class Commentaire extends Model
         'commentaire'
     ];
 
+    /**
+     * Relation avec la table 'users'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
+    /**
+     * Relation avec la table 'recettes'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function recette()
     {
         return $this->belongsTo(Recette::class, 'recette_id', 'id');

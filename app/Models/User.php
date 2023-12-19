@@ -67,4 +67,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Groupe::class, 'user_groupe', 'users_id', 'groupe_id')->withTimestamps();
     }
+
+    // Relation avec la table 'logs' à travers la table 'recette'
+    public function logs()
+    {
+        return $this->hasManyThrough(Logs::class, Recette::class, 'users_id', 'recette_id');
+    }
+
+    // Retrouve les commentaires
+    public function getCommentaires()
+    {
+        return Commentaire::where('users_id', $this->id)->orderBy('created_at', 'desc')->get();
+    }
+
+    // Retrouve les recettes commentées
+    public function getRecettesCommentees()
+    {
+        return Recette::whereHas('commentaires', function ($query) {
+            $query->where('users_id', $this->id);
+        })->orderBy('created_at', 'desc')->get();
+    }
 }

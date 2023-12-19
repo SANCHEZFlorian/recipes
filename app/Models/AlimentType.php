@@ -12,6 +12,11 @@ class AlimentType extends Model
 
     protected $fillable = ['nom'];
 
+    /**
+     * Relation avec la table 'aliments'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function aliments()
     {
         return $this->hasMany(Aliment::class, 'aliment_type_id', 'id');

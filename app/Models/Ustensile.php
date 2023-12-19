@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\PhotoUstensile;
+use App\Models\UstensilePhoto;
 use App\Models\RecetteUstensile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,8 +18,8 @@ class Ustensile extends Model
         return $this->hasMany(RecetteUstensile::class, 'ustensile_id', 'id');
     }
 
-    public function photoUstensiles()
+    public function ustensilePhoto()
     {
-        return $this->hasMany(PhotoUstensile::class, 'ustensile_id', 'id');
+        return $this->hasMany(UstensilePhoto::class, 'ustensile_id', 'id');
     }
 }

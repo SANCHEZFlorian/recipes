@@ -84,4 +84,56 @@ class Recette extends Model
     {
         return $this->hasMany(Logs::class, 'recette_id');
     }
+
+    // Recherche par aliment
+    public static function searchByAliment($alimentId)
+    {
+        return self::whereHas('recetteIngredients', function ($query) use ($alimentId) {
+            $query->where('aliment_id', $alimentId);
+        })->get();
+    }
+
+    // Recherche par catégorie de recette
+    public static function searchByCategorie($categorieId)
+    {
+        return self::where('categorie_recette_id', $categorieId)->get();
+    }
+
+    // Recherche par type de recette
+    public static function searchByType($typeId)
+    {
+        return self::where('type_recette_id', $typeId)->get();
+    }
+
+    // Tri par aliment
+    public static function sortByAliment($alimentId)
+    {
+        return self::whereHas('recetteIngredients', function ($query) use ($alimentId) {
+            $query->where('aliment_id', $alimentId);
+        })->orderBy('created_at', 'desc')->get();
+    }
+
+    // Tri par catégorie de recette
+    public static function sortByCategorie($categorieId)
+    {
+        return self::where('categorie_recette_id', $categorieId)->orderBy('created_at', 'desc')->get();
+    }
+
+    // Tri par type de recette
+    public static function sortByType($typeId)
+    {
+        return self::where('type_recette_id', $typeId)->orderBy('created_at', 'desc')->get();
+    }
+
+    // Récupère toutes les étapes d'une recette trier par numéro
+    public function etapes()
+    {
+        return $this->hasMany(RecetteEtape::class, 'recette_id', 'id')->orderBy('numero');
+    }
+
+    // Récupère tous les ustensiles d'une recette
+    public function ustensiles()
+    {
+        return $this->hasMany(RecetteUstensile::class, 'recette_id', 'id');
+    }
 }
