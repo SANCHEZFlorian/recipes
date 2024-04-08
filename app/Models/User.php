@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,14 +18,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'pseudo',
+        'username',
+        'firstname',
+        'lastname',
         'email',
         'password',
-        'photo_id',
-        'date_inscription',
-        'date_derniere_connexion'
+        'address',
+        'city',
+        'country',
+        'postal',
+        'about',
+        'date_derniere_connexion',
+        'photo_id'
     ];
-
 
     /**
      * The attributes that should be hidden for serialization.
@@ -86,5 +91,16 @@ class User extends Authenticatable
         return Recette::whereHas('commentaires', function ($query) {
             $query->where('users_id', $this->id);
         })->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * Always encrypt the password when it is updated.
+     *
+     * @param $value
+    * @return string
+    */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
     }
 }

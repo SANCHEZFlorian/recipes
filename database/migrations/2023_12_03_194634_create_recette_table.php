@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('recette', function (Blueprint $table) {
             $table->id()->unique();
+            $table->text('title');
             $table->integer('is_visible');
             $table->integer('is_supprimer');
             $table->unsignedBigInteger('users_id');

@@ -21,6 +21,7 @@ class Recette extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
         'users_id',
         'groupe_id',
         'recette_type_id',

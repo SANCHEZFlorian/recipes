@@ -8,16 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('users', function (Blueprint $table) {
-            $table->id()->unique();
-            $table->string('pseudo');
+            $table->id();
+            $table->string('username');
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->timestamp('date_inscription');
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postal')->nullable();
+            $table->text('about')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
             $table->timestamp('date_derniere_connexion')->nullable();
             $table->unsignedBigInteger('photo_id')->nullable();
 
@@ -27,8 +38,10 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
