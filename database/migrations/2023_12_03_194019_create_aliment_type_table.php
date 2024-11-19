@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('aliment_type', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
+            $table->string('icone');
         });
     }
 

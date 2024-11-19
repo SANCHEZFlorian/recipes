@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('aliment', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom')->unique();
+            $table->string('icone');
             $table->unsignedBigInteger('aliment_type_id');
 
             $table->foreign('aliment_type_id')->references('id')->on('aliment_type')->onDelete('restrict')->onUpdate('restrict');

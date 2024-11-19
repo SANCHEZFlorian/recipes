@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_cuisson', function (Blueprint $table) {
+        Schema::create('periode', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
             $table->string('icone');
@@ -23,7 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('type_cuisson');
+        Schema::dropIfExists('periode');
     }
 };

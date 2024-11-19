@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('unite', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('nom');
+            $table->string('icone');
             $table->string('abreviation');
         });
     }
