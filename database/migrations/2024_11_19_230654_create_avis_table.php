@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('commentaire', function (Blueprint $table) {
+        Schema::create('avis', function (Blueprint $table) {
             $table->id()->unique();
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('recette_id');
+            $table->integer('note');
             $table->longText('commentaire');
             $table->timestamps();
 
@@ -29,7 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('commentaire');
+        Schema::dropIfExists('avis');
     }
 };

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('commentaire', function (Blueprint $table) {
+        Schema::create('favoris', function (Blueprint $table) {
             $table->id()->unique();
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('recette_id');
-            $table->longText('commentaire');
-            $table->timestamps();
 
             $table->foreign('users_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('recette_id')->references('id')->on('recette')->onDelete('restrict')->onUpdate('restrict');
@@ -29,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('commentaire');
+        Schema::dropIfExists('favoris');
     }
 };
