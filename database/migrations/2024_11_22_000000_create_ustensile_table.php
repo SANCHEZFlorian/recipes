@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('recette_id');
-            $table->text('modification');
-            $table->timestamps();
+        Schema::create('ustensile', function (Blueprint $table) {
+            $table->id()->unique();
+            $table->string('nom');
+            $table->string('icone');
+            $table->unsignedBigInteger('photo_id')->nullable();
 
-            $table->foreign('recette_id')->references('id')->on('recette')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('photo_id')->references('id')->on('photo')->onDelete('restrict')->onUpdate('restrict')->nullable();
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('ustensile');
     }
 };

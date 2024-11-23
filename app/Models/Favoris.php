@@ -2,21 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class UserPhoto extends Model
+class Favoris extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'user_id',
-        'photo_id'
+        'recette_id'
     ];
+
 
     //*------------------------------------//
     //* Relations avec les autres tables   //
     //*------------------------------------//
+
+    /**
+     * Relation avec la table 'recettes'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function recette()
+    {
+        return $this->belongsTo(Recette::class, 'recette_id', 'id');
+    }
 
     /**
      * Relation avec la table 'users'.
@@ -25,16 +41,6 @@ class UserPhoto extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * Relation avec la table 'photos'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function photo()
-    {
-        return $this->belongsTo(Photo::class, 'photo_id', 'id');
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 }

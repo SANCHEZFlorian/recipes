@@ -52,44 +52,123 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    //*------------------------------------//
+    //* Relations avec les autres tables   //
+    //*------------------------------------//
 
-    public function photo()
-    {
-        return $this->hasOne(Photo::class, 'id', 'photo_id');
-    }
-
+    /**
+     * Relation avec la table 'user_photos'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function userPhotos()
     {
-        return $this->hasMany(UserPhoto::class, 'users_id', 'id');
+        return $this->hasMany(UserPhoto::class, 'user_id', 'id');
     }
 
+    /**
+     * Relation avec la table 'recettes'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function recettes()
     {
-        return $this->hasMany(Recette::class, 'users_id', 'id');
+        return $this->hasMany(Recette::class, 'user_id', 'id');
     }
 
+    /**
+     * Relation avec la table 'groupes' via la table pivot 'user_groupe'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groupes()
     {
-        return $this->belongsToMany(Groupe::class, 'user_groupe', 'users_id', 'groupe_id')->withTimestamps();
+        return $this->belongsToMany(Groupe::class, 'user_groupe', 'user_id', 'groupe_id')->withTimestamps();
     }
 
-    // Relation avec la table 'logs' à travers la table 'recette'
-    public function logs()
+    /**
+     * Relation avec la table 'avis'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function avis()
     {
-        return $this->hasManyThrough(Logs::class, Recette::class, 'users_id', 'recette_id');
+        return $this->hasMany(Avis::class, 'users_id', 'id');
     }
 
-    // Retrouve les commentaires
+    /**
+     * Relation avec la table 'commentaires'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class, 'users_id', 'id');
+    }
+
+    /**
+     * Retourne les recettes que l'utilisateur a mis en favoris.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function favoris()
+    {
+        return $this->belongsToMany(Recette::class, 'favoris', 'users_id', 'recette_id');
+    }
+
+    /**
+     * Relation avec la table 'notifications'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'users_id', 'id');
+    }
+
+    //*------------------------------------//
+    //* Requête SQL diverses liés          //
+    //*------------------------------------//
+
+    /**
+     * Retrieves comments associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getCommentaires()
     {
-        return Commentaire::where('users_id', $this->id)->orderBy('created_at', 'desc')->get();
+        return Commentaire::where('user_id', $this->id)->orderBy('created_at', 'desc')->get();
     }
 
-    // Retrouve les recettes commentées
+    /**
+     * Renvoie les recettes crées par l'utilisateur.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getRecettes()
+    {
+        return Recette::where('user_id', $this->id)->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * Renvoie le nombre de recettes crées par l'utilisateur.
+     *
+     * @return int
+     */
+    public function getNbRecettes()
+    {
+        return Recette::where('user_id', $this->id)->count();
+    }
+
+    /**
+     * Renvoie les recettes sur lesquelles l'utilisateur a posté au moins un commentaire.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getRecettesCommentees()
     {
         return Recette::whereHas('commentaires', function ($query) {
-            $query->where('users_id', $this->id);
+            $query->where('user_id', $this->id);
         })->orderBy('created_at', 'desc')->get();
     }
 
@@ -97,8 +176,8 @@ class User extends Authenticatable
      * Always encrypt the password when it is updated.
      *
      * @param $value
-    * @return string
-    */
+     * @return string
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);

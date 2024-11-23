@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Recette;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,10 +9,22 @@ class Difficulte extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom'];
+    protected $fillable = [
+        'nom',
+        'icone'
+    ];
 
-    public function recettes()
+    //*------------------------------------//
+    //* Requête SQL diverses liés          //
+    //*------------------------------------//
+
+    /**
+     * Renvoie les recettes par difficulté.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getRecettes()
     {
-        return $this->hasMany(Recette::class, 'difficulte_id', 'id');
+        return Recette::where('difficulte_id', $this->id)->orderBy('created_at', 'desc')->get();
     }
 }

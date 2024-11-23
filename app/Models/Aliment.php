@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\AlimentType;
-use App\Models\RecetteIngredient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,8 +11,13 @@ class Aliment extends Model
 
     protected $fillable = [
         'nom',
+        'icone',
         'aliment_type_id'
     ];
+
+    //*------------------------------------//
+    //* Relations avec les autres tables   //
+    //*------------------------------------//
 
     /**
      * Relation avec la table 'aliment_types'.
@@ -36,7 +39,15 @@ class Aliment extends Model
         return $this->hasMany(RecetteIngredient::class, 'aliment_id', 'id');
     }
 
-    // Récupère toutes les recettes associées à un aliment
+    //*------------------------------------//
+    //* Requête SQL diverses liés          //
+    //*------------------------------------//
+
+    /**
+     * Renvoie les recettes qui contiennent cet aliment.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function recettes()
     {
         return $this->hasManyThrough(RecetteIngredient::class, Recette::class, 'aliment_id', 'recette_id');

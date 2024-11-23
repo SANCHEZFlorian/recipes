@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,32 +11,34 @@ class Groupe extends Model
 
     protected $fillable = [
         'nom',
-        'owner_users_id'
+        'owner_user_id'
     ];
 
+    /**
+     * Relation with the 'users' table for the owner of the group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function owner()
     {
-        return $this->belongsTo(User::class, 'owner_users_id', 'id');
+        return $this->belongsTo(User::class, 'owner_user_id', 'id');
     }
 
+    /**
+     * Relation avec la table 'users' via la table pivot 'user_groupe'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function membres()
     {
-        return $this->belongsToMany(User::class, 'user_groupe', 'groupe_id', 'users_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_groupe', 'groupe_id', 'user_id')->withTimestamps();
     }
 
-    // Relation avec la table 'logs' à travers la table 'recette'
-    public function logs()
-    {
-        return $this->hasManyThrough(Logs::class, Recette::class, 'groupe_id', 'recette_id');
-    }
-
-    // Recherche les recherches du groupe
-    public function getRecettes()
-    {
-        return Recette::where('groupe_id', $this->id)->orderBy('created_at', 'desc')->get();
-    }
-
-    // Récupère les recettes d'un groupe
+    /**
+     * Retrieves the recipes associated with this group.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function recettes()
     {
         return $this->hasMany(Recette::class, 'groupe_id', 'id')->orderBy('created_at', 'desc');

@@ -5,15 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RecetteUstensile extends Model
+class Avis extends Model
 {
     use HasFactory;
 
-    protected $table = 'recette_ustensile';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
+        'user_id',
         'recette_id',
-        'ustensile_id',
+        'note',
+        'commentaire'
     ];
 
     //*------------------------------------//
@@ -21,22 +26,26 @@ class RecetteUstensile extends Model
     //*------------------------------------//
 
     /**
-     * Establishes a relationship with the 'recettes' table.
+     * Relation avec la table 'recettes'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function recette()
     {
-        return $this->belongsTo(Recette::class, 'recette_id');
+        return $this->belongsTo(Recette::class, 'recette_id', 'id');
     }
 
     /**
-     * Establishes a relationship with the 'ustensiles' table.
+     * Relation avec la table 'users'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ustensile()
+    public function user()
     {
-        return $this->belongsTo(Ustensile::class, 'ustensile_id');
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    //*------------------------------------//
+    //* Requête SQL diverses liés          //
+    //*------------------------------------//
 }
