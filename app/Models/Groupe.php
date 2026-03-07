@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Groupe extends Model
 {
+    protected $table = 'groupe';
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = [
         'nom',
-        'owner_user_id'
+        'owner_users_id'
     ];
 
     /**
@@ -31,7 +33,7 @@ class Groupe extends Model
      */
     public function membres()
     {
-        return $this->belongsToMany(User::class, 'user_groupe', 'groupe_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_groupe', 'groupe_id', 'users_id');
     }
 
     /**
@@ -41,6 +43,6 @@ class Groupe extends Model
      */
     public function recettes()
     {
-        return $this->hasMany(Recette::class, 'groupe_id', 'id')->orderBy('created_at', 'desc');
+        return $this->hasMany(Recette::class, 'groupe_id', 'id')->orderBy('created_at', 'desc')->get();
     }
 }

@@ -29,6 +29,7 @@ class User extends Authenticatable
         'postal',
         'about',
         'date_derniere_connexion',
+        'is_admin',
         'photo_id'
     ];
 
@@ -57,13 +58,13 @@ class User extends Authenticatable
     //*------------------------------------//
 
     /**
-     * Relation avec la table 'user_photos'.
+     * Relation avec la table 'photo' (avatar de l'utilisateur).
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function userPhotos()
+    public function photo()
     {
-        return $this->hasMany(UserPhoto::class, 'user_id', 'id');
+        return $this->belongsTo(Photo::class, 'photo_id');
     }
 
     /**
@@ -73,7 +74,7 @@ class User extends Authenticatable
      */
     public function recettes()
     {
-        return $this->hasMany(Recette::class, 'user_id', 'id');
+        return $this->hasMany(Recette::class, 'users_id', 'id');
     }
 
     /**
@@ -83,7 +84,7 @@ class User extends Authenticatable
      */
     public function groupes()
     {
-        return $this->belongsToMany(Groupe::class, 'user_groupe', 'user_id', 'groupe_id')->withTimestamps();
+        return $this->belongsToMany(Groupe::class, 'user_groupe', 'users_id', 'groupe_id');
     }
 
     /**
@@ -147,7 +148,7 @@ class User extends Authenticatable
      */
     public function getRecettes()
     {
-        return Recette::where('user_id', $this->id)->orderBy('created_at', 'desc')->get();
+        return Recette::where('users_id', $this->id)->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -157,7 +158,7 @@ class User extends Authenticatable
      */
     public function getNbRecettes()
     {
-        return Recette::where('user_id', $this->id)->count();
+        return Recette::where('users_id', $this->id)->count();
     }
 
     /**
@@ -168,7 +169,7 @@ class User extends Authenticatable
     public function getRecettesCommentees()
     {
         return Recette::whereHas('commentaires', function ($query) {
-            $query->where('user_id', $this->id);
+            $query->where('users_id', $this->id);
         })->orderBy('created_at', 'desc')->get();
     }
 
@@ -181,5 +182,16 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+        return $this;
+    }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return "{$this->firstname} {$this->lastname}";
     }
 }

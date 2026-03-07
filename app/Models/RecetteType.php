@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RecetteType extends Model
 {
+    protected $table = 'recette_type';
     use HasFactory;
 
     protected $fillable = [
@@ -14,6 +15,8 @@ class RecetteType extends Model
         'icone',
         'recette_categorie_id'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

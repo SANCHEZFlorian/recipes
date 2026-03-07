@@ -15,7 +15,7 @@ class Favoris extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'users_id',
         'recette_id'
     ];
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ustensile extends Model
 {
+    protected $table = 'ustensile';
     use HasFactory;
 
     protected $fillable = [
@@ -14,6 +15,8 @@ class Ustensile extends Model
         'icone',
         'photo_id'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TypeCuisson extends Model
 {
+    protected $table = 'type_cuisson';
     use HasFactory;
 
     protected $fillable = [
         'nom',
-        'icone'
+        'icone',
+        'photo_id'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

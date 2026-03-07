@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RecettePhoto extends Model
 {
+    protected $table = 'recette_photo';
     use HasFactory;
 
     protected $fillable = [
@@ -14,6 +15,8 @@ class RecettePhoto extends Model
         'photo_id',
         'recette_id'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserPhoto extends Model
 {
+    protected $table = 'user_photo';
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'users_id',
         'photo_id'
     ];
 

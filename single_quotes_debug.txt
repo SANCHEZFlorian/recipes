@@ -1,0 +1,34 @@
+82:                                                    filterByStatus('All')
+90:                                                    filterByStatus('Active')
+98:                                                    filterByStatus('Inactive')
+125:                                                    filterByCategory('All')
+164:                                                    filterByUnit('All')
+200:                                                        'All',
+210:                                                        'Available',
+220:                                                        'Not Available',
+383:                                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
+385:                                                    ? 'bg-green-100 text-green-800'
+386:                                                    : 'bg-gray-100 text-gray-800',
+399:                                                'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
+400:                                                ingredient.status === 'Active'
+401:                                                    ? 'bg-green-100 text-green-800'
+402:                                                    : 'bg-gray-100 text-gray-800',
+600:                                    'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md cursor-pointer whitespace-nowrap !rounded-button',
+602:                                        ? 'bg-gray-100 text-gray-400'
+603:                                        : 'bg-white text-gray-700 hover:bg-gray-50',
+612:                                    'ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md cursor-pointer whitespace-nowrap !rounded-button',
+614:                                        ? 'bg-gray-100 text-gray-400'
+615:                                        : 'bg-white text-gray-700 hover:bg-gray-50',
+667:                                            'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium cursor-pointer whitespace-nowrap !rounded-button',
+669:                                                ? 'bg-gray-100 text-gray-400'
+670:                                                : 'bg-white text-gray-500 hover:bg-gray-50',
+681:                                            v-if="page === '...'"
+690:                                                'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium cursor-pointer whitespace-nowrap !rounded-button',
+692:                                                    ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+693:                                                    : 'bg-white text-gray-700 hover:bg-gray-50',
+703:                                            'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium cursor-pointer whitespace-nowrap !rounded-button',
+705:                                                ? 'bg-gray-100 text-gray-400'
+706:                                                : 'bg-white text-gray-500 hover:bg-gray-50',
+1102:                                                : 'Are you sure you want to delete "' +
+1104:                                                  '"? This action cannot be undone.'
+2081:        // Adjust if we're near the end

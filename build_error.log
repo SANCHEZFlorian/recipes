@@ -1,0 +1,25 @@
+
+> build
+> vite build
+
+[36mvite v4.5.14 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 27 modules transformed.
+[32m✓ built in 1.38s[39m
+[31m[vite]: Rollup failed to resolve import "echarts" from "D:/Code/recipes/resources/js/Pages/Admin_setting.vue?vue&type=script&setup=true&lang.ts".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`[39m
+[31merror during build:
+Error: [vite]: Rollup failed to resolve import "echarts" from "D:/Code/recipes/resources/js/Pages/Admin_setting.vue?vue&type=script&setup=true&lang.ts".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteWarn (file:///D:/Code/recipes/node_modules/vite/dist/node/chunks/dep-827b23df.js:48272:27)
+    at onRollupWarning (file:///D:/Code/recipes/node_modules/vite/dist/node/chunks/dep-827b23df.js:48304:9)
+    at onwarn (file:///D:/Code/recipes/node_modules/vite/dist/node/chunks/dep-827b23df.js:48032:13)
+    at file:///D:/Code/recipes/node_modules/rollup/dist/es/shared/node-entry.js:24305:13
+    at Object.logger [as onLog] (file:///D:/Code/recipes/node_modules/rollup/dist/es/shared/node-entry.js:25979:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///D:/Code/recipes/node_modules/rollup/dist/es/shared/node-entry.js:24891:26)
+    at file:///D:/Code/recipes/node_modules/rollup/dist/es/shared/node-entry.js:24851:26
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)[39m

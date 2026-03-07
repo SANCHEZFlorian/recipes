@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class unite extends Model
+class Unite extends Model
 {
+    protected $table = 'unite';
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = [

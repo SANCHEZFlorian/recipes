@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prix extends Model
 {
+    protected $table = 'prix';
     use HasFactory;
 
     protected $fillable = [
         'nom',
-        'icone',
+        'icone'
     ];
+
+    public $timestamps = false;
 
     /**
      * Relation with the 'recettes' table.

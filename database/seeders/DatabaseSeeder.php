@@ -15,12 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'username' => 'admin',
-            'firstname' => 'Admin',
-            'lastname' => 'Admin',
-            'email' => 'admin@argon.com',
-            'password' => bcrypt('secret')
-        ]);
+        // DB::table('users')->truncate(); // Avoid deleting admin if it exists
+        if (DB::table('users')->count() == 0) {
+            DB::table('users')->insert([
+                'username' => 'admin',
+                'firstname' => 'Admin',
+                'lastname' => 'Admin',
+                'email' => 'admin@argon.com',
+                'password' => bcrypt('secret')
+            ]);
+        }
+
+        $this->call(DummyDataSeeder::class);
+        $this->call(BulkRecipeSeeder::class);
     }
 }

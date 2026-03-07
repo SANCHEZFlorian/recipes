@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Photo extends Model
 {
+    protected $table = 'photo';
     use HasFactory;
 
     protected $fillable = [

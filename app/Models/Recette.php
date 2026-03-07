@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Recette extends Model
 {
+    protected $table = 'recette';
     use HasFactory;
 
     protected $fillable = [
         'title',
+        'portions',
         'is_visible',
         'is_supprimer',
-        'user_id',
+        'users_id',
         'groupe_id',
         'recette_type_id',
         'prix_id',
@@ -32,7 +34,7 @@ class Recette extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
     /**
@@ -123,6 +125,16 @@ class Recette extends Model
     public function recetteEtapes()
     {
         return $this->hasMany(RecetteEtape::class, 'recette_id', 'id');
+    }
+
+    /**
+     * Relation avec la table 'temps'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function temps()
+    {
+        return $this->hasOne(Temps::class, 'recette_id', 'id');
     }
 
     //*------------------------------------//

@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Difficulte extends Model
 {
+    protected $table = 'difficulte';
     use HasFactory;
 
     protected $fillable = [
         'nom',
         'icone'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Requête SQL diverses liés          //

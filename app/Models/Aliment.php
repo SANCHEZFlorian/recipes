@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Aliment extends Model
 {
+    protected $table = 'aliment';
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = [
         'nom',
         'icone',
+        'is_certified',
         'aliment_type_id'
     ];
 
@@ -50,6 +53,6 @@ class Aliment extends Model
      */
     public function recettes()
     {
-        return $this->hasManyThrough(RecetteIngredient::class, Recette::class, 'aliment_id', 'recette_id');
+        return $this->hasManyThrough(RecetteIngredient::class, Recette::class, 'aliment_id', 'recette_id')->get();
     }
 }

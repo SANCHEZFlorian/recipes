@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
+    protected $table = 'notification';
     use HasFactory;
 
     /**
@@ -15,12 +16,12 @@ class Notification extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'users_id',
         'recette_id',
         'commentaire_id',
         'avis_id',
         'is_read',
-        'type',
+        'type'
     ];
 
     //*------------------------------------//

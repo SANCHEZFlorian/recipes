@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UstensilePhoto extends Model
 {
+    protected $table = 'ustensile_photo';
     use HasFactory;
 
     protected $fillable = [

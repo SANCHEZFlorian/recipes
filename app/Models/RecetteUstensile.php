@@ -13,8 +13,10 @@ class RecetteUstensile extends Model
 
     protected $fillable = [
         'recette_id',
-        'ustensile_id',
+        'ustensile_id'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

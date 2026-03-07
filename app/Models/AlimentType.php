@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AlimentType extends Model
 {
+    protected $table = 'aliment_type';
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = [

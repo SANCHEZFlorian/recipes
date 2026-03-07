@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Periode extends Model
 {
+    protected $table = 'periode';
     use HasFactory;
 
     /**
@@ -16,8 +17,10 @@ class Periode extends Model
      */
     protected $fillable = [
         'nom',
-        'icone',
+        'icone'
     ];
+
+    public $timestamps = false;
 
     /**
      * Retrieves the recipes associated with this period.

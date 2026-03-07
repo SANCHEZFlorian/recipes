@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserGroupe extends Model
 {
+    protected $table = 'user_groupe';
     use HasFactory;
 
     protected $fillable = [
         'groupe_id',
-        'user_id'
+        'users_id'
     ];
 
     //*------------------------------------//

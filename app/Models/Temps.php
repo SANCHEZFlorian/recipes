@@ -11,9 +11,12 @@ class Temps extends Model
 
     protected $fillable = [
         'recette_id',
-        'temps',
-        'type'
+        'preparation',
+        'cuisson',
+        'repos'
     ];
+
+    public $timestamps = false;
 
     //*------------------------------------//
     //* Relations avec les autres tables   //

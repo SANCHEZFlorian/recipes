@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Commentaire extends Model
 {
+    protected $table = 'commentaire';
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'users_id',
         'recette_id',
         'commentaire'
     ];
