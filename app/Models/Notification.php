@@ -41,30 +41,30 @@ class Notification extends Model
     /**
      * Relation avec la table 'commentaires'.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function commentaires()
+    public function commentaire()
     {
-        return $this->hasMany(Commentaire::class);
+        return $this->belongsTo(Commentaire::class, 'commentaire_id');
     }
 
     /**
      * Relation avec la table 'recettes'.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function recettes()
+    public function recette()
     {
-        return $this->hasMany(Recette::class);
+        return $this->belongsTo(Recette::class, 'recette_id');
     }
 
     /**
      * Relation avec la table 'avis'.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function avis()
     {
-        return $this->hasMany(Avis::class);
+        return $this->belongsTo(Avis::class, 'avis_id');
     }
 }

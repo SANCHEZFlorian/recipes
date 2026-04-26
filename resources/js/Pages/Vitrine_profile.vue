@@ -1,4 +1,8 @@
 <template>
+    <Head>
+        <title>Mon Profil</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <VitrineLayout>
         <!-- Profile Header -->
         <div class="relative bg-gray-900 border-b border-gray-100 pb-16">
@@ -284,7 +288,7 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import { Link, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
 
 const props = defineProps({

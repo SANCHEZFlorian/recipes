@@ -1,6 +1,6 @@
 <template>
     <Head>
-        <title>Nouvelle Recette</title>
+        <title>Modifier la Recette</title>
         <meta name="robots" content="noindex, nofollow" />
     </Head>
     <VitrineLayout>
@@ -11,8 +11,8 @@
             </div>
             
             <div class="max-w-4xl mx-auto relative z-10">
-                <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">Nouvelle Recette</h1>
-                <p class="text-emerald-50 text-lg font-medium">Partagez votre création culinaire avec la communauté. Remplissez les étapes ci-dessous de la façon la plus précise possible.</p>
+                <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">Modifier la Recette</h1>
+                <p class="text-emerald-50 text-lg font-medium">Mettez à jour les informations de votre création culinaire pour la communauté.</p>
             </div>
         </div>
 
@@ -274,7 +274,7 @@
                     </Link>
                     <button type="submit" :disabled="form.processing" class="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 disabled:opacity-50">
                         <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Publier ma recette
+                        Mettre à jour la recette
                     </button>
                 </div>
             </form>
@@ -288,6 +288,10 @@ import { useForm, Link, Head } from '@inertiajs/vue3';
 import VitrineLayout from '@/Layouts/VitrineLayout.vue';
 
 const props = defineProps({
+    recipe: {
+        type: Object,
+        required: true
+    },
     difficultes: Array,
     prix: Array,
     aliments: Array,
@@ -297,29 +301,59 @@ const props = defineProps({
     userGroups: {
         type: Array,
         default: () => []
-    },
-    defaultGroupId: {
-        type: Number,
-        default: null
     }
+});
+
+// Format existing ingredients if any
+const initialIngredients = (props.recipe.recette_ingredients || []).map(ri => ({
+    aliment_id: ri.aliment_id,
+    aliment_name: ri.aliment ? ri.aliment.nom : '',
+    search: ri.aliment ? ri.aliment.nom : '',
+    showResults: false,
+    quantite: ri.quantite,
+    unite_id: ri.unite_id,
+    pivot_id: ri.id
+}));
+
+// Format existing steps and map pivot ingredients
+const initialEtapes = (props.recipe.recette_etapes || []).map(etape => {
+    const ingredientIndexes = [];
+    if (etape.ingredients && etape.ingredients.length > 0) {
+        etape.ingredients.forEach(etapeIng => {
+            const foundIndex = initialIngredients.findIndex(ri => ri.pivot_id === etapeIng.id);
+            if (foundIndex !== -1) ingredientIndexes.push(foundIndex);
+        });
+    }
+    
+    return {
+        numero: etape.numero,
+        description: etape.description,
+        ingredient_indexes: ingredientIndexes,
+        ustensile_ids: etape.ustensiles ? etape.ustensiles.map(u => u.id) : []
+    };
 });
 
 // Main Form Payload mirroring the complex database relations
 const form = useForm({
-    title: '',
-    recette_type_id: '',
-    portions: 1,
-    difficulte_id: null,
-    prix_id: null,
-    groupe_id: props.defaultGroupId || null,
+    title: props.recipe.title || '',
+    recette_type_id: props.recipe.recette_type_id || '',
+    portions: props.recipe.portions || 1,
+    difficulte_id: props.recipe.difficulte_id || null,
+    prix_id: props.recipe.prix_id || null,
+    groupe_id: props.recipe.groupe_id || null,
 
-    temps_preparation: '',
-    temps_cuisson: '',
-    temps_repos: '',
-    photo: null,
+    temps_preparation: props.recipe.temps ? props.recipe.temps.preparation : '',
+    temps_cuisson: props.recipe.temps ? props.recipe.temps.cuisson : '',
+    temps_repos: props.recipe.temps ? props.recipe.temps.repos : '',
+    photo: null, // New photo upload replaces the old one if set
 
-    ingredients: [],
-    etapes: []
+    ingredients: initialIngredients,
+    etapes: initialEtapes.length > 0 ? initialEtapes : [{
+        numero: 1,
+        description: '',
+        ingredient_indexes: [],
+        ustensile_ids: []
+    }]
 });
 
 // Ingredient Management
@@ -428,7 +462,7 @@ const submitForm = () => {
         return;
     }
 
-    form.post(route('recipe.store'), {
+    form.post(route('recipe.update', props.recipe.id), {
         preserveScroll: true,
         onError: (errors) => {
             console.error("Erreur de publication:", errors);

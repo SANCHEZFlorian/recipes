@@ -59,6 +59,16 @@ class AuthController extends Controller
             'password' => $request->password,
         ]);
 
+        // Process any pending group invitations for this email
+        $invitations = \App\Models\GroupInvitation::where('email', $user->email)->get();
+        foreach ($invitations as $invitation) {
+            \App\Models\UserGroupe::create([
+                'groupe_id' => $invitation->groupe_id,
+                'users_id' => $user->id
+            ]);
+            $invitation->delete();
+        }
+
         Auth::login($user);
 
         return redirect()->intended();

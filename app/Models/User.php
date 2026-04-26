@@ -174,16 +174,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Always encrypt the password when it is updated.
-     *
-     * @param $value
-     * @return string
+     * Le mot de passe est haché automatiquement via le cast 'hashed' défini dans $casts.
+     * Ne pas redéfinir setPasswordAttribute pour éviter le double-haçhage.
      */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-        return $this;
-    }
 
     /**
      * Get the user's full name.

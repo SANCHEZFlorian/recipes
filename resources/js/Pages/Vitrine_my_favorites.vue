@@ -1,124 +1,26 @@
 <template>
     <Head>
-        <title>Découvrir les recettes</title>
-        <meta name="description" content="Explorez des milliers de recettes savoureuses sur CookBook. Filtrez par type de plat, difficulté et temps de préparation pour trouver l'inspiration parfaite." />
-        <meta property="og:title" content="Découvrir les recettes — CookBook" />
-        <meta property="og:description" content="Explorez des milliers de recettes savoureuses. Filtrez par type, difficulté et temps de préparation." />
+        <title>Mes Recettes Favorites</title>
+        <meta name="robots" content="noindex, nofollow" />
     </Head>
     <VitrineLayout>
         <!-- Hero Section -->
-        <div
-            class="bg-emerald-600 text-white py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-        >
-            <!-- Decorative background elements -->
-            <div
-                class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"
-            ></div>
-            <div
-                class="absolute bottom-0 left-0 -mb-10 -ml-10 w-32 h-32 bg-emerald-900/20 rounded-full blur-2xl"
-            ></div>
-
-            <div class="max-w-[1520px] mx-auto relative z-10 text-center">
-                <h1 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">
-                    Que vas-tu cuisiner aujourd'hui ?
-                </h1>
-                <p
-                    class="text-emerald-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium"
-                >
-                    Découvre des milliers de recettes savoureuses, testées et
-                    approuvées par notre communauté de passionnés.
-                </p>
-
-                <div class="flex justify-center mb-10 gap-4">
-                    <Link :href="route('recipe.create')" class="bg-white text-emerald-600 hover:bg-emerald-50 px-6 py-3 rounded-full font-bold shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                        Publier ma recette
+        <div class="bg-gray-900 text-white py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div class="max-w-[1520px] mx-auto relative z-10">
+                <div class="flex items-center gap-4 mb-4">
+                    <Link :href="route('profile')" class="text-gray-400 hover:text-emerald-500 transition-colors">
+                        &larr; Retour au profil
                     </Link>
                 </div>
-
-                <div class="max-w-2xl mx-auto relative">
-                    <input
-                        v-model="searchQuery"
-                        type="search"
-                        placeholder="Rechercher un plat, un ingrédient..."
-                        class="w-full pl-6 pr-14 py-4 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-emerald-400/50 shadow-xl"
-                        @keyup.enter="search"
-                    />
-                    <button
-                        @click="search"
-                        class="absolute right-2 top-2 bottom-2 bg-emerald-600 text-white rounded-xl px-4 hover:bg-emerald-700 transition-colors shadow-md"
-                    >
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filter Bar -->
-        <div
-            class="bg-white border-b border-gray-100 sticky top-16 z-30 shadow-sm"
-        >
-            <div
-                class="max-w-[1520px] mx-auto px-2 sm:px-4 lg:px-8 py-3 overflow-x-auto flex items-center gap-3"
-            >
-                <div
-                    class="text-sm font-semibold text-gray-400 pr-2 border-r border-gray-200 uppercase tracking-widest whitespace-nowrap"
-                >
-                    Filtres
-                </div>
-
-                <button
-                    v-for="filter in [
-                        'Rapide',
-                        'Facile',
-                        'Végétarien',
-                        'Dessert',
-                        'Pas cher',
-                    ]"
-                    :key="filter"
-                    @click="toggleFilter(filter)"
-                    :class="[
-                        'px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap border',
-                        activeFilters.includes(filter)
-                            ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20'
-                            : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-emerald-300 hover:text-emerald-700',
-                    ]"
-                >
-                    {{ filter }}
-                </button>
-
-                <button
-                    v-if="activeFilters.length > 0"
-                    @click="activeFilters = []"
-                    class="ml-auto text-sm text-gray-400 hover:text-red-500 font-medium whitespace-nowrap transition-colors flex items-center gap-1"
-                >
-                    <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
+                <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight flex items-center gap-3">
+                    <svg class="w-10 h-10 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
-                    Effacer
-                </button>
+                    Mes Recettes Favorites
+                </h1>
+                <p class="text-gray-300 text-lg md:text-xl max-w-2xl font-medium">
+                    Retrouvez ici toutes les recettes que vous avez enregistrées pour les cuisiner plus tard.
+                </p>
             </div>
         </div>
 
@@ -145,14 +47,9 @@
                         <!-- Heart button -->
                         <button
                             @click.prevent="toggleFavorite(recipe.id)"
-                            class="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm text-gray-400 hover:text-emerald-500 hover:bg-white shadow-sm transition-all z-10"
+                            class="absolute top-3 right-3 p-2 rounded-full bg-emerald-600 backdrop-blur-sm text-white shadow-sm transition-all z-10 hover:bg-emerald-700"
                         >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -256,18 +153,17 @@
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">
-                    Aucune recette trouvée
+                    Aucun favori pour l'instant
                 </h3>
                 <p class="text-gray-500 max-w-md mx-auto">
-                    Essayez d'ajuster vos filtres ou de rechercher un autre
-                    plat. Nous ajoutons constamment de nouvelles recettes !
+                    Vous n'avez pas encore enregistré de recette dans vos favoris. Parcourez notre catalogue et cliquez sur le cœur pour sauvegarder celles qui vous plaisent !
                 </p>
-                <button
-                    @click="resetFilters"
-                    class="mt-6 font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-6 py-2.5 rounded-full transition-colors"
+                <Link
+                    :href="route('home')"
+                    class="inline-block mt-6 font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-6 py-2.5 rounded-full transition-colors"
                 >
-                    Réinitialiser
-                </button>
+                    Découvrir des recettes
+                </Link>
             </div>
 
             <!-- Pagination (Mock for now, relies on Inertia for real implementation) -->
@@ -297,77 +193,21 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { Link, Head } from "@inertiajs/vue3";
+import { computed } from "vue";
+import { Link, router, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
 
 const props = defineProps({
-    recipes: Object, // Paginated object
+    recipes: Object,
 });
 
-const searchQuery = ref("");
-const activeFilters = ref([]);
-
-const search = () => {
-    // In a real app, this would use Inertia.router.get with preservation
-    console.log("Searching for:", searchQuery.value);
-};
-
-const toggleFilter = (filter) => {
-    if (activeFilters.value.includes(filter)) {
-        activeFilters.value = activeFilters.value.filter((f) => f !== filter);
-    } else {
-        activeFilters.value.push(filter);
-    }
-};
-
-const resetFilters = () => {
-    searchQuery.value = "";
-    activeFilters.value = [];
-};
-
 const toggleFavorite = (id) => {
-    // Prevent default handles link navigation
-    console.log("Toggled favorite for recipe:", id);
+    router.post(route('recipe.favorite', id), {}, { preserveScroll: true });
 };
 
-// Client-side filtering logic based on mock filter names vs recipe properties
+// Dans Mes Favoris, filteredRecipes est simplement tout le tableau
 const filteredRecipes = computed(() => {
-    const rawRecipes = props.recipes?.data || [];
-
-    return rawRecipes.filter((recipe) => {
-        // Search filter
-        if (searchQuery.value) {
-            const query = searchQuery.value.toLowerCase();
-            const titleMatch =
-                recipe.title && recipe.title.toLowerCase().includes(query);
-            const typeMatch =
-                recipe.recette_type?.nom &&
-                recipe.recette_type.nom.toLowerCase().includes(query);
-            if (!titleMatch && !typeMatch) return false;
-        }
-
-        // Tag filters (Simplified logic for the mock tags)
-        if (activeFilters.value.length > 0) {
-            const time = recipe.temps_preparation || 0;
-            const diff = (
-                recipe.difficulte?.nom ||
-                recipe.difficulte ||
-                ""
-            ).toLowerCase();
-            const type = (recipe.recette_type?.nom || "").toLowerCase();
-
-            for (const filter of activeFilters.value) {
-                if (filter === "Rapide" && time > 30) return false;
-                if (filter === "Facile" && diff !== "facile") return false;
-                if (filter === "Dessert" && !type.includes("dessert"))
-                    return false;
-                // Add logic for Végétarien / Pas cher if data exists
-            }
-        }
-
-        return true;
-    });
+    return props.recipes?.data || [];
 });
 
 const getDifficultyColorClass = (difficulty) => {

@@ -145,7 +145,6 @@ class Recette extends Model
      * Renvoie les recettes qui contiennent l'aliment passé en paramètre.
      *
      * @param int $alimentId L'ID de l'aliment.
-     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function searchByAliment($alimentId)
@@ -156,36 +155,9 @@ class Recette extends Model
     }
 
     /**
-     * Renvoie les recettes appartenant à la catégorie de recette
-     * correspondante à l'ID passé en paramètre.
-     *
-     * @param int $categorieId L'ID de la catégorie de recette.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function searchByCategorie($categorieId)
-    {
-        return self::where('categorie_recette_id', $categorieId)->get();
-    }
-
-    /**
-     * Renvoie les recettes appartenant au type de recette
-     * correspondant à l'ID passé en paramètre.
-     *
-     * @param int $typeId L'ID du type de recette.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function searchByType($typeId)
-    {
-        return self::where('type_recette_id', $typeId)->get();
-    }
-
-    /**
      * Tri les recettes par aliment.
      *
      * @param int $alimentId L'ID de l'aliment.
-     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function sortByAliment($alimentId)
@@ -196,46 +168,22 @@ class Recette extends Model
     }
 
     /**
-     * Tri les recettes par catégorie.
-     *
-     * @param int $categorieId L'ID de la catégorie de recette.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function sortByCategorie($categorieId)
-    {
-        return self::where('categorie_recette_id', $categorieId)->orderBy('created_at', 'desc')->get();
-    }
-
-    /**
-     * Tri les recettes par type.
-     *
-     * @param int $typeId L'ID du type de recette.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function sortByType($typeId)
-    {
-        return self::where('type_recette_id', $typeId)->orderBy('created_at', 'desc')->get();
-    }
-
-    /**
-     * Renvoie les étapes de la recette.
+     * Renvoie les avis (notes + commentaires) de la recette.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function etapes()
+    public function avis()
     {
-        return $this->hasMany(RecetteEtape::class, 'recette_id', 'id')->orderBy('numero');
+        return $this->hasMany(Avis::class, 'recette_id', 'id')->orderBy('created_at', 'desc');
     }
 
     /**
-     * Renvoie les ustensiles associés à la recette.
+     * Renvoie les entrées favoris liées à la recette.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ustensiles()
+    public function favoris()
     {
-        return $this->hasMany(RecetteUstensile::class, 'recette_id', 'id');
+        return $this->hasMany(Favoris::class, 'recette_id', 'id');
     }
 }

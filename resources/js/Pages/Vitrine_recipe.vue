@@ -1,4 +1,12 @@
 <template>
+    <Head>
+        <title>{{ recipe.title }}</title>
+        <meta name="description" :content="`Recette ${recipe.title} — ${recipe.recette_type?.nom || 'Plat'} ${recipe.difficulte?.nom || ''} à réaliser. Découvrez les ingrédients, étapes et avis de la communauté CookBook.`" />
+        <meta property="og:title" :content="`${recipe.title} — CookBook`" />
+        <meta property="og:description" :content="`Recette ${recipe.recette_type?.nom || ''} — ${recipe.difficulte?.nom || 'Facile'}. Consultez les ingrédients et instructions détaillées.`" />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" :content="getRecipeImage(recipe)" />
+    </Head>
     <VitrineLayout>
         <!-- Hero Header -->
         <div class="bg-gray-900 text-white relative">
@@ -59,11 +67,17 @@
 
                 <div class="flex flex-row md:flex-col gap-3 w-full md:w-auto">
                     <button
-                        class="flex-1 md:w-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold tracking-wide transition-all shadow-lg hover:shadow-emerald-600/30 flex items-center justify-center gap-2"
+                        @click="toggleFavorite"
+                        :class="[
+                            'flex-1 md:w-full px-6 py-3 rounded-xl font-bold tracking-wide transition-all shadow-lg flex items-center justify-center gap-2',
+                            isFavorited 
+                                ? 'bg-white text-emerald-600 border border-emerald-600 hover:bg-emerald-50'
+                                : 'bg-emerald-600 hover:bg-emerald-700 text-white hover:shadow-emerald-600/30'
+                        ]"
                     >
                         <svg
                             class="w-5 h-5"
-                            fill="none"
+                            :fill="isFavorited ? 'currentColor' : 'none'"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                         >
@@ -74,7 +88,7 @@
                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                             />
                         </svg>
-                        Enregistrer
+                        {{ isFavorited ? 'Enregistrée' : 'Enregistrer' }}
                     </button>
                     <button
                         @click="printRecipe"
@@ -94,6 +108,27 @@
                             />
                         </svg>
                         Imprimer
+                    </button>
+                    <!-- Actions propriétaire/admin -->
+                    <Link
+                        v-if="$page.props.auth.user && ($page.props.auth.user.id === recipe.users_id || $page.props.auth.user.is_admin)"
+                        :href="route('recipe.edit', recipe.id)"
+                        class="flex-1 md:w-full bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold tracking-wide transition-all flex items-center justify-center gap-2 border border-emerald-500/20"
+                    >
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Modifier
+                    </Link>
+                    <button
+                        v-if="$page.props.auth.user && ($page.props.auth.user.id === recipe.users_id || $page.props.auth.user.is_admin)"
+                        @click="deleteRecipe"
+                        class="flex-1 md:w-full bg-red-600/80 hover:bg-red-600 backdrop-blur-md text-white border border-red-500/20 px-6 py-3 rounded-xl font-bold tracking-wide transition-all flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Supprimer
                     </button>
                 </div>
             </div>
@@ -455,7 +490,7 @@
                                 </p>
                                 <p class="text-lg font-bold text-gray-900">
                                     {{
-                                        recipe.user?.name ||
+                                        recipe.user?.username ||
                                         "Un Cuisinier Passionné"
                                     }}
                                 </p>
@@ -469,13 +504,100 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Avis & Commentaires Block -->
+            <div class="mt-16 border-t-2 border-gray-100 pt-12">
+                <h2 class="text-3xl font-black text-gray-900 mb-8 flex items-center gap-3">
+                    <span class="text-yellow-400">★</span> 
+                    Avis de la communauté
+                    <span class="text-lg text-gray-400 font-medium ml-2">({{ recipe.avis ? recipe.avis.length : 0 }})</span>
+                </h2>
+
+                <div class="flex flex-col lg:flex-row gap-12">
+                    <!-- Liste des Avis -->
+                    <div class="lg:w-2/3 space-y-6">
+                        <div v-for="avis in recipe.avis" :key="avis.id" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex gap-4">
+                            <img :src="'https://ui-avatars.com/api/?name=' + encodeURIComponent(avis.user?.username || 'User') + '&background=f3f4f6&color=374151'" class="w-12 h-12 rounded-full shrink-0" />
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-2">
+                                    <div>
+                                        <p class="font-bold text-gray-900">{{ avis.user?.username }}</p>
+                                        <div class="flex text-yellow-400 text-sm">
+                                            <span v-for="n in 5" :key="n" :class="n <= avis.note ? 'text-yellow-400' : 'text-gray-200'">★</span>
+                                        </div>
+                                    </div>
+                                    <button v-if="$page.props.auth.user && ($page.props.auth.user.id === avis.users_id || $page.props.auth.user.is_admin)" @click="deleteAvis(avis.id)" class="text-red-400 hover:text-red-600 text-xs font-bold uppercase tracking-wider">
+                                        Supprimer
+                                    </button>
+                                </div>
+                                <p v-if="avis.commentaire" class="text-gray-600 mt-2">{{ avis.commentaire }}</p>
+                            </div>
+                        </div>
+                        
+                        <div v-if="!recipe.avis || recipe.avis.length === 0" class="text-gray-500 italic p-6 bg-gray-50 rounded-2xl text-center">
+                            Aucun avis pour le moment. Soyez le premier à partager votre opinion !
+                        </div>
+                    </div>
+
+                    <!-- Formulaire d'avis -->
+                    <div class="lg:w-1/3">
+                        <div class="sticky top-24">
+                            <div v-if="$page.props.auth.user" class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                                <h3 class="font-bold text-gray-900 mb-4 text-lg">Laissez votre avis</h3>
+                                
+                                <form @submit.prevent="submitAvis" class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Votre note</label>
+                                        <div class="flex gap-2">
+                                            <button 
+                                                v-for="n in 5" :key="n" type="button"
+                                                @click="formAvis.note = n"
+                                                @mouseenter="hoverRating = n"
+                                                @mouseleave="hoverRating = 0"
+                                                class="text-3xl focus:outline-none transition-transform hover:scale-110"
+                                                :class="[(hoverRating >= n || (!hoverRating && formAvis.note >= n)) ? 'text-yellow-400' : 'text-gray-300']"
+                                            >
+                                                ★
+                                            </button>
+                                        </div>
+                                        <p v-if="formAvis.errors.note" class="text-red-500 text-xs mt-1">{{ formAvis.errors.note }}</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Un petit mot ? <span class="text-gray-400 font-normal">(Optionnel)</span></label>
+                                        <textarea 
+                                            v-model="formAvis.commentaire"
+                                            rows="4" 
+                                            class="w-full rounded-xl border-gray-200 focus:ring-emerald-500 focus:border-emerald-500 text-sm shadow-sm resize-none"
+                                            placeholder="Qu'avez-vous pensé de cette recette ?"
+                                        ></textarea>
+                                        <p v-if="formAvis.errors.commentaire" class="text-red-500 text-xs mt-1">{{ formAvis.errors.commentaire }}</p>
+                                    </div>
+                                    
+                                    <button type="submit" :disabled="formAvis.processing || !formAvis.note" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md disabled:opacity-50">
+                                        {{ formAvis.processing ? 'Envoi en cours...' : 'Publier mon avis' }}
+                                    </button>
+                                </form>
+                            </div>
+                            <div v-else class="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex flex-col items-center justify-center text-center">
+                                <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                <p class="text-gray-600 font-medium mb-4">Vous devez être connecté pour laisser un avis sur cette recette.</p>
+                                <Link :href="route('login')" class="w-full text-center bg-gray-900 hover:bg-black text-white font-bold px-6 py-3 rounded-xl transition-colors">
+                                    Me connecter
+                                </Link>
+                                <p class="mt-4 text-xs text-gray-500">Pas de compte ? <Link :href="route('home')" class="text-emerald-600 font-bold hover:underline">Inscrivez-vous</Link></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </VitrineLayout>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router, useForm, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
 
 const props = defineProps({
@@ -483,6 +605,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    isFavorited: {
+        type: Boolean,
+        default: false
+    }
 });
 
 // Normalized data to handle both snake_case and camelCase from Inertia/Eloquent
@@ -507,22 +633,51 @@ const getTemps = (type) => {
 const calculateAmount = (amount) => {
     if (amount === null || amount === undefined) return "";
 
-    // Safely parse the amount string or number to a float
-    // Handle edge cases where comma might be used instead of dot
     const parsedAmount = parseFloat(String(amount).replace(",", "."));
 
     if (isNaN(parsedAmount)) return String(amount);
 
     const calculated = (parsedAmount / defaultServings) * servings.value;
 
-    // Format nicely: no decimals if whole number, otherwise up to 1 decimal
     return Number.isInteger(calculated)
         ? calculated.toString()
         : calculated.toFixed(1);
 };
 
+// Formulaire pour les avis
+const hoverRating = ref(0);
+const formAvis = useForm({
+    note: 0,
+    commentaire: '',
+});
+
+const submitAvis = () => {
+    formAvis.post(route('recipe.review', props.recipe.id), {
+        preserveScroll: true,
+        onSuccess: () => formAvis.reset(),
+    });
+};
+
+const deleteAvis = (id) => {
+    if (confirm("Supprimer cet avis ?")) {
+        router.delete(route('recipe.review.destroy', id), { preserveScroll: true });
+    }
+};
+
+const toggleFavorite = () => {
+    router.post(route('recipe.favorite', props.recipe.id), {}, { preserveScroll: true });
+};
+
 const printRecipe = () => {
     window.print();
+};
+
+const deleteRecipe = () => {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette recette ? Cette action est irréversible.")) {
+        router.delete(route('recipe.destroy', props.recipe.id), {
+            preserveScroll: true
+        });
+    }
 };
 
 const getDifficultyColorClass = (difficulty) => {

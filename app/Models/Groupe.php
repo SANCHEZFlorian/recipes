@@ -23,7 +23,7 @@ class Groupe extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(User::class, 'owner_user_id', 'id');
+        return $this->belongsTo(User::class, 'owner_users_id', 'id');
     }
 
     /**
@@ -37,12 +37,12 @@ class Groupe extends Model
     }
 
     /**
-     * Retrieves the recipes associated with this group.
+     * Relation avec les recettes du groupe.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function recettes()
     {
-        return $this->hasMany(Recette::class, 'groupe_id', 'id')->orderBy('created_at', 'desc')->get();
+        return $this->hasMany(Recette::class, 'groupe_id', 'id');
     }
 }

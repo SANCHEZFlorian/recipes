@@ -1,4 +1,10 @@
 <template>
+    <Head>
+        <title>{{ category.nom }}</title>
+        <meta name="description" :content="`Découvrez toutes les recettes de la catégorie ${category.nom} sur CookBook. Laissez-vous inspirer par nos meilleures créations culinaires.`" />
+        <meta property="og:title" :content="`${category.nom} — CookBook`" />
+        <meta property="og:description" :content="`Toutes nos meilleures recettes ${category.nom}. Trouvez l'inspiration pour votre prochain repas.`" />
+    </Head>
     <VitrineLayout>
         <!-- Category Hero -->
         <div class="bg-gray-900 text-white relative overflow-hidden py-16">
@@ -174,7 +180,7 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import { Link, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
 
 const props = defineProps({

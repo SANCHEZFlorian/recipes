@@ -123,7 +123,7 @@
                         >
                     </div>
                     <p class="text-gray-500 text-sm font-medium">
-                        &copy; 2025 CookBook. Recettes partagées avec amour.
+                        &copy; 2026 CookBook. Recettes partagées avec amour.
                     </p>
                     <div class="flex gap-4 text-gray-400">
                         <a

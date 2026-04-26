@@ -1,4 +1,8 @@
 <template>
+    <Head>
+        <title>Mes Groupes</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <VitrineLayout>
         <!-- Header -->
         <div
@@ -169,11 +173,12 @@
                                 </svg>
                                 {{ group.membres_count || 0 }} Membre(s)
                             </div>
-                            <button
-                                class="w-full bg-emerald-50 text-emerald-700 font-medium py-2 rounded-lg hover:bg-emerald-100 transition-colors"
+                            <Link
+                                :href="route('groups.show', group.id)"
+                                class="w-full bg-emerald-50 text-emerald-700 font-medium py-2 rounded-lg hover:bg-emerald-100 transition-colors text-center block mt-6"
                             >
-                                Gérer les recettes
-                            </button>
+                                Gérer et voir le groupe
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -217,14 +222,14 @@
                                     :src="
                                         'https://ui-avatars.com/api/?name=' +
                                         encodeURIComponent(
-                                            group.owner?.name || 'User',
+                                            group.owner?.username || 'User',
                                         ) +
                                         '&background=e5e7eb&color=374151'
                                     "
                                     class="w-5 h-5 rounded-full"
                                 />
                                 <span class="font-medium text-gray-700">{{
-                                    group.owner?.name || "Inconnu"
+                                    group.owner?.username || "Inconnu"
                                 }}</span>
                             </p>
                             <div
@@ -246,11 +251,12 @@
                                 {{ group.membres_count || 0 }} Membre(s)
                             </div>
                             <div class="flex gap-2">
-                                <button
-                                    class="flex-1 bg-white border border-gray-200 text-gray-700 font-medium py-2 rounded-lg hover:border-emerald-300 hover:text-emerald-700 transition-colors"
+                                <Link
+                                    :href="route('groups.show', group.id)"
+                                    class="flex-1 bg-white border border-gray-200 text-gray-700 font-medium py-2 rounded-lg hover:border-emerald-300 hover:text-emerald-700 transition-colors text-center block"
                                 >
                                     Voir Recettes
-                                </button>
+                                </Link>
                                 <button
                                     @click="confirmLeave(group)"
                                     class="px-4 bg-white border border-red-100 text-red-500 font-medium py-2 rounded-lg hover:bg-red-50 hover:border-red-200 transition-colors"
@@ -453,7 +459,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useForm, Link } from "@inertiajs/vue3";
+import { useForm, Link, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
 
 const props = defineProps({

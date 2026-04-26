@@ -21,14 +21,28 @@ Route::middleware('auth')->group(function () {
 
     // Group Routes
     Route::get('/groups', [\App\Http\Controllers\GroupeController::class, 'index'])->name('groups');
+    Route::get('/groups/{id}', [\App\Http\Controllers\GroupeController::class, 'show'])->name('groups.show');
     Route::post('/groups', [\App\Http\Controllers\GroupeController::class, 'store'])->name('groups.store');
     Route::put('/groups/{id}', [\App\Http\Controllers\GroupeController::class, 'update'])->name('groups.update');
     Route::delete('/groups/{id}', [\App\Http\Controllers\GroupeController::class, 'destroy'])->name('groups.destroy');
     Route::post('/groups/{id}/leave', [\App\Http\Controllers\GroupeController::class, 'leave'])->name('groups.leave');
+    
+    // Group Members and Invites
+    Route::post('/groups/{id}/members', [\App\Http\Controllers\GroupeController::class, 'addMember'])->name('groups.members.add');
+    Route::delete('/groups/{id}/members/{user_id}', [\App\Http\Controllers\GroupeController::class, 'removeMember'])->name('groups.members.remove');
+    Route::delete('/groups/{id}/invitations/{invitation_id}', [\App\Http\Controllers\GroupeController::class, 'revokeInvitation'])->name('groups.invitations.revoke');
     // Recipe Creation
     Route::get('/recipe/create', [\App\Http\Controllers\RecetteController::class, 'create'])->name('recipe.create');
     Route::post('/recipe/store', [\App\Http\Controllers\RecetteController::class, 'store'])->name('recipe.store');
+    Route::get('/recipe/{id}/edit', [\App\Http\Controllers\RecetteController::class, 'edit'])->name('recipe.edit');
+    Route::put('/recipe/{id}/update', [\App\Http\Controllers\RecetteController::class, 'update'])->name('recipe.update');
+    Route::delete('/recipe/{id}', [\App\Http\Controllers\RecetteController::class, 'destroy'])->name('recipe.destroy');
     
+    // Interactions Sociales (Favoris & Avis)
+    Route::post('/recipe/{id}/favorite', [\App\Http\Controllers\RecetteInteractionController::class, 'toggleFavorite'])->name('recipe.favorite');
+    Route::post('/recipe/{id}/review', [\App\Http\Controllers\RecetteInteractionController::class, 'storeAvis'])->name('recipe.review');
+    Route::delete('/recipe/review/{id}', [\App\Http\Controllers\RecetteInteractionController::class, 'destroyAvis'])->name('recipe.review.destroy');
+    Route::get('/profile/favorites', [\App\Http\Controllers\RecetteInteractionController::class, 'userFavorites'])->name('profile.favorites');
 });
 
 Route::get('/recipe/random', [App\Http\Controllers\RecetteController::class, 'random'])->name('recipe.random');
