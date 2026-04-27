@@ -24,6 +24,8 @@ Route::get('/', [RecetteController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
 
     // Group Routes
     Route::get('/groups', [\App\Http\Controllers\GroupeController::class, 'index'])->name('groups');

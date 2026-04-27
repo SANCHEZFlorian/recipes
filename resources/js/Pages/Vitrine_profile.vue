@@ -1,12 +1,12 @@
 <template>
     <Head>
-        <title>Mon Profil</title>
+        <title>Mon Profil — Family Recipe</title>
         <meta name="robots" content="noindex, nofollow" />
     </Head>
     <VitrineLayout>
         <!-- Profile Header -->
         <div class="relative bg-gray-900 border-b border-gray-100 pb-16">
-            <!-- Cover Image (Mocked gradient for elegance) -->
+            <!-- Cover Image -->
             <div
                 class="h-48 md:h-64 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-900 w-full object-cover"
             ></div>
@@ -20,36 +20,9 @@
                         class="relative w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0"
                     >
                         <img
-                            :src="
-                                'https://ui-avatars.com/api/?name=' +
-                                encodeURIComponent(user.name) +
-                                '&background=ffffff&color=047857&size=200'
-                            "
+                            :src="user.avatar"
                             class="w-full h-full rounded-2xl border-4 border-white shadow-xl object-cover"
                         />
-                        <button
-                            class="absolute bottom-2 right-2 bg-white text-gray-600 p-2 rounded-xl shadow-md border border-gray-100 hover:text-emerald-600 transition-colors"
-                        >
-                            <svg
-                                class="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                                />
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                            </svg>
-                        </button>
                     </div>
 
                     <!-- User Info -->
@@ -65,46 +38,120 @@
                             <p
                                 class="text-emerald-300 md:text-emerald-600 font-medium mb-3"
                             >
-                                {{ user.email }}
+                                @{{ user.username }} • {{ user.email }}
                             </p>
                             <p class="text-gray-200 md:text-gray-600 max-w-xl">
-                                {{
-                                    user.bio ||
-                                    "Passionné de cuisine. Toujours à la recherche de nouvelles saveurs à partager."
-                                }}
+                                {{ user.bio }}
                             </p>
                         </div>
-                        <Link
-                            :href="route('profile')"
-                            class="inline-flex justify-center items-center gap-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-6 py-2.5 rounded-xl font-medium transition-colors border border-emerald-100"
+                        <button
+                            @click="isEditing = !isEditing"
+                            class="inline-flex justify-center items-center gap-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 px-6 py-2.5 rounded-xl font-medium transition-colors border border-emerald-100 shadow-sm"
                         >
-                            <svg
-                                class="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                />
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
+                            <svg v-if="!isEditing" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
-                            Modifier le profil
-                        </Link>
+                            <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            {{ isEditing ? 'Annuler' : 'Modifier mon profil' }}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Edit Form -->
+            <transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0 -translate-y-4"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 -translate-y-4"
+            >
+                <div v-if="isEditing" class="mb-12 bg-white rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 p-8">
+                    <form @submit.prevent="submitProfile" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-6">
+                                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">01</span>
+                                    Informations de base
+                                </h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nom d'utilisateur</label>
+                                        <input v-model="form.username" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        <p v-if="form.errors.username" class="mt-1 text-sm text-red-600">{{ form.errors.username }}</p>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Prénom</label>
+                                            <input v-model="form.firstname" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Nom</label>
+                                            <input v-model="form.lastname" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                                        <input v-model="form.email" type="email" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        <p v-if="form.errors.email" class="mt-1 text-sm text-red-600">{{ form.errors.email }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+                                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">02</span>
+                                    Détails & Sécurité
+                                </h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">À propos de moi</label>
+                                        <textarea v-model="form.about" rows="3" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Ville</label>
+                                            <input v-model="form.city" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Pays</label>
+                                            <input v-model="form.country" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nouveau mot de passe (optionnel)</label>
+                                        <input v-model="form.password" type="password" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                        <p v-if="form.errors.password" class="mt-1 text-sm text-red-600">{{ form.errors.password }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
+                            <button
+                                type="button"
+                                @click="isEditing = false"
+                                class="px-6 py-2.5 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                type="submit"
+                                :disabled="form.processing"
+                                class="bg-emerald-600 text-white px-8 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                            >
+                                {{ form.processing ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </transition>
+
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <!-- Sidebar -->
                 <div class="lg:col-span-1 space-y-6">
@@ -198,7 +245,7 @@
                 <div class="lg:col-span-3">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold text-gray-900">
-                            Mes Recettes Récents
+                            Mes Recettes Récentes
                         </h2>
                         <Link
                             :href="route('home')"
@@ -225,19 +272,6 @@
                                     :alt="recipe.titre"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                 />
-                                <div
-                                    class="absolute bottom-2 left-2 px-2 py-1 rounded-md bg-black/60 backdrop-blur-md text-white text-xs font-bold border border-white/10 shadow-sm flex items-center gap-1.5"
-                                >
-                                    <div
-                                        class="w-1.5 h-1.5 rounded-full"
-                                        :class="
-                                            recipe.difficulte?.nom === 'Facile'
-                                                ? 'bg-green-400'
-                                                : 'bg-yellow-400'
-                                        "
-                                    ></div>
-                                    {{ recipe.difficulte?.nom || "Facile" }}
-                                </div>
                             </div>
                             <h3
                                 class="text-lg font-bold text-gray-900 leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2"
@@ -275,11 +309,12 @@
                             Vous n'avez pas encore publié de recette. Partagez
                             votre passion avec la communauté !
                         </p>
-                        <button
-                            class="font-medium text-white bg-emerald-600 hover:bg-emerald-700 px-6 py-2.5 rounded-xl transition-colors shadow-md shadow-emerald-600/20"
+                        <Link
+                            :href="route('recipe.create')"
+                            class="inline-block font-medium text-white bg-emerald-600 hover:bg-emerald-700 px-6 py-2.5 rounded-xl transition-colors shadow-md shadow-emerald-600/20"
                         >
                             Ajouter une recette
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -288,8 +323,9 @@
 </template>
 
 <script setup>
-import { Link, Head } from "@inertiajs/vue3";
+import { Link, Head, useForm } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
+import { ref } from "vue";
 
 const props = defineProps({
     user: {
@@ -305,6 +341,29 @@ const props = defineProps({
         default: () => [],
     },
 });
+
+const isEditing = ref(false);
+
+const form = useForm({
+    username: props.user.username,
+    firstname: props.user.name.split(' ')[0] || '',
+    lastname: props.user.name.split(' ')[1] || '',
+    email: props.user.email,
+    about: props.user.bio !== 'Aucune biographie renseignée.' ? props.user.bio : '',
+    city: props.user.location.split(', ')[0] || '',
+    country: props.user.location.split(', ')[1] || '',
+    password: '',
+    password_confirmation: '',
+});
+
+const submitProfile = () => {
+    form.put(route('profile.update'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            isEditing.value = false;
+        },
+    });
+};
 
 const getRecipeImage = (recipe) => {
     // Basic premium fallback mapping

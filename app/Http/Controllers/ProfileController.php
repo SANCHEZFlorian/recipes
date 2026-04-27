@@ -56,5 +56,36 @@ class ProfileController extends Controller
                 ]
             ]
         ]);
+    /**
+     * Update the user's profile.
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'firstname' => 'nullable|string|max:255',
+            'lastname' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'about' => 'nullable|string|max:1000',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user->fill($validated);
+
+        if ($request->filled('password')) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        }
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Votre profil a été mis à jour avec succès.');
     }
 }
