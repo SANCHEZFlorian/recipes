@@ -1,8 +1,8 @@
 <template>
     <Head>
         <title>{{ recipe.title }}</title>
-        <meta name="description" :content="`Recette ${recipe.title} — ${recipe.recette_type?.nom || 'Plat'} ${recipe.difficulte?.nom || ''} à réaliser. Découvrez les ingrédients, étapes et avis de la communauté CookBook.`" />
-        <meta property="og:title" :content="`${recipe.title} — CookBook`" />
+        <meta name="description" :content="`Recette ${recipe.title} — ${recipe.recette_type?.nom || 'Plat'} ${recipe.difficulte?.nom || ''} à réaliser. Découvrez les ingrédients, étapes et avis de la communauté Family Recipe.`" />
+        <meta property="og:title" :content="`${recipe.title} — Family Recipe`" />
         <meta property="og:description" :content="`Recette ${recipe.recette_type?.nom || ''} — ${recipe.difficulte?.nom || 'Facile'}. Consultez les ingrédients et instructions détaillées.`" />
         <meta property="og:type" content="article" />
         <meta property="og:image" :content="getRecipeImage(recipe)" />

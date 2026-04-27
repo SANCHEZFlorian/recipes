@@ -1,8 +1,8 @@
 <template>
     <Head>
         <title>{{ category.nom }}</title>
-        <meta name="description" :content="`Découvrez toutes les recettes de la catégorie ${category.nom} sur CookBook. Laissez-vous inspirer par nos meilleures créations culinaires.`" />
-        <meta property="og:title" :content="`${category.nom} — CookBook`" />
+        <meta name="description" :content="`Découvrez toutes les recettes de la catégorie ${category.nom} sur Family Recipe. Laissez-vous inspirer par nos meilleures créations culinaires.`" />
+        <meta property="og:title" :content="`${category.nom} — Family Recipe`" />
         <meta property="og:description" :content="`Toutes nos meilleures recettes ${category.nom}. Trouvez l'inspiration pour votre prochain repas.`" />
     </Head>
     <VitrineLayout>

@@ -3,29 +3,29 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="CookBook — Découvrez et partagez des milliers de recettes savoureuses. Trouvez l'inspiration pour vos repas quotidiens grâce à notre communauté de passionnés de cuisine.">
+        <meta name="description" content="Family Recipe — Découvrez et partagez des milliers de recettes savoureuses. Trouvez l'inspiration pour vos repas quotidiens grâce à notre communauté de passionnés de cuisine.">
         <meta name="theme-color" content="#059669">
-        <meta name="author" content="CookBook">
+        <meta name="author" content="Family Recipe">
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="{{ url()->current() }}">
 
         {{-- Open Graph --}}
         <meta property="og:type" content="website">
-        <meta property="og:site_name" content="CookBook">
+        <meta property="og:site_name" content="Family Recipe">
         <meta property="og:locale" content="fr_FR">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ asset('images/logo.png') }}">
 
         {{-- Twitter Card --}}
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="@CookBook">
+        <meta name="twitter:site" content="@FamilyRecipe">
         <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
 
-        <title inertia>CookBook</title>
+        <title inertia>Family Recipe</title>
 
         {{-- Favicon --}}
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
 
         {{-- Google Fonts: Inter --}}
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,9 +42,9 @@
         {
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "CookBook",
+            "name": "Family Recipe",
             "url": "{{ config('app.url') }}",
-            "description": "Découvrez et partagez des milliers de recettes savoureuses avec la communauté CookBook.",
+            "description": "Découvrez et partagez des milliers de recettes savoureuses avec la communauté Family Recipe.",
             "potentialAction": {
                 "@type": "SearchAction",
                 "target": "{{ config('app.url') }}/?search={search_term_string}",

@@ -8,8 +8,8 @@
       <div class="flex-1 flex flex-col min-h-0 border-r border-gray-200">
         <!-- Logo -->
         <div class="flex items-center h-16 px-4 border-b border-gray-200">
-          <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-          <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+          <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+          <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
         </div>
         <!-- Navigation Menu -->
         <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
@@ -186,8 +186,8 @@
             class="flex items-center justify-between h-16 px-4 border-b border-gray-200"
           >
             <div class="flex items-center">
-              <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-              <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+              <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+              <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
             </div>
             <button
               @click="toggleSidebar"
@@ -1319,7 +1319,7 @@ report.reason === 'Spam' ? 'bg-yellow-100 text-yellow-800' :
                           <input
                             type="text"
                             id="site-name"
-                            value="CookBook"
+                            value="Family Recipe"
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
                           />
                         </div>
@@ -1346,7 +1346,7 @@ Discover, create, and share delicious recipes from around the world.</textarea
                           <input
                             type="email"
                             id="contact-email"
-                            value="contact@cookbook.com"
+                            value="contact@Family Recipe.com"
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
                           />
                         </div>
@@ -1739,7 +1739,7 @@ Discover, create, and share delicious recipes from around the world.</textarea
                           <input
                             type="text"
                             id="smtp-username"
-                            value="noreply@cookbook.com"
+                            value="noreply@Family Recipe.com"
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
                           />
                         </div>

@@ -8,8 +8,8 @@
       >
         <!-- Logo -->
         <div class="flex items-center">
-          <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-          <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+          <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+          <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
         </div>
         <!-- Search Bar (Desktop) -->
         <div class="hidden md:flex flex-1 max-w-xl mx-6">
@@ -189,7 +189,7 @@
                   <!-- Modal content -->
                   <div class="p-6">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                      Login to CookBook
+                      Login to Family Recipe
                     </h2>
                     <form @submit.prevent="handleLogin" id="loginForm">
                       <!-- Email/Username field -->
@@ -2018,8 +2018,8 @@ deleteConfirmation === 'DELETE' ? 'bg-red-600 hover:bg-red-700' : 'bg-red-300 cu
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div class="flex items-center mb-4">
-              <img :src="logoUrl" alt="CookBook" class="h-8 w-auto" />
-              <h2 class="ml-2 text-lg font-bold text-emerald-600">CookBook</h2>
+              <img :src="logoUrl" alt="Family Recipe" class="h-8 w-auto" />
+              <h2 class="ml-2 text-lg font-bold text-emerald-600">Family Recipe</h2>
             </div>
             <p class="text-gray-600 text-sm mb-4">
               Discover, create, and share delicious recipes from around the
@@ -2171,7 +2171,7 @@ deleteConfirmation === 'DELETE' ? 'bg-red-600 hover:bg-red-700' : 'bg-red-300 cu
           class="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
         >
           <p class="text-gray-600 text-sm mb-4 md:mb-0">
-            &copy; 2025 CookBook. All rights reserved.
+            &copy; 2025 Family Recipe. All rights reserved.
           </p>
           <div class="flex items-center space-x-4">
             <i class="fab fa-cc-visa text-gray-500 text-xl"></i>
@@ -2577,7 +2577,7 @@ const handleLogin = () => {
   setTimeout(() => {
     // Check if email and password match our fake account
     if (
-      loginForm.value.email === "demo@cookbook.com" &&
+      loginForm.value.email === "demo@Family Recipe.com" &&
       loginForm.value.password === "demo123"
     ) {
       // Update authentication state
@@ -2585,7 +2585,7 @@ const handleLogin = () => {
       currentUser.value = {
         id: 1,
         name: "Demo User",
-        email: "demo@cookbook.com",
+        email: "demo@Family Recipe.com",
         avatar:
           "https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520a%2520young%2520person%2520with%2520friendly%2520smile%252C%2520neutral%2520background%252C%2520high%2520quality%2520portrait%2520photo&width=100&height=100&seq=20&orientation=squarish",
       };
@@ -2598,7 +2598,7 @@ const handleLogin = () => {
       };
     } else {
       // Show error message for invalid credentials
-      alert("Invalid email or password. Try demo@cookbook.com / demo123");
+      alert("Invalid email or password. Try demo@Family Recipe.com / demo123");
     }
   }, 500);
 };

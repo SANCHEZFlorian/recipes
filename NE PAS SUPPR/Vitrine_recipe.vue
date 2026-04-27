@@ -8,8 +8,8 @@
       >
         <!-- Logo -->
         <div class="flex items-center">
-          <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-          <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+          <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+          <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
         </div>
         <!-- Search Bar (Desktop) -->
         <div class="hidden md:flex flex-1 max-w-xl mx-6">
@@ -183,7 +183,7 @@
                   <!-- Modal content -->
                   <div class="p-6">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6">
-                      Login to CookBook
+                      Login to Family Recipe
                     </h2>
                     <form @submit.prevent="handleLogin" id="loginForm">
                       <!-- Email/Username field -->
@@ -1206,8 +1206,8 @@ star <= recipe.rating ? 'fas fa-star text-amber-400' : 'far fa-star text-gray-30
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div class="flex items-center mb-4">
-              <img :src="logoUrl" alt="CookBook" class="h-8 w-auto" />
-              <h2 class="ml-2 text-lg font-bold text-emerald-600">CookBook</h2>
+              <img :src="logoUrl" alt="Family Recipe" class="h-8 w-auto" />
+              <h2 class="ml-2 text-lg font-bold text-emerald-600">Family Recipe</h2>
             </div>
             <p class="text-gray-600 text-sm mb-4">
               Discover, create, and share delicious recipes from around the
@@ -1359,7 +1359,7 @@ star <= recipe.rating ? 'fas fa-star text-amber-400' : 'far fa-star text-gray-30
           class="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
         >
           <p class="text-gray-600 text-sm mb-4 md:mb-0">
-            &copy; 2025 CookBook. All rights reserved.
+            &copy; 2025 Family Recipe. All rights reserved.
           </p>
           <div class="flex items-center space-x-4">
             <i class="fab fa-cc-visa text-gray-500 text-xl"></i>
@@ -1413,7 +1413,7 @@ const reviewTitle = ref("");
 const reviewContent = ref("");
 // Recipe URL for sharing
 const recipeUrl =
-  "https://cookbook.example.com/recipes/spicy-thai-noodle-soup-with-shrimp";
+  "https://Family Recipe.example.com/recipes/spicy-thai-noodle-soup-with-shrimp";
 // Notifications
 const unreadNotifications = ref(3);
 const notifications = ref([
@@ -1876,7 +1876,7 @@ const handleLogin = () => {
   setTimeout(() => {
     // Check if email and password match our fake account
     if (
-      loginForm.value.email === "demo@cookbook.com" &&
+      loginForm.value.email === "demo@Family Recipe.com" &&
       loginForm.value.password === "demo123"
     ) {
       // Update authentication state
@@ -1884,7 +1884,7 @@ const handleLogin = () => {
       currentUser.value = {
         id: 1,
         name: "Demo User",
-        email: "demo@cookbook.com",
+        email: "demo@Family Recipe.com",
         avatar:
           "https://readdy.ai/api/search-image?query=professional%25252520headshot%25252520of%25252520a%25252520young%25252520person%25252520with%25252520friendly%25252520smile%2525252C%25252520neutral%25252520background%2525252C%25252520high%25252520quality%25252520portrait%25252520photo&width=100&height=100&seq=2&orientation=squarish",
       };
@@ -1897,7 +1897,7 @@ const handleLogin = () => {
       };
     } else {
       // Show error message for invalid credentials
-      alert("Invalid email or password. Try demo@cookbook.com / demo123");
+      alert("Invalid email or password. Try demo@Family Recipe.com / demo123");
     }
   }, 500);
 };

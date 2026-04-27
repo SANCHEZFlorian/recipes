@@ -2,27 +2,25 @@
 
 namespace App\Mail;
 
-use App\Models\Groupe;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class GroupInvitationMail extends Mailable
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $group;
-    public $invitedEmail;
+    public User $user;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Groupe $group, string $invitedEmail)
+    public function __construct(User $user)
     {
-        $this->group = $group;
-        $this->invitedEmail = $invitedEmail;
+        $this->user = $user;
     }
 
     /**
@@ -31,7 +29,7 @@ class GroupInvitationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invitation au groupe « ' . $this->group->nom . ' » sur Family Recipe 🍳',
+            subject: 'Bienvenue sur Family Recipe, ' . $this->user->username . ' 🍳',
         );
     }
 
@@ -41,7 +39,7 @@ class GroupInvitationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.group-invitation',
+            view: 'emails.welcome',
         );
     }
 

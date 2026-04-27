@@ -8,9 +8,9 @@
                 :href="route('home')"
                 class="flex items-center h-16 px-4 border-b border-gray-200"
             >
-                <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
+                <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
                 <h1 class="ml-2 text-xl font-bold text-emerald-600">
-                    CookBook
+                    Family Recipe
                 </h1>
             </Link>
             <!-- Navigation Menu -->
@@ -45,8 +45,7 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 
-const logoUrl =
-    "https://ui-avatars.com/api/?name=Recipe&background=random&color=fff";
+const logoUrl = "/images/logo.png";
 
 const menuItems = [
     {

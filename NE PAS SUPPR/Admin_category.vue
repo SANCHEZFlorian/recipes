@@ -8,8 +8,8 @@
       <div class="flex-1 flex flex-col min-h-0 border-r border-gray-200">
         <!-- Logo -->
         <div class="flex items-center h-16 px-4 border-b border-gray-200">
-          <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-          <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+          <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+          <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
         </div>
         <!-- Navigation Menu -->
         <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
@@ -196,8 +196,8 @@
             class="flex items-center justify-between h-16 px-4 border-b border-gray-200"
           >
             <div class="flex items-center">
-              <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-              <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+              <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+              <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
             </div>
             <button
               @click="toggleSidebar"

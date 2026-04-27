@@ -12,13 +12,13 @@
                 >
                     <img
                         src="/images/logo.png"
-                        alt="CookBook Logo"
+                        alt="Family Recipe Logo"
                         class="h-full w-full object-contain drop-shadow-sm"
                     />
                 </div>
                 <span
                     class="text-xl font-black text-gray-900 tracking-tight leading-none pt-1"
-                    >Cook<span class="text-emerald-600">Book</span></span
+                    >Family <span class="text-emerald-600">Recipe</span></span
                 >
             </Link>
 

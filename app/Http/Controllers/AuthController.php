@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 class AuthController extends Controller
 {
@@ -70,6 +72,14 @@ class AuthController extends Controller
         }
 
         Auth::login($user);
+
+        // Send welcome email (queued-friendly — won't block the response)
+        try {
+            Mail::to($user->email)->send(new WelcomeMail($user));
+        } catch (\Exception $e) {
+            // Ne pas bloquer l'inscription si l'envoi d'e-mail échoue
+            \Illuminate\Support\Facades\Log::warning('Welcome email failed: ' . $e->getMessage());
+        }
 
         return redirect()->intended();
     }

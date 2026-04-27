@@ -1,8 +1,8 @@
 <template>
     <Head>
         <title>Découvrir les recettes</title>
-        <meta name="description" content="Explorez des milliers de recettes savoureuses sur CookBook. Filtrez par type de plat, difficulté et temps de préparation pour trouver l'inspiration parfaite." />
-        <meta property="og:title" content="Découvrir les recettes — CookBook" />
+        <meta name="description" content="Explorez des milliers de recettes savoureuses sur Family Recipe. Filtrez par type de plat, difficulté et temps de préparation pour trouver l'inspiration parfaite." />
+        <meta property="og:title" content="Découvrir les recettes — Family Recipe" />
         <meta property="og:description" content="Explorez des milliers de recettes savoureuses. Filtrez par type, difficulté et temps de préparation." />
     </Head>
     <VitrineLayout>

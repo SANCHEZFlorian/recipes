@@ -24,7 +24,7 @@
                         <i class="fas fa-user-plus text-2xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800">
-                        Créer un compte CookBook
+                        Créer un compte Family Recipe
                     </h2>
                     <p class="text-sm text-gray-500 mt-2">
                         Inscrivez-vous pour partager vos propres recettes et

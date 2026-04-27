@@ -1,8 +1,8 @@
 <template>
     <Head>
         <title>Catégories de recettes</title>
-        <meta name="description" content="Parcourez toutes les catégories de recettes CookBook : entrées, plats, desserts, cuisine asiatique, italienne et bien plus. Trouvez l'inspiration par thème." />
-        <meta property="og:title" content="Catégories de recettes — CookBook" />
+        <meta name="description" content="Parcourez toutes les catégories de recettes Family Recipe : entrées, plats, desserts, cuisine asiatique, italienne et bien plus. Trouvez l'inspiration par thème." />
+        <meta property="og:title" content="Catégories de recettes — Family Recipe" />
         <meta property="og:description" content="De l'entrée au dessert, explorez nos catégories de recettes soigneusement triées." />
     </Head>
     <VitrineLayout>

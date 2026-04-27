@@ -8,8 +8,8 @@
       >
         <!-- Logo -->
         <div class="flex items-center">
-          <img :src="logoUrl" alt="CookBook" class="h-10 w-auto" />
-          <h1 class="ml-2 text-xl font-bold text-emerald-600">CookBook</h1>
+          <img :src="logoUrl" alt="Family Recipe" class="h-10 w-auto" />
+          <h1 class="ml-2 text-xl font-bold text-emerald-600">Family Recipe</h1>
         </div>
         <!-- Search Bar (Desktop) -->
         <div class="hidden md:flex flex-1 max-w-xl mx-6">
@@ -1066,8 +1066,8 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div class="flex items-center mb-4">
-              <img :src="logoUrl" alt="CookBook" class="h-8 w-auto" />
-              <h2 class="ml-2 text-lg font-bold text-emerald-600">CookBook</h2>
+              <img :src="logoUrl" alt="Family Recipe" class="h-8 w-auto" />
+              <h2 class="ml-2 text-lg font-bold text-emerald-600">Family Recipe</h2>
             </div>
             <p class="text-gray-600 text-sm mb-4">
               Discover, create, and share delicious recipes from around the
@@ -1178,7 +1178,7 @@
           class="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center"
         >
           <p class="text-gray-600 text-sm mb-4 md:mb-0">
-            &copy; 2025 CookBook. All rights reserved.
+            &copy; 2025 Family Recipe. All rights reserved.
           </p>
           <div class="flex items-center space-x-4">
             <i class="fab fa-cc-visa text-gray-500 text-xl"></i>

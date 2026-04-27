@@ -14,6 +14,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
+// Password Reset
+Route::get('/forgot-password', [\App\Http\Controllers\PasswordResetController::class, 'showForgotForm'])->name('password.request');
+Route::post('/forgot-password', [\App\Http\Controllers\PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [\App\Http\Controllers\PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [\App\Http\Controllers\PasswordResetController::class, 'resetPassword'])->name('password.update');
+
 Route::get('/', [RecetteController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
@@ -101,3 +107,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Settings
     Route::get('/settings', [\App\Http\Controllers\Admin\AdminSettingController::class, 'index'])->name('settings');
 });
+
+// Mail Previews (Local Only)
+if (app()->environment('local')) {
+    Route::prefix('mail-previews')->name('mail-previews.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\MailPreviewController::class, 'index'])->name('index');
+        Route::get('/welcome', [\App\Http\Controllers\MailPreviewController::class, 'welcome'])->name('welcome');
+        Route::get('/invitation', [\App\Http\Controllers\MailPreviewController::class, 'invitation'])->name('invitation');
+        Route::get('/reset-password', [\App\Http\Controllers\MailPreviewController::class, 'reset'])->name('reset');
+    });
+}

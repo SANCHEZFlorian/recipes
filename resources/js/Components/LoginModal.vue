@@ -24,7 +24,7 @@
                         <i class="fas fa-user-circle text-2xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800">
-                        Connexion à CookBook
+                        Connexion à Family Recipe
                     </h2>
                     <p class="text-sm text-gray-500 mt-2">
                         Connectez-vous pour enregistrer vos recettes préférées
@@ -68,11 +68,10 @@
                                 class="block text-sm font-medium text-gray-700"
                                 >Mot de passe</label
                             >
-                            <a
-                                href="#"
+                            <Link
+                                :href="route('password.request')"
                                 class="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
-                                >Mot de passe oublié ?</a
-                            >
+                            >Mot de passe oublié ?</Link>
                         </div>
                         <div class="relative">
                             <input
@@ -145,7 +144,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, Link } from "@inertiajs/vue3";
 
 const props = defineProps({
     show: {

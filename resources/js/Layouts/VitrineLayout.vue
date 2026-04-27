@@ -115,15 +115,15 @@
                         <div
                             class="h-8 w-8 bg-gray-800 text-white rounded-lg flex items-center justify-center font-bold text-lg"
                         >
-                            CB
+                            FR
                         </div>
                         <span
                             class="text-xl font-black text-gray-800 tracking-tight"
-                            >CookBook</span
+                            >Family Recipe</span
                         >
                     </div>
                     <p class="text-gray-500 text-sm font-medium">
-                        &copy; 2026 CookBook. Recettes partagées avec amour.
+                        &copy; 2026 Family Recipe. Recettes partagées avec amour.
                     </p>
                     <div class="flex gap-4 text-gray-400">
                         <a

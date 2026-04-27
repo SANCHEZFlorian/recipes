@@ -51,7 +51,7 @@ class ProfileController extends Controller
                 // Mock activity data
                 [
                     'icon' => 'fa-plus',
-                    'text' => 'A rejoint CookBook',
+                    'text' => 'A rejoint Family Recipe',
                     'time' => $user->created_at ? $user->created_at->diffForHumans() : 'Récemment'
                 ]
             ]
