@@ -93,9 +93,9 @@
                                 >
                                     <span class="text-sm font-medium"
                                         >{{
-                                            category.recette_types_count || 0
+                                            category.recettes_count || 0
                                         }}
-                                        Sous-catégories</span
+                                        {{ (category.recettes_count || 0) > 1 ? 'Recettes' : 'Recette' }}</span
                                     >
                                     <svg
                                         class="w-4 h-4"

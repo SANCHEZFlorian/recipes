@@ -195,12 +195,8 @@
                         class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors focus:outline-none h-full"
                     >
                         <img
-                            :src="
-                                'https://ui-avatars.com/api/?name=' +
-                                encodeURIComponent($page.props.auth.user.name) +
-                                '&background=10b981&color=fff'
-                            "
-                            class="w-8 h-8 rounded-full border-2 border-transparent group-hover:border-emerald-200 transition-all"
+                            :src="$page.props.auth.user.avatar"
+                            class="w-8 h-8 rounded-full border-2 border-transparent group-hover:border-emerald-200 transition-all object-cover"
                         />
                         <span>{{ $page.props.auth.user.name }}</span>
                         <svg

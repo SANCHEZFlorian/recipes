@@ -84,7 +84,7 @@ class RecetteInteractionController extends Controller
         // Récupérer les ID des recettes favorites
         $favorisId = Favoris::where('users_id', $userId)->pluck('recette_id');
         
-        $recettes = Recette::with(['user', 'RecetteType', 'prix', 'difficulte', 'recettePhotos.photo'])
+        $recettes = Recette::with(['user', 'categories', 'prix', 'difficulte', 'recettePhotos.photo'])
             ->whereIn('id', $favorisId)
             ->where('is_supprimer', false)
             ->latest()

@@ -11,90 +11,104 @@
 
         <!-- Mobile Menu Overlay -->
         <transition
-            enter-active-class="transition duration-200 ease-out"
-            enter-from-class="opacity-0 -translate-y-2"
-            enter-to-class="opacity-100 translate-y-0"
-            leave-active-class="transition duration-150 ease-in"
-            leave-from-class="opacity-100 translate-y-0"
-            leave-to-class="opacity-0 -translate-y-2"
+            enter-active-class="transition duration-300 ease-out"
+            enter-from-class="opacity-0 translate-x-full"
+            enter-to-class="opacity-100 translate-x-0"
+            leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100 translate-x-0"
+            leave-to-class="opacity-0 translate-x-full"
         >
             <div
                 v-if="isMobileMenuOpen"
-                class="md:hidden fixed inset-x-0 top-16 bg-white/95 backdrop-blur-md shadow-2xl border-b border-gray-100 z-40 p-4"
+                class="md:hidden fixed inset-0 z-[100] bg-white/95 backdrop-blur-xl"
             >
-                <nav class="flex flex-col gap-2">
-                    <Link
-                        :href="route('home')"
-                        class="px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
-                    >
-                        Découvrir
-                    </Link>
-                    <Link
-                        :href="route('categories.list')"
-                        class="px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
-                    >
-                        Catégories
-                    </Link>
+                <div class="flex flex-col h-full p-6">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-3">
+                            <img src="/images/logo.png" class="h-8 w-8 object-contain" alt="Logo" />
+                            <span class="text-xl font-black text-gray-900">Family <span class="text-emerald-600">Recipe</span></span>
+                        </div>
+                        <button @click="isMobileMenuOpen = false" class="p-2 text-gray-500 hover:text-emerald-600 transition-colors">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
 
-                    <div class="h-px bg-gray-100 my-2"></div>
+                    <nav class="flex flex-col gap-2">
+                        <Link
+                            :href="route('home')"
+                            @click="isMobileMenuOpen = false"
+                            class="px-5 py-4 rounded-2xl font-bold text-lg text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all active:scale-95"
+                        >
+                            Découvrir
+                        </Link>
+                        <Link
+                            :href="route('categories.list')"
+                            @click="isMobileMenuOpen = false"
+                            class="px-5 py-4 rounded-2xl font-bold text-lg text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all active:scale-95"
+                        >
+                            Catégories
+                        </Link>
 
-                    <template v-if="$page.props.auth.user">
-                        <div class="px-4 py-3 flex items-center gap-3">
-                            <img
-                                :src="
-                                    'https://ui-avatars.com/api/?name=' +
-                                    encodeURIComponent(
-                                        $page.props.auth.user.name,
-                                    ) +
-                                    '&background=10b981&color=fff'
-                                "
-                                class="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <div class="font-bold text-gray-900">
-                                    {{ $page.props.auth.user.name }}
-                                </div>
-                                <div class="text-sm text-gray-500">
-                                    {{ $page.props.auth.user.email }}
+                        <div class="h-px bg-slate-100 my-4"></div>
+
+                        <template v-if="$page.props.auth.user">
+                            <div class="px-5 py-4 flex items-center gap-4 bg-slate-50 rounded-3xl mb-4">
+                                <img
+                                    :src="$page.props.auth.user.avatar"
+                                    class="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover"
+                                />
+                                <div>
+                                    <div class="font-black text-slate-900">
+                                        {{ $page.props.auth.user.name }}
+                                    </div>
+                                    <div class="text-sm text-slate-500">
+                                        {{ $page.props.auth.user.email }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <template v-if="$page.props.auth.user.is_admin">
+                            
                             <Link
+                                v-if="$page.props.auth.user.is_admin"
                                 :href="route('admin.ingredients')"
-                                class="px-4 py-3 rounded-xl font-medium text-amber-600 hover:bg-amber-50 transition-colors"
+                                @click="isMobileMenuOpen = false"
+                                class="px-5 py-4 rounded-2xl font-bold text-lg text-amber-600 hover:bg-amber-50 transition-all active:scale-95"
                             >
                                 Administration
                             </Link>
+                            <Link
+                                :href="route('profile')"
+                                @click="isMobileMenuOpen = false"
+                                class="px-5 py-4 rounded-2xl font-bold text-lg text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all active:scale-95"
+                            >
+                                Mon Profil
+                            </Link>
+                            <button
+                                @click="logout"
+                                class="px-5 py-4 rounded-2xl font-bold text-lg text-left text-red-600 hover:bg-red-50 transition-all active:scale-95 w-full mt-auto"
+                            >
+                                Déconnexion
+                            </button>
                         </template>
-                        <Link
-                            :href="route('profile')"
-                            class="px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
-                        >
-                            Mon Profil
-                        </Link>
-                        <button
-                            @click="logout"
-                            class="px-4 py-3 rounded-xl font-medium text-left text-red-600 hover:bg-red-50 transition-colors w-full"
-                        >
-                            Déconnexion
-                        </button>
-                    </template>
-                    <template v-else>
-                        <button
-                            @click="openModal('login')"
-                            class="px-4 py-3 rounded-xl font-medium text-center text-emerald-600 bg-emerald-50 hover:bg-emerald-100 transition-colors w-full"
-                        >
-                            Connexion
-                        </button>
-                        <button
-                            @click="openModal('register')"
-                            class="px-4 py-3 rounded-xl font-medium text-center text-white bg-emerald-600 hover:bg-emerald-700 transition-colors w-full shadow-md shadow-emerald-600/20"
-                        >
-                            S'inscrire
-                        </button>
-                    </template>
-                </nav>
+                        <template v-else>
+                            <div class="flex flex-col gap-3 mt-4">
+                                <button
+                                    @click="openModal('login')"
+                                    class="premium-button-secondary w-full text-lg py-4"
+                                >
+                                    Connexion
+                                </button>
+                                <button
+                                    @click="openModal('register')"
+                                    class="premium-button-primary w-full text-lg py-4"
+                                >
+                                    S'inscrire
+                                </button>
+                            </div>
+                        </template>
+                    </nav>
+                </div>
             </div>
         </transition>
 

@@ -103,7 +103,7 @@ class GroupeController extends Controller
         }
 
         // Load recipes associated with this group
-        $recettes = \App\Models\Recette::with(['user', 'RecetteType', 'prix', 'difficulte', 'recettePhotos.photo'])
+        $recettes = \App\Models\Recette::with(['user', 'categories', 'prix', 'difficulte', 'recettePhotos.photo'])
             ->where('groupe_id', $group->id)
             ->where('is_supprimer', false)
             ->latest()

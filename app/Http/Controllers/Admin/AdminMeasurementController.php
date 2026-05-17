@@ -33,7 +33,10 @@ class AdminMeasurementController extends Controller
             'icone' => 'nullable|string|max:100',
         ]);
 
-        Unite::create($validated);
+        Unite::create([
+            ...$validated,
+            'icone' => $validated['icone'] ?? 'fas fa-balance-scale',
+        ]);
 
         return back()->with('success', 'Unité de mesure créée avec succès.');
     }

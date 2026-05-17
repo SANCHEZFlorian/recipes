@@ -37,7 +37,10 @@ class AdminCategoryController extends Controller
             'nom' => 'required|string|max:255|unique:recette_categorie,nom',
         ]);
 
-        RecetteCategorie::create($validated);
+        RecetteCategorie::create([
+            ...$validated,
+            'icone' => 'fas fa-tags',
+        ]);
 
         return back()->with('success', 'Catégorie créée avec succès.');
     }

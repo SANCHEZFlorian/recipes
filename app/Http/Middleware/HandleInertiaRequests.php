@@ -38,10 +38,10 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? $request->user()->load('photo') : null,
             ],
             'categories' => fn () => \App\Models\RecetteCategorie::orderBy('nom')->get(),
-            'types' => fn () => \App\Models\RecetteType::orderBy('nom')->get(),
+            'types' => fn () => \App\Models\RecetteCategorie::orderBy('nom')->get(),
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'success' => fn () => $request->session()->get('success'),

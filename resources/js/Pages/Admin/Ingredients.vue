@@ -23,7 +23,7 @@
                         <tr v-for="ing in ingredients" :key="ing.id" class="hover:bg-gray-50/50 transition-colors group">
                             <td class="px-6 py-4">
                                 <template v-if="editingId === ing.id">
-                                    <input v-model="editForm.nom" type="text" class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-emerald-500">
+                                    <input v-model="editForm.nom" type="text" class="premium-input py-1.5 px-3">
                                 </template>
                                 <template v-else>
                                     <div class="flex items-center gap-3">
@@ -36,9 +36,13 @@
                             </td>
                             <td class="px-6 py-4">
                                 <template v-if="editingId === ing.id">
-                                    <select v-model="editForm.aliment_type_id" class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-emerald-500 bg-white">
-                                        <option v-for="t in types" :key="t.id" :value="t.id">{{ t.nom }}</option>
-                                    </select>
+                                    <PremiumSelect
+                                        v-model="editForm.aliment_type_id"
+                                        :options="types"
+                                        placeholder="Type"
+                                        label-key="nom"
+                                        required
+                                    />
                                 </template>
                                 <template v-else>
                                     <span v-if="ing.aliment_type" class="text-sm font-medium text-gray-600">{{ ing.aliment_type.nom }}</span>
@@ -84,6 +88,7 @@
 import { ref } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
 import VitrineLayout from '@/Layouts/VitrineLayout.vue';
+import PremiumSelect from '@/Components/PremiumSelect.vue';
 
 const props = defineProps({
     ingredients: Array,

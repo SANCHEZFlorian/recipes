@@ -110,39 +110,39 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeModal" aria-hidden="true"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form @submit.prevent="submitForm">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
-                                {{ form.id ? "Modifier le Type d'ingrédient" : "Ajouter un Type d'ingrédient" }}
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom du Type</label>
-                                    <input type="text" id="nom" v-model="form.nom" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" required />
-                                    <div v-if="form.errors.nom" class="text-red-500 text-xs mt-1">{{ form.errors.nom }}</div>
-                                </div>
-                                <div>
-                                    <label for="icone" class="block text-sm font-medium text-gray-700">Icône (ex: 🍎, ou fa-solid fa-apple-whole)</label>
-                                    <input type="text" id="icone" v-model="form.icone" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
-                                    <div v-if="form.errors.icone" class="text-red-500 text-xs mt-1">{{ form.errors.icone }}</div>
-                                </div>
-                            </div>
+        <div v-if="showModal" class="premium-modal-backdrop" @click.self="closeModal">
+            <div class="premium-modal-content max-w-md p-6 bg-white rounded-3xl shadow-2xl relative">
+                <button @click="closeModal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+                
+                <h3 class="text-2xl font-black text-slate-900 mb-6">
+                    {{ form.id ? "Modifier le Type d'ingrédient" : "Ajouter un Type d'ingrédient" }}
+                </h3>
+                
+                <form @submit.prevent="submitForm">
+                    <div class="space-y-5">
+                        <div>
+                            <label for="nom" class="premium-label">Nom du Type</label>
+                            <input type="text" id="nom" v-model="form.nom" class="premium-input" placeholder="Ex: Légumes" required />
+                            <div v-if="form.errors.nom" class="text-red-500 text-xs mt-1">{{ form.errors.nom }}</div>
                         </div>
-                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="submit" :disabled="form.processing" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
-                                {{ form.id ? 'Sauvegarder' : 'Créer' }}
-                            </button>
-                            <button type="button" @click="closeModal" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                Annuler
-                            </button>
+                        <div>
+                            <label for="icone" class="premium-label">Icône (ex: 🍎, ou fa-solid fa-apple-whole)</label>
+                            <input type="text" id="icone" v-model="form.icone" class="premium-input" placeholder="Ex: 🍎" />
+                            <div v-if="form.errors.icone" class="text-red-500 text-xs mt-1">{{ form.errors.icone }}</div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" @click="closeModal" class="premium-button-secondary flex-1">
+                            Annuler
+                        </button>
+                        <button type="submit" :disabled="form.processing" class="premium-button-primary flex-1 disabled:opacity-50">
+                            {{ form.id ? 'Sauvegarder' : 'Créer' }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </AdminLayout>

@@ -17,11 +17,21 @@ class Recette extends Model
         'is_supprimer',
         'users_id',
         'groupe_id',
-        'recette_type_id',
         'prix_id',
-        'type_cuisson_id',
         'difficulte_id'
     ];
+
+    protected $appends = ['recette_type'];
+
+    /**
+     * Get the first category as the recipe type for backward compatibility.
+     *
+     * @return object|null
+     */
+    public function getRecetteTypeAttribute()
+    {
+        return $this->categories->first();
+    }
 
     //*------------------------------------//
     //* Relations avec les autres tables   //
@@ -48,13 +58,13 @@ class Recette extends Model
     }
 
     /**
-     * Relation avec la table 'recette_types'.
+     * Relation many-to-many avec la table 'recette_categorie'.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function RecetteType()
+    public function categories()
     {
-        return $this->belongsTo(RecetteType::class, 'recette_type_id', 'id');
+        return $this->belongsToMany(RecetteCategorie::class, 'recette_recette_categorie', 'recette_id', 'recette_categorie_id');
     }
 
     /**
@@ -67,15 +77,7 @@ class Recette extends Model
         return $this->belongsTo(Prix::class, 'prix_id', 'id');
     }
 
-    /**
-     * Relation avec la table 'type_cuissons'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function typeCuisson()
-    {
-        return $this->belongsTo(TypeCuisson::class, 'type_cuisson_id', 'id');
-    }
+
 
     /**
      * Renvoie la difficulté de la recette.

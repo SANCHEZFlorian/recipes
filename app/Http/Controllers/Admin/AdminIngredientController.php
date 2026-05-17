@@ -46,8 +46,10 @@ class AdminIngredientController extends Controller
         ]);
 
         Aliment::create([
-            ...$validated,
-            'user_id' => \Illuminate\Support\Facades\Auth::id() ?? 1 // Fallback just in case
+            'nom' => $validated['nom'],
+            'aliment_type_id' => $validated['aliment_type_id'],
+            'is_certified' => $validated['is_certified'] ?? false,
+            'icone' => 'fas fa-carrot',
         ]);
 
         return back()->with('success', 'Ingrédient créé avec succès.');

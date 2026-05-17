@@ -12,7 +12,6 @@ class RecetteEtape extends Model
 
     protected $fillable = [
         'recette_id',
-        'type_cuisson_id',
         'numero',
         'description'
     ];
@@ -33,15 +32,7 @@ class RecetteEtape extends Model
         return $this->belongsTo(Recette::class, 'recette_id', 'id');
     }
 
-    /**
-     * Renvoie le type de cuisson associé cette étape.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function typeCuisson()
-    {
-        return $this->belongsTo(TypeCuisson::class, 'type_cuisson_id', 'id');
-    }
+
 
     /**
      * Renvoie les ingrédients associés à cette étape (many-to-many via pivot).

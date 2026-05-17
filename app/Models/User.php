@@ -34,6 +34,34 @@ class User extends Authenticatable
         'photo_id'
     ];
 
+    protected $appends = ['name', 'avatar'];
+
+    /**
+     * Get the avatar URL for the user.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute()
+    {
+        if ($this->photo) {
+            return $this->photo->url;
+        }
+
+        // Generate initials from first and last name, or username
+        $initials = '';
+        if ($this->firstname) {
+            $initials .= mb_substr($this->firstname, 0, 1);
+        }
+        if ($this->lastname) {
+            $initials .= mb_substr($this->lastname, 0, 1);
+        }
+        if (empty($initials)) {
+            $initials = mb_substr($this->username, 0, 2);
+        }
+
+        return "https://ui-avatars.com/api/?name=" . urlencode($initials) . "&background=10b981&color=fff";
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

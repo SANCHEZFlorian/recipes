@@ -22,7 +22,7 @@ class ProfileController extends Controller
         // but we have 'recettes.commentaires' and 'recettes' for the views.
         // For simplicity, we just pass what we can readily calculate or mock the rest for presentation.
 
-        $recipes = $user->recettes()->with(['photo', 'difficulte', 'prix'])->latest()->take(6)->get();
+        $recipes = $user->recettes()->with(['recettePhotos', 'difficulte', 'prix'])->latest()->take(6)->get();
 
         return Inertia::render('Vitrine_profile', [
             'user' => [
@@ -74,9 +74,33 @@ class ProfileController extends Controller
             'city' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
+            'avatar' => 'nullable|image|max:5120',
         ]);
 
-        $user->fill($validated);
+        $data = $validated;
+        unset($data['password']);
+        unset($data['avatar']);
+        $user->fill($data);
+
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetPath = public_path('storage/avatars');
+
+            if (!file_exists($targetPath)) {
+                mkdir($targetPath, 0755, true);
+            }
+
+            $file->move($targetPath, $filename);
+
+            $photo = \App\Models\Photo::create([
+                'nom_fichier' => $filename,
+                'type' => 'avatar'
+            ]);
+
+            $user->photo_id = $photo->id;
+        }
 
         if ($request->filled('password')) {
             $user->password = \Illuminate\Support\Facades\Hash::make($request->password);

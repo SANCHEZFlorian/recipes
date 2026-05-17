@@ -21,23 +21,15 @@ class RecetteCategorie extends Model
     //* Relations avec les autres tables   //
     //*------------------------------------//
 
-    /**
-     * Relation avec la table 'recette_types'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function RecetteTypes()
-    {
-        return $this->hasMany(RecetteType::class, 'recette_categorie_id', 'id');
-    }
+
 
     /**
-     * Renvoie toutes les recettes associées à cette catégorie via ses types.
+     * Renvoie toutes les recettes associées à cette catégorie.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function recettes()
     {
-        return $this->hasManyThrough(Recette::class, RecetteType::class, 'recette_categorie_id', 'recette_type_id', 'id', 'id');
+        return $this->belongsToMany(Recette::class, 'recette_recette_categorie', 'recette_categorie_id', 'recette_id');
     }
 }

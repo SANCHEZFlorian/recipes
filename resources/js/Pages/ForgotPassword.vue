@@ -40,7 +40,7 @@
 
                     <form @submit.prevent="submit" class="space-y-5">
                         <div>
-                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <label for="email" class="premium-label">
                                 Adresse e-mail
                             </label>
                             <input
@@ -50,13 +50,13 @@
                                 required
                                 autofocus
                                 placeholder="votre@email.com"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all text-sm"
-                                :class="{ 'border-red-400 ring-2 ring-red-400/20': form.errors.email }"
+                                class="premium-input"
+                                :class="{ 'border-red-400 ring-4 ring-red-500/10': form.errors.email }"
                             />
-                            <p v-if="form.errors.email" class="mt-1.5 text-xs text-red-500 font-medium">
+                            <p v-if="form.errors.email" class="mt-1.5 text-xs text-red-500 font-medium ml-1">
                                 {{ form.errors.email }}
                             </p>
-                            <p class="mt-2 text-xs text-gray-500">
+                            <p class="mt-2 text-xs text-gray-500 ml-1">
                                 Entrez l'adresse e-mail associée à votre compte Family Recipe.
                             </p>
                         </div>
@@ -64,7 +64,7 @@
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2"
+                            class="w-full premium-button-primary flex items-center justify-center gap-2"
                         >
                             <svg v-if="form.processing" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

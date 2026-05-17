@@ -15,6 +15,21 @@ class Photo extends Model
         'type'
     ];
 
+    protected $appends = ['url'];
+
+    /**
+     * Get the URL for the photo.
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        if ($this->type === 'avatar') {
+            return '/storage/avatars/' . $this->nom_fichier;
+        }
+        return '/storage/recipes/' . $this->nom_fichier;
+    }
+
     //*------------------------------------//
     //* Relations avec les autres tables   //
     //*------------------------------------//

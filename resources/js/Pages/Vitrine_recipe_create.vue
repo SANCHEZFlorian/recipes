@@ -20,62 +20,108 @@
             <form @submit.prevent="submitForm" class="space-y-12">
                 
                 <!-- Section 1: Informations de base -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">1</div>
-                        <h2 class="text-2xl font-bold text-gray-900">Informations Principales</h2>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-12">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl shadow-inner">1</div>
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Informations Principales</h2>
                     </div>
 
-                    <div class="space-y-6">
+                    <div class="space-y-8">
                         <!-- Titre -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Titre de la recette</label>
-                                <input v-model="form.title" type="text" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all font-medium text-lg placeholder:font-normal" placeholder="Ex: Gratin Dauphinois Traditionnel" required>
+                                <label class="premium-label">Titre de la recette</label>
+                                <input v-model="form.title" type="text" class="premium-input text-lg font-bold" placeholder="Ex: Gratin Dauphinois Traditionnel" required>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Photo de couverture</label>
+                                <label class="premium-label">Photo de couverture</label>
                                 <div class="relative h-[52px]">
                                     <input type="file" @input="form.photo = $event.target.files[0]" id="photo_upload" class="sr-only" accept="image/*">
-                                    <label for="photo_upload" class="flex items-center justify-center w-full h-full border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 transition-all text-sm font-bold text-gray-500 overflow-hidden">
+                                    <label for="photo_upload" class="flex items-center justify-center w-full h-full border-2 border-dashed border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 transition-all text-sm font-bold text-slate-500 overflow-hidden">
                                         <template v-if="!form.photo">
-                                            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                            <svg class="w-5 h-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                             Choisir une photo
                                         </template>
                                         <template v-else>
-                                            <span class="text-emerald-600 truncate px-2">{{ form.photo.name }}</span>
+                                            <span class="text-emerald-600 truncate px-4">{{ form.photo.name }}</span>
                                         </template>
                                     </label>
                                 </div>
-                                <p v-if="form.errors.photo" class="mt-1 text-xs text-red-500 font-bold">{{ form.errors.photo }}</p>
+                                <p v-if="form.errors.photo" class="mt-2 text-xs text-rose-500 font-bold ml-1">{{ form.errors.photo }}</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Type -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Categories (Types de plats) -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Type de plat</label>
-                                <select v-model="form.recette_type_id" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all bg-white" required>
-                                    <option value="" disabled>Sélectionner un type...</option>
-                                    <option v-for="type in types" :key="type.id" :value="type.id">{{ type.nom }}</option>
-                                </select>
+                                <label class="premium-label flex justify-between items-center">
+                                    <span>Catégories / Types de plat</span>
+                                    <span class="text-xs font-bold" :class="form.category_ids.length === 3 ? 'text-amber-500' : 'text-slate-400'">
+                                        {{ form.category_ids.length }} / 3 max
+                                    </span>
+                                </label>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <button
+                                        v-for="type in types"
+                                        :key="type.id"
+                                        type="button"
+                                        @click="toggleCategory(type.id)"
+                                        class="px-4 py-2.5 rounded-2xl border text-sm font-medium transition-all duration-300 cursor-pointer select-none active:scale-95 flex items-center gap-2"
+                                        :class="[
+                                            form.category_ids.includes(type.id)
+                                                ? 'border-emerald-500 bg-emerald-50 text-emerald-700 font-bold shadow-md shadow-emerald-500/5'
+                                                : form.category_ids.length >= 3
+                                                    ? 'border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed opacity-50'
+                                                    : 'border-slate-200 bg-white/70 backdrop-blur-sm text-slate-600 hover:border-emerald-300 hover:text-emerald-600'
+                                        ]"
+                                        :disabled="form.category_ids.length >= 3 && !form.category_ids.includes(type.id)"
+                                    >
+                                        <i v-if="type.icone" :class="type.icone" class="text-xs"></i>
+                                        <span>{{ type.nom }}</span>
+                                    </button>
+                                </div>
+                                <p v-if="form.errors.category_ids" class="mt-2 text-xs text-rose-500 font-bold ml-1">{{ form.errors.category_ids }}</p>
                             </div>
 
                             <!-- Portions -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de portions</label>
-                                <input v-model.number="form.portions" type="number" min="1" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all" placeholder="Ex: 4" required>
+                                <label class="premium-label">Nombre de portions</label>
+                                <div class="flex items-center gap-1 bg-white/70 backdrop-blur-sm border border-slate-200 rounded-2xl p-1 w-fit focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 transition-all duration-300">
+                                    <button 
+                                        type="button" 
+                                        @click="form.portions = Math.max(1, form.portions - 1)"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 active:scale-95 transition-all font-bold cursor-pointer select-none"
+                                    >
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    
+                                    <input 
+                                        v-model.number="form.portions" 
+                                        type="number" 
+                                        min="1" 
+                                        class="w-16 text-center bg-transparent border-0 ring-0 focus:ring-0 font-bold text-slate-800 text-lg p-0"
+                                        @input="form.portions = Math.max(1, parseInt($event.target.value) || 1)"
+                                    >
+                                    
+                                    <button 
+                                        type="button" 
+                                        @click="form.portions = form.portions + 1"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 active:scale-95 transition-all font-bold cursor-pointer select-none"
+                                    >
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Difficulté -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Difficulté</label>
+                                <label class="premium-label">Difficulté</label>
                                 <div class="grid grid-cols-3 gap-3">
                                     <label v-for="diff in difficultes" :key="diff.id" class="cursor-pointer">
                                         <input type="radio" v-model="form.difficulte_id" :value="diff.id" class="peer sr-only" required>
-                                        <div class="text-center px-3 py-2 rounded-xl border-2 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 text-gray-500 font-medium transition-all hover:border-emerald-200">
+                                        <div class="text-center px-3 py-3 rounded-2xl border-2 border-slate-100 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 text-slate-500 font-bold transition-all hover:border-emerald-200 text-sm">
                                             {{ diff.nom }}
                                         </div>
                                     </label>
@@ -83,11 +129,11 @@
                             </div>
                             <!-- Prix -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Coût estimé</label>
+                                <label class="premium-label">Coût estimé</label>
                                 <div class="grid grid-cols-3 gap-3">
                                     <label v-for="px in prix" :key="px.id" class="cursor-pointer">
                                         <input type="radio" v-model="form.prix_id" :value="px.id" class="peer sr-only" required>
-                                        <div class="text-center px-3 py-2 rounded-xl border-2 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 text-gray-500 font-medium transition-all hover:border-emerald-200">
+                                        <div class="text-center px-3 py-3 rounded-2xl border-2 border-slate-100 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 text-slate-500 font-bold transition-all hover:border-emerald-200 text-sm">
                                             {{ px.nom }}
                                         </div>
                                     </label>
@@ -96,185 +142,220 @@
                         </div>
 
                         <!-- Groupe -->
-                        <div v-if="userGroups && userGroups.length > 0" class="mt-6 border-t border-gray-100 pt-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Partager dans un groupe ? <span class="text-gray-400 font-normal">(Optionnel)</span></label>
-                            <select v-model="form.groupe_id" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all bg-white">
-                                <option :value="null">Non, rendre cette recette publique</option>
-                                <option v-for="group in userGroups" :key="group.id" :value="group.id">
-                                    {{ group.nom }}
-                                </option>
-                            </select>
-                            <p class="text-xs text-emerald-600 mt-2 font-medium">Si vous sélectionnez un groupe, seuls ses membres pourront y accéder !</p>
+                        <div v-if="userGroups && userGroups.length > 0" class="mt-8 border-t border-slate-100 pt-8">
+                            <label class="premium-label">Partager dans un groupe ? <span class="text-slate-400 font-normal">(Optionnel)</span></label>
+                            <PremiumSelect
+                                v-model="form.groupe_id"
+                                :options="userGroups"
+                                placeholder="Non, rendre cette recette publique"
+                                label-key="nom"
+                            />
+                            <p class="text-xs text-emerald-600 mt-3 font-bold flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                Si vous sélectionnez un groupe, seuls ses membres pourront y accéder !
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Section 2: Temps -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">2</div>
-                        <h2 class="text-2xl font-bold text-gray-900">Temps nécessaires (en minutes)</h2>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-12">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl shadow-inner">2</div>
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Temps de préparation</h2>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
-                                Préparation
+                            <label class="premium-label flex items-center gap-2">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
+                                Préparation (min)
                             </label>
-                            <input v-model.number="form.temps_preparation" type="number" min="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20" placeholder="0" required>
+                            <input v-model.number="form.temps_preparation" type="number" min="0" class="premium-input" placeholder="0" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" /></svg>
-                                Cuisson
+                            <label class="premium-label flex items-center gap-2">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" /></svg>
+                                Cuisson (min)
                             </label>
-                            <input v-model.number="form.temps_cuisson" type="number" min="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20" placeholder="0" required>
+                            <input v-model.number="form.temps_cuisson" type="number" min="0" class="premium-input" placeholder="0" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                Repos
+                            <label class="premium-label flex items-center gap-2">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                Repos (min)
                             </label>
-                            <input v-model.number="form.temps_repos" type="number" min="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20" placeholder="0" required>
+                            <input v-model.number="form.temps_repos" type="number" min="0" class="premium-input" placeholder="0" required>
                         </div>
                     </div>
                 </div>
 
                 <!-- Section 3: Ingredients -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">3</div>
-                            <h2 class="text-2xl font-bold text-gray-900">Ingrédients</h2>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-12">
+                    <div class="flex items-center justify-between flex-wrap gap-4 mb-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl shadow-inner">3</div>
+                            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Ingrédients</h2>
                         </div>
-                        <button type="button" @click="addIngredient" class="text-emerald-600 font-bold hover:text-emerald-700 transition-colors flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-xl">
+                        <button type="button" @click="addIngredient" class="premium-button-secondary py-3 flex items-center gap-2 text-emerald-600 border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                             Ajouter un ingrédient
                         </button>
                     </div>
 
-                    <div class="space-y-4">
-                        <div v-for="(ing, index) in form.ingredients" :key="index" class="flex flex-wrap md:flex-nowrap items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                    <div class="space-y-6">
+                        <div v-for="(ing, index) in form.ingredients" :key="index" class="flex flex-wrap md:flex-nowrap items-end gap-4 bg-slate-50/50 p-6 rounded-3xl border border-slate-100 transition-all hover:bg-slate-50">
                             
                             <div class="w-full md:w-2/5">
-                                <label class="block text-xs font-bold text-gray-500 mb-1">Ingrédient</label>
+                                <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Ingrédient</label>
                                 <div class="relative group">
                                     <input 
                                         type="text" 
                                         v-model="ing.search" 
                                         @focus="ing.showResults = true"
                                         @blur="hideResults(ing)"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-emerald-500 bg-white" 
-                                        placeholder="Taper pour chercher ou créer..."
+                                        class="premium-input bg-white" 
+                                        placeholder="Chercher ou créer..."
                                         required
                                     >
-                                    <div v-if="ing.showResults && filteredAliments(ing.search).length > 0" class="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-48 overflow-y-auto overflow-hidden">
+                                    <div v-if="ing.showResults && filteredAliments(ing.search).length > 0" class="absolute z-20 w-full mt-2 bg-white/95 backdrop-blur-md border border-slate-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto p-1.5 transition-all duration-200">
                                         <div 
                                             v-for="al in filteredAliments(ing.search)" 
                                             :key="al.id" 
                                             @click="selectAliment(index, al)"
-                                            class="px-4 py-2 hover:bg-emerald-50 cursor-pointer text-sm font-medium text-gray-700 flex items-center justify-between"
+                                            class="px-4 py-2.5 hover:bg-emerald-50 hover:text-emerald-900 rounded-xl cursor-pointer text-sm font-bold text-slate-700 flex items-center justify-between transition-colors"
                                         >
-                                            <span>{{ al.nom }}</span>
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-apple-alt text-emerald-500 text-xs"></i>
+                                                {{ al.nom }}
+                                            </span>
+                                            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Existant</span>
                                         </div>
                                     </div>
-                                    <div v-else-if="ing.showResults && ing.search.length > 2" class="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden p-2">
+                                    <div v-else-if="ing.showResults && ing.search.length > 2" class="absolute z-20 w-full mt-2 bg-white/95 backdrop-blur-md border border-slate-100 rounded-2xl shadow-xl p-1.5 transition-all duration-200">
                                         <button 
                                             type="button"
                                             @click="createNewAliment(index, ing.search)"
-                                            class="w-full text-left px-3 py-2 bg-emerald-50 text-emerald-700 text-sm font-bold rounded-lg hover:bg-emerald-100 transition-colors"
+                                            class="w-full text-left px-4 py-2.5 bg-emerald-50/50 hover:bg-emerald-50 text-emerald-700 text-sm font-black rounded-xl hover:text-emerald-800 transition-colors flex items-center justify-between"
                                         >
-                                            Créer "{{ ing.search }}"
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-plus-circle text-emerald-600"></i>
+                                                Créer "{{ ing.search }}"
+                                            </span>
+                                            <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">Nouveau</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="w-full md:w-1/4">
-                                <label class="block text-xs font-bold text-gray-500 mb-1">Quantité</label>
-                                <input v-model.number="ing.quantite" type="number" min="0.1" step="0.1" class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-emerald-500" required>
+                                <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Quantité</label>
+                                <input v-model.number="ing.quantite" type="number" min="0.1" step="0.1" class="premium-input bg-white" required>
                             </div>
 
                             <div class="w-full md:w-1/4">
-                                <label class="block text-xs font-bold text-gray-500 mb-1">Unité</label>
-                                <select v-model="ing.unite_id" class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-emerald-500 bg-white" required>
-                                    <option value="" disabled>Choisir...</option>
-                                    <option v-for="unite in unites" :key="unite.id" :value="unite.id">{{ unite.nom }} ({{ unite.abreviation }})</option>
-                                </select>
+                                <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Unité</label>
+                                <PremiumSelect
+                                    v-model="ing.unite_id"
+                                    :options="formattedUnites"
+                                    placeholder="Choisir..."
+                                    label-key="nom"
+                                    required
+                                />
                             </div>
                             
-                            <div class="w-full md:w-auto pt-5">
-                                <button type="button" @click="removeIngredient(index)" class="text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-colors" title="Supprimer">
+                            <div class="w-full md:w-auto">
+                                <button type="button" @click="removeIngredient(index)" class="text-rose-400 hover:text-rose-600 p-3 hover:bg-rose-50 rounded-xl transition-all active:scale-90" title="Supprimer">
                                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                 </button>
                             </div>
                         </div>
-                        <p v-if="form.ingredients.length === 0" class="text-gray-500 italic text-center py-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">Aucun ingrédient stipulé pour le moment.</p>
+                        <div v-if="form.ingredients.length === 0" class="text-slate-400 font-medium text-center py-12 bg-slate-50/50 rounded-[2rem] border-2 border-dashed border-slate-100">
+                            Aucun ingrédient ajouté pour le moment.
+                        </div>
                     </div>
                 </div>
 
                 <!-- Section 4: Étapes -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">4</div>
-                            <h2 class="text-2xl font-bold text-gray-900">Préparation étape par étape</h2>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-12">
+                    <div class="flex items-center justify-between flex-wrap gap-4 mb-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl shadow-inner">4</div>
+                            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Préparation</h2>
                         </div>
-                        <button type="button" @click="addStep" class="text-emerald-600 font-bold hover:text-emerald-700 transition-colors flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-xl">
+                        <button type="button" @click="addStep" class="premium-button-secondary py-3 flex items-center gap-2 text-emerald-600 border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                             Ajouter une étape
                         </button>
                     </div>
 
-                    <div class="space-y-6">
-                        <div v-for="(step, index) in form.etapes" :key="index" class="bg-gray-50 w-full p-6 rounded-2xl border border-gray-200 flex gap-4">
-                            <div class="font-black text-4xl text-emerald-200 mt-2">
+                    <div class="space-y-8">
+                        <div v-for="(step, index) in form.etapes" :key="index" class="bg-slate-50/30 w-full p-8 rounded-[2rem] border border-slate-100 flex flex-col md:flex-row gap-8 relative group">
+                            <div class="font-black text-6xl text-emerald-100 leading-none">
                                 {{ index + 1 }}
                             </div>
-                            <div class="flex-1 space-y-4">
+                            <div class="flex-1 space-y-6">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-500 mb-1">Description de l'action à réaliser</label>
-                                    <textarea v-model="step.description" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 resize-none font-medium" placeholder="Ex: Dans un saladier, mélanger vigoureusement les œufs et le sucre..." required></textarea>
+                                    <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Description de l'action</label>
+                                    <textarea v-model="step.description" rows="3" class="premium-input bg-white resize-none font-medium text-base" placeholder="Ex: Dans un saladier, mélanger vigoureusement les œufs et le sucre..." required></textarea>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-500 mb-1">Ingrédients concernés (optionnel)</label>
-                                        <div class="space-y-2 mt-2 max-h-40 overflow-y-auto pr-2">
-                                            <label v-for="(ing, i) in validIngredientsForm" :key="i" class="flex items-center gap-2 p-2 rounded-lg border border-gray-100 hover:bg-emerald-50 cursor-pointer transition-colors bg-white">
-                                                <input type="checkbox" :value="i" v-model="step.ingredient_indexes" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500">
-                                                <span class="text-sm text-gray-700 font-medium">{{ getAlimentName(ing.aliment_id) }} ({{ ing.quantite }})</span>
+                                        <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Ingrédients concernés</label>
+                                        <div class="space-y-2 mt-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                                            <label v-for="(ing, i) in validIngredientsForm" :key="i" 
+                                                   :class="[
+                                                       step.ingredient_indexes.includes(i) 
+                                                           ? 'border-emerald-500 bg-emerald-50/40 text-emerald-955 shadow-sm shadow-emerald-500/5' 
+                                                           : 'border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 text-slate-700 bg-white'
+                                                   ]"
+                                                   class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all">
+                                                <input type="checkbox" :value="i" v-model="step.ingredient_indexes" class="w-5 h-5 rounded-lg border-slate-300 text-emerald-600 focus:ring-emerald-500/20 transition-all cursor-pointer">
+                                                <span class="text-sm font-bold">{{ getAlimentName(ing.aliment_id) }}</span>
+                                                <span :class="[
+                                                    step.ingredient_indexes.includes(i)
+                                                        ? 'bg-emerald-100 text-emerald-700 font-extrabold'
+                                                        : 'bg-slate-100 text-slate-400'
+                                                ]" class="text-[10px] px-1.5 py-0.5 rounded ml-auto font-black">{{ ing.quantite }}</span>
                                             </label>
-                                            <p v-if="validIngredientsForm.length === 0" class="text-xs text-gray-400 italic">Ajoutez d'abord des ingrédients à la recette.</p>
+                                            <p v-if="validIngredientsForm.length === 0" class="text-xs text-slate-400 italic py-2">Ajoutez d'abord des ingrédients.</p>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-500 mb-1">Ustensiles Requis (optionnel)</label>
-                                        <div class="space-y-2 mt-2 max-h-40 overflow-y-auto pr-2">
-                                            <label v-for="ust in ustensiles" :key="ust.id" class="flex items-center gap-2 p-2 rounded-lg border border-gray-100 hover:bg-emerald-50 cursor-pointer transition-colors bg-white">
-                                                <input type="checkbox" :value="ust.id" v-model="step.ustensile_ids" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500">
-                                                <span class="text-sm text-gray-700 font-medium">{{ ust.nom }}</span>
+                                        <label class="premium-label text-xs uppercase tracking-wider text-slate-400">Ustensiles Requis</label>
+                                        <div class="space-y-2 mt-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                                            <label v-for="ust in ustensiles" :key="ust.id" 
+                                                   :class="[
+                                                       step.ustensile_ids.includes(ust.id) 
+                                                           ? 'border-emerald-500 bg-emerald-50/40 text-emerald-955 shadow-sm shadow-emerald-500/5' 
+                                                           : 'border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 text-slate-700 bg-white'
+                                                   ]"
+                                                   class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all">
+                                                <input type="checkbox" :value="ust.id" v-model="step.ustensile_ids" class="w-5 h-5 rounded-lg border-slate-300 text-emerald-600 focus:ring-emerald-500/20 transition-all cursor-pointer">
+                                                <span class="text-sm font-bold">{{ ust.nom }}</span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" @click="removeStep(index)" class="text-red-400 hover:text-red-600 p-2 self-start rounded-lg transition-colors hover:bg-red-50" title="Supprimer">
+                            <button type="button" @click="removeStep(index)" class="absolute top-4 right-4 text-rose-300 hover:text-rose-600 p-2 rounded-xl transition-all hover:bg-rose-50 opacity-0 group-hover:opacity-100" title="Supprimer">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                             </button>
                         </div>
-                        <p v-if="form.etapes.length === 0" class="text-gray-500 italic text-center py-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">Ajoutez au moins une étape pour guider vos lecteurs.</p>
+                        <div v-if="form.etapes.length === 0" class="text-slate-400 font-medium text-center py-12 bg-slate-50/50 rounded-[2rem] border-2 border-dashed border-slate-100">
+                            Aucune étape définie pour le moment.
+                        </div>
                     </div>
                 </div>
 
                 <!-- Submit Area -->
-                <div class="pt-8 border-t border-gray-200 flex justify-end gap-4">
-                    <Link :href="route('home')" class="px-6 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-colors">
+                <div class="pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-end gap-4">
+                    <Link :href="route('home')" class="premium-button-secondary text-center">
                         Annuler
                     </Link>
-                    <button type="submit" :disabled="form.processing" class="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 disabled:opacity-50">
-                        <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Publier ma recette
+                    <button type="submit" :disabled="form.processing" class="premium-button-primary text-lg px-12 flex items-center justify-center gap-3">
+                        <svg v-if="form.processing" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span>{{ form.processing ? 'Publication...' : 'Publier ma recette' }}</span>
                     </button>
                 </div>
             </form>
@@ -286,6 +367,7 @@
 import { computed } from 'vue';
 import { useForm, Link, Head } from '@inertiajs/vue3';
 import VitrineLayout from '@/Layouts/VitrineLayout.vue';
+import PremiumSelect from '@/Components/PremiumSelect.vue';
 
 const props = defineProps({
     difficultes: Array,
@@ -304,10 +386,17 @@ const props = defineProps({
     }
 });
 
+const formattedUnites = computed(() => {
+    return props.unites.map(u => ({
+        id: u.id,
+        nom: `${u.nom} (${u.abreviation})`
+    }));
+});
+
 // Main Form Payload mirroring the complex database relations
 const form = useForm({
     title: '',
-    recette_type_id: '',
+    category_ids: [],
     portions: 1,
     difficulte_id: null,
     prix_id: null,
@@ -321,6 +410,15 @@ const form = useForm({
     ingredients: [],
     etapes: []
 });
+
+const toggleCategory = (id) => {
+    const idx = form.category_ids.indexOf(id);
+    if (idx !== -1) {
+        form.category_ids.splice(idx, 1);
+    } else if (form.category_ids.length < 3) {
+        form.category_ids.push(id);
+    }
+};
 
 // Ingredient Management
 const addIngredient = () => {

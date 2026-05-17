@@ -23,6 +23,13 @@
                     <span v-if="isOwner" class="bg-emerald-600/20 text-emerald-400 text-xs px-2 py-1 rounded-md border border-emerald-500/30 font-bold ml-2">C'est vous !</span>
                 </p>
             </div>
+            
+            <div v-if="!isOwner" class="absolute bottom-16 right-4 sm:right-6 lg:right-8 z-10">
+                <button @click="leaveGroup" class="bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/30 px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-2 backdrop-blur-md">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Quitter le groupe
+                </button>
+            </div>
         </div>
 
         <div class="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -71,8 +78,23 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-2 mb-1">
-                            <span v-if="recipe.recette_type?.nom" class="text-xs font-bold text-emerald-600 tracking-wide uppercase">{{ recipe.recette_type?.nom }}</span>
+                        <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1 mb-1">
+                            <template v-if="recipe.categories && recipe.categories.length > 0">
+                                <span
+                                    v-for="(cat, cidx) in recipe.categories"
+                                    :key="cat.id"
+                                    class="text-xs font-bold text-emerald-600 tracking-wide uppercase flex items-center gap-1.5"
+                                >
+                                    <span v-if="cidx > 0" class="text-gray-300 font-normal">•</span>
+                                    <i v-if="cat.icone" :class="cat.icone" class="text-[9px]"></i>
+                                    {{ cat.nom }}
+                                </span>
+                            </template>
+                            <span
+                                v-else-if="recipe.recette_type?.nom"
+                                class="text-xs font-bold text-emerald-600 tracking-wide uppercase"
+                                >{{ recipe.recette_type?.nom }}</span
+                            >
                         </div>
 
                         <h3 class="text-lg font-bold text-gray-900 leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2">
@@ -81,7 +103,7 @@
 
                         <div class="mt-2 flex items-center justify-between w-full">
                             <div class="flex items-center gap-2">
-                                <img :src="'https://ui-avatars.com/api/?name=' + encodeURIComponent(recipe.user?.username || 'Chef') + '&background=f3f4f6&color=374151'" class="w-6 h-6 rounded-full" />
+                                <img :src="recipe.user?.avatar" class="w-6 h-6 rounded-full object-cover" />
                                 <span class="text-sm font-medium text-gray-600">{{ recipe.user?.username || "Cuisinier" }}</span>
                             </div>
                         </div>
@@ -108,7 +130,7 @@
                             <!-- Administrateur -->
                             <div class="p-4 flex items-center justify-between bg-gray-50">
                                 <div class="flex items-center gap-3">
-                                    <img :src="'https://ui-avatars.com/api/?name=' + encodeURIComponent(group.owner?.username || 'Chef') + '&background=059669&color=fff'" class="w-10 h-10 rounded-full" />
+                                    <img :src="group.owner?.avatar" class="w-10 h-10 rounded-full object-cover" />
                                     <div>
                                         <p class="font-bold text-gray-900">{{ group.owner?.username }} (Créateur)</p>
                                         <p class="text-sm text-gray-500">{{ group.owner?.email }}</p>
@@ -119,7 +141,7 @@
                             <!-- Autres membres -->
                             <div v-for="membre in group.membres" :key="membre.id" class="p-4 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img :src="'https://ui-avatars.com/api/?name=' + encodeURIComponent(membre.username || 'Chef') + '&background=f3f4f6&color=374151'" class="w-10 h-10 rounded-full" />
+                                    <img :src="membre.avatar" class="w-10 h-10 rounded-full object-cover" />
                                     <div>
                                         <p class="font-bold text-gray-900">{{ membre.username }}</p>
                                         <p class="text-sm text-gray-500">{{ membre.email }}</p>
@@ -161,20 +183,20 @@
                             
                             <form @submit.prevent="inviteMember">
                                 <div class="mb-4">
-                                    <label class="block text-sm font-bold text-emerald-900 mb-1">Adresse e-mail</label>
+                                    <label class="premium-label text-emerald-950 font-extrabold">Adresse e-mail</label>
                                     <input 
                                         v-model="inviteForm.email"
                                         type="email" 
                                         required
                                         placeholder="ami@exemple.com"
-                                        class="w-full px-4 py-2 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                        class="premium-input bg-white"
                                     />
-                                    <p v-if="inviteForm.errors.email" class="text-red-500 text-xs mt-1">{{ inviteForm.errors.email }}</p>
+                                    <p v-if="inviteForm.errors.email" class="text-red-500 text-xs font-bold mt-1.5 ml-1">{{ inviteForm.errors.email }}</p>
                                 </div>
                                 <button 
                                     type="submit" 
                                     :disabled="inviteForm.processing"
-                                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-colors disabled:opacity-50 flex justify-center items-center gap-2"
+                                    class="w-full premium-button-primary flex justify-center items-center gap-2"
                                 >
                                     <span v-if="inviteForm.processing" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                                     Inviter
@@ -186,6 +208,31 @@
             </div>
 
         </div>
+
+        <!-- Confirm Modals -->
+        <PremiumConfirmModal 
+            :show="showConfirmKick"
+            title="Éjecter un membre"
+            :message="'Voulez-vous vraiment éjecter ' + selectedMember?.username + ' du groupe ?'"
+            @confirm="confirmKickMember"
+            @close="showConfirmKick = false"
+        />
+
+        <PremiumConfirmModal 
+            :show="showConfirmRevoke"
+            title="Annuler l'invitation"
+            message="Voulez-vous vraiment annuler cette invitation ?"
+            @confirm="confirmRevokeInvitation"
+            @close="showConfirmRevoke = false"
+        />
+
+        <PremiumConfirmModal 
+            :show="showConfirmLeave"
+            title="Quitter le groupe"
+            :message="'Voulez-vous vraiment quitter le groupe ' + group.nom + ' ?'"
+            @confirm="confirmLeaveGroup"
+            @close="showConfirmLeave = false"
+        />
     </VitrineLayout>
 </template>
 
@@ -193,6 +240,7 @@
 import { ref } from 'vue';
 import { Link, useForm, router, Head } from '@inertiajs/vue3';
 import VitrineLayout from '@/Layouts/VitrineLayout.vue';
+import PremiumConfirmModal from '@/Components/PremiumConfirmModal.vue';
 
 const props = defineProps({
     group: Object,
@@ -200,6 +248,12 @@ const props = defineProps({
     invitations: Array,
     isOwner: Boolean,
 });
+
+const showConfirmKick = ref(false);
+const showConfirmRevoke = ref(false);
+const showConfirmLeave = ref(false);
+const selectedMember = ref(null);
+const selectedInvitationId = ref(null);
 
 const activeTab = ref('recipes');
 
@@ -215,15 +269,44 @@ const inviteMember = () => {
 };
 
 const kickMember = (membre) => {
-    if(confirm(`Voulez-vous vraiment éjecter ${membre.username} du groupe ?`)) {
-        router.delete(route('groups.members.remove', { id: props.group.id, user_id: membre.id }), { preserveScroll: true });
-    }
+    selectedMember.value = membre;
+    showConfirmKick.value = true;
+};
+
+const confirmKickMember = () => {
+    router.delete(route('groups.members.remove', { id: props.group.id, user_id: selectedMember.value.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmKick.value = false;
+        }
+    });
 };
 
 const revokeInvitation = (invitationId) => {
-    if(confirm(`Annuler cette invitation ?`)) {
-        router.delete(route('groups.invitations.revoke', { id: props.group.id, invitation_id: invitationId }), { preserveScroll: true });
-    }
+    selectedInvitationId.value = invitationId;
+    showConfirmRevoke.value = true;
+};
+
+const confirmRevokeInvitation = () => {
+    router.delete(route('groups.invitations.revoke', { id: props.group.id, invitation_id: selectedInvitationId.value }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmRevoke.value = false;
+        }
+    });
+};
+
+const leaveGroup = () => {
+    showConfirmLeave.value = true;
+};
+
+const confirmLeaveGroup = () => {
+    router.post(route('groups.leave', props.group.id), {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmLeave.value = false;
+        }
+    });
 };
 
 const getDifficultyColorClass = (difficulty) => {

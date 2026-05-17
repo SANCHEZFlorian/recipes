@@ -13,7 +13,7 @@ class RecetteCategorieController extends Controller
      */
     public function index()
     {
-        $categories = RecetteCategorie::withCount('RecetteTypes')
+        $categories = RecetteCategorie::withCount('recettes')
             ->get();
 
         return Inertia::render('Vitrine_category_list', [
@@ -30,7 +30,7 @@ class RecetteCategorieController extends Controller
 
         // Fetch recipes through the hasManyThrough relationship
         $recipes = $category->recettes()
-            ->with(['RecetteType', 'prix', 'difficulte', 'recettePhotos.photo'])
+            ->with(['categories', 'prix', 'difficulte', 'recettePhotos.photo'])
             ->whereNull('groupe_id') // Exclure les recettes privées de groupe
             ->where('is_supprimer', false)
             ->latest()

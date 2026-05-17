@@ -14,7 +14,7 @@
                     </div>
                     <button
                         @click="openAddModal"
-                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer whitespace-nowrap !rounded-button"
+                        class="premium-button-primary"
                     >
                         <i class="fas fa-plus mr-2"></i>
                         Ajouter un Ingrédient
@@ -22,61 +22,56 @@
                 </div>
 
                 <!-- Ingredients Table -->
-                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                <div class="premium-table-container">
+                    <table class="premium-table">
+                        <thead>
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nom
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Type
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Statut
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
+                                <th class="w-20">ID</th>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>Statut</th>
+                                <th class="text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="divide-y divide-slate-100">
                             <tr v-for="ingredient in ingredients" :key="ingredient.id">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ ingredient.id }}
+                                <td class="text-xs font-black text-slate-400">
+                                    #{{ ingredient.id }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">
+                                <td>
+                                    <div class="text-sm font-black text-slate-900">
                                         {{ ingredient.name }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="text-sm font-medium text-slate-500">
                                     {{ ingredient.category }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span :class="[ ingredient.status === 'Certifié' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full' ]">
-                                        <i v-if="ingredient.status === 'Certifié'" class="fas fa-check-circle mr-1"></i>
+                                <td>
+                                    <span :class="[ 
+                                        ingredient.status === 'Certifié' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500', 
+                                        'px-2.5 py-1 inline-flex text-[10px] font-black uppercase tracking-wider rounded-lg items-center gap-1.5' 
+                                    ]">
+                                        <i v-if="ingredient.status === 'Certifié'" class="fas fa-check-circle"></i>
                                         {{ ingredient.status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button @click="toggleCertification(ingredient)" title="Basculer la certification" class="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">
-                                        <i class="fas fa-award"></i>
-                                    </button>
-                                    <button @click="editIngredient(ingredient)" title="Modifier" class="text-emerald-600 hover:text-emerald-900 mr-3 cursor-pointer">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button @click="confirmDelete(ingredient)" title="Supprimer" class="text-red-600 hover:text-red-900 cursor-pointer">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                <td class="text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button @click="toggleCertification(ingredient)" title="Basculer la certification" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-amber-500 cursor-pointer">
+                                            <i class="fas fa-award"></i>
+                                        </button>
+                                        <button @click="editIngredient(ingredient)" title="Modifier" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-emerald-600 cursor-pointer">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button @click="confirmDelete(ingredient)" title="Supprimer" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-50 text-slate-400 hover:text-rose-600 cursor-pointer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                             <tr v-if="ingredients.length === 0">
-                                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                                    Aucun ingrédient trouvé.
+                                <td colspan="5" class="px-6 py-16 text-center text-slate-400 font-medium">
+                                    Aucun ingrédient trouvé dans la base.
                                 </td>
                             </tr>
                         </tbody>
@@ -85,51 +80,57 @@
             </div>
         </div>
 
-        <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeModal" aria-hidden="true"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form @submit.prevent="submitForm">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
-                                {{ form.id ? "Modifier l'Ingrédient" : "Ajouter un Ingrédient" }}
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom de l'ingrédient</label>
-                                    <input type="text" id="nom" v-model="form.nom" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" required />
-                                    <div v-if="form.errors.nom" class="text-red-500 text-xs mt-1">{{ form.errors.nom }}</div>
-                                </div>
-                                <div>
-                                    <label for="type" class="block text-sm font-medium text-gray-700">Type d'ingrédient</label>
-                                    <select id="type" v-model="form.aliment_type_id" class="mt-1 block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md border" required>
-                                        <option value="" disabled>Sélectionnez un type</option>
-                                        <option v-for="type in types" :key="type.id" :value="type.id">
-                                            {{ type.name }}
-                                        </option>
-                                    </select>
-                                    <div v-if="form.errors.aliment_type_id" class="text-red-500 text-xs mt-1">{{ form.errors.aliment_type_id }}</div>
-                                </div>
-                                <div class="flex items-center mt-2">
-                                    <input id="certified" type="checkbox" v-model="form.is_certified" class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
-                                    <label for="certified" class="ml-2 block text-sm text-gray-900">Ingrédient certifié</label>
-                                </div>
+        <div v-if="showModal" class="premium-modal-backdrop">
+            <div class="premium-modal-content">
+                <form @submit.prevent="submitForm">
+                    <div class="p-10">
+                        <h3 class="text-3xl font-black text-slate-900 mb-8 tracking-tight">
+                            {{ form.id ? "Modifier l'Ingrédient" : "Nouvel Ingrédient" }}
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="nom" class="premium-label">Nom de l'ingrédient</label>
+                                <input type="text" id="nom" v-model="form.nom" class="premium-input" placeholder="Ex: Farine de blé" required />
+                                <div v-if="form.errors.nom" class="text-rose-500 text-xs font-bold mt-2 ml-1">{{ form.errors.nom }}</div>
                             </div>
+                            <div>
+                                <label for="type" class="premium-label">Type d'ingrédient</label>
+                                <PremiumSelect
+                                    id="type"
+                                    v-model="form.aliment_type_id"
+                                    :options="types"
+                                    placeholder="Sélectionnez un type"
+                                    label-key="name"
+                                    required
+                                />
+                                <div v-if="form.errors.aliment_type_id" class="text-rose-500 text-xs font-bold mt-2 ml-1">{{ form.errors.aliment_type_id }}</div>
+                            </div>
+                            <label class="flex items-center cursor-pointer p-4 rounded-2xl border-2 border-slate-100 w-full transition-all hover:border-emerald-200 hover:bg-emerald-50/30 group">
+                                <input id="certified" type="checkbox" v-model="form.is_certified" class="h-6 w-6 text-emerald-600 focus:ring-emerald-500/20 border-slate-200 rounded-lg shadow-inner">
+                                <span class="ml-4 block text-sm font-black text-slate-700">Ingrédient certifié</span>
+                            </label>
                         </div>
-                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="submit" :disabled="form.processing" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
-                                {{ form.id ? 'Sauvegarder' : 'Créer' }}
-                            </button>
-                            <button type="button" @click="closeModal" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                Annuler
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="bg-slate-50/50 px-10 py-8 flex flex-row-reverse gap-4 border-t border-slate-100">
+                        <button type="submit" :disabled="form.processing" class="premium-button-primary">
+                            {{ form.id ? 'Enregistrer' : 'Créer l\'ingrédient' }}
+                        </button>
+                        <button type="button" @click="closeModal" class="premium-button-secondary">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
+
+        <!-- Confirm Modal -->
+        <PremiumConfirmModal 
+            :show="showConfirmModal"
+            title="Supprimer l'ingrédient"
+            :message="'Voulez-vous vraiment supprimer l\'ingrédient ' + selectedIngredient?.name + ' ?'"
+            @confirm="deleteIngredient"
+            @close="showConfirmModal = false"
+        />
     </AdminLayout>
 </template>
 
@@ -137,6 +138,8 @@
 import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import PremiumConfirmModal from "@/Components/PremiumConfirmModal.vue";
+import PremiumSelect from "@/Components/PremiumSelect.vue";
 
 const props = defineProps({
     ingredients: Array,
@@ -144,6 +147,8 @@ const props = defineProps({
 });
 
 const showModal = ref(false);
+const showConfirmModal = ref(false);
+const selectedIngredient = ref(null);
 
 const form = useForm({
     id: null,
@@ -190,10 +195,16 @@ const toggleCertification = (ing) => {
 }
 
 const confirmDelete = (ing) => {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer l'ingrédient "${ing.name}" ?`)) {
-        router.delete(route('admin.ingredients.destroy', ing.id), {
-            preserveScroll: true,
-        });
-    }
+    selectedIngredient.value = ing;
+    showConfirmModal.value = true;
+};
+
+const deleteIngredient = () => {
+    router.delete(route('admin.ingredients.destroy', selectedIngredient.value.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmModal.value = false;
+        }
+    });
 };
 </script>

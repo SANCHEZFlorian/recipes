@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Groupe extends Model
 {
     protected $table = 'groupe';
-    public $timestamps = false;
+    public $timestamps = true;
     use HasFactory;
 
     protected $fillable = [

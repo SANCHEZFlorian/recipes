@@ -14,7 +14,7 @@
                     </div>
                     <button
                         @click="openAddModal"
-                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer whitespace-nowrap !rounded-button"
+                        class="premium-button-primary"
                     >
                         <i class="fas fa-plus mr-2"></i>
                         Ajouter une Catégorie
@@ -154,36 +154,41 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="closeModal" aria-hidden="true"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form @submit.prevent="submitForm">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
-                                {{ form.id ? "Modifier la Catégorie" : "Ajouter une Catégorie" }}
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom de la Catégorie</label>
-                                    <input type="text" id="nom" v-model="form.nom" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" required />
-                                    <div v-if="form.errors.nom" class="text-red-500 text-xs mt-1">{{ form.errors.nom }}</div>
-                                </div>
+        <div v-if="showModal" class="premium-modal-backdrop">
+            <div class="premium-modal-content">
+                <form @submit.prevent="submitForm">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                            {{ form.id ? "Modifier la Catégorie" : "Ajouter une Catégorie" }}
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="nom" class="premium-label">Nom de la Catégorie</label>
+                                <input type="text" id="nom" v-model="form.nom" class="premium-input" placeholder="Ex: Entrées" required />
+                                <div v-if="form.errors.nom" class="text-red-500 text-xs mt-1 ml-1">{{ form.errors.nom }}</div>
                             </div>
                         </div>
-                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                            <button type="submit" :disabled="form.processing" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
-                                {{ form.id ? 'Sauvegarder' : 'Créer' }}
-                            </button>
-                            <button type="button" @click="closeModal" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                Annuler
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="bg-gray-50/50 px-8 py-6 flex flex-row-reverse gap-4 border-t border-gray-100">
+                        <button type="submit" :disabled="form.processing" class="premium-button-primary">
+                            {{ form.id ? 'Sauvegarder' : 'Créer' }}
+                        </button>
+                        <button type="button" @click="closeModal" class="premium-button-secondary">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
+
+        <!-- Confirm Modal -->
+        <PremiumConfirmModal 
+            :show="showConfirmModal"
+            title="Supprimer la catégorie"
+            :message="'Voulez-vous vraiment supprimer la catégorie ' + selectedCategory?.name + ' ?'"
+            @confirm="deleteCategory"
+            @close="showConfirmModal = false"
+        />
     </AdminLayout>
 </template>
 
@@ -191,12 +196,15 @@
 import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import PremiumConfirmModal from "@/Components/PremiumConfirmModal.vue";
 
 const props = defineProps({
     categories: Array,
 });
 
 const showModal = ref(false);
+const showConfirmModal = ref(false);
+const selectedCategory = ref(null);
 
 const form = useForm({
     id: null,
@@ -234,10 +242,16 @@ const submitForm = () => {
 };
 
 const confirmDelete = (cat) => {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer la catégorie "${cat.name}" ?`)) {
-        router.delete(route('admin.categories.destroy', cat.id), {
-            preserveScroll: true,
-        });
-    }
+    selectedCategory.value = cat;
+    showConfirmModal.value = true;
+};
+
+const deleteCategory = () => {
+    router.delete(route('admin.categories.destroy', selectedCategory.value.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmModal.value = false;
+        }
+    });
 };
 </script>

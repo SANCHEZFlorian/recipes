@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/recipe/create', [\App\Http\Controllers\RecetteController::class, 'create'])->name('recipe.create');
     Route::post('/recipe/store', [\App\Http\Controllers\RecetteController::class, 'store'])->name('recipe.store');
     Route::get('/recipe/{id}/edit', [\App\Http\Controllers\RecetteController::class, 'edit'])->name('recipe.edit');
-    Route::put('/recipe/{id}/update', [\App\Http\Controllers\RecetteController::class, 'update'])->name('recipe.update');
+    Route::post('/recipe/{id}/update', [\App\Http\Controllers\RecetteController::class, 'update'])->name('recipe.update');
     Route::delete('/recipe/{id}', [\App\Http\Controllers\RecetteController::class, 'destroy'])->name('recipe.destroy');
     
     // Interactions Sociales (Favoris & Avis)
@@ -62,6 +62,41 @@ Route::get('/categories', [RecetteCategorieController::class, 'index'])->name('c
 Route::get('/categories/{id}', [RecetteCategorieController::class, 'show'])->name('category.show');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Recipes
+    Route::get('/recipes', [\App\Http\Controllers\Admin\AdminRecipeController::class, 'index'])->name('recipes');
+    Route::post('/recipes/{id}/toggle-visibility', [\App\Http\Controllers\Admin\AdminRecipeController::class, 'toggleVisibility'])->name('recipes.toggle-visibility');
+    Route::delete('/recipes/{id}', [\App\Http\Controllers\Admin\AdminRecipeController::class, 'destroy'])->name('recipes.destroy');
+
+    // Groups
+    Route::get('/groups', [\App\Http\Controllers\Admin\AdminGroupController::class, 'index'])->name('groups');
+    Route::delete('/groups/{id}', [\App\Http\Controllers\Admin\AdminGroupController::class, 'destroy'])->name('groups.destroy');
+
+    // Reviews & Comments
+    Route::get('/reviews', [\App\Http\Controllers\Admin\AdminReviewController::class, 'index'])->name('reviews');
+    Route::delete('/reviews/avis/{id}', [\App\Http\Controllers\Admin\AdminReviewController::class, 'destroyAvis'])->name('reviews.avis.destroy');
+    Route::delete('/reviews/comments/{id}', [\App\Http\Controllers\Admin\AdminReviewController::class, 'destroyComment'])->name('reviews.comments.destroy');
+
+    // Ustensiles
+    Route::get('/ustensiles', [\App\Http\Controllers\Admin\AdminUstensileController::class, 'index'])->name('ustensiles');
+    Route::post('/ustensiles', [\App\Http\Controllers\Admin\AdminUstensileController::class, 'store'])->name('ustensiles.store');
+    Route::put('/ustensiles/{id}', [\App\Http\Controllers\Admin\AdminUstensileController::class, 'update'])->name('ustensiles.update');
+    Route::delete('/ustensiles/{id}', [\App\Http\Controllers\Admin\AdminUstensileController::class, 'destroy'])->name('ustensiles.destroy');
+
+    // Difficulties
+    Route::get('/difficulties', [\App\Http\Controllers\Admin\AdminDifficultyController::class, 'index'])->name('difficulties');
+    Route::post('/difficulties', [\App\Http\Controllers\Admin\AdminDifficultyController::class, 'store'])->name('difficulties.store');
+    Route::put('/difficulties/{id}', [\App\Http\Controllers\Admin\AdminDifficultyController::class, 'update'])->name('difficulties.update');
+    Route::delete('/difficulties/{id}', [\App\Http\Controllers\Admin\AdminDifficultyController::class, 'destroy'])->name('difficulties.destroy');
+
+    // Prices
+    Route::get('/prices', [\App\Http\Controllers\Admin\AdminPriceController::class, 'index'])->name('prices');
+    Route::post('/prices', [\App\Http\Controllers\Admin\AdminPriceController::class, 'store'])->name('prices.store');
+    Route::put('/prices/{id}', [\App\Http\Controllers\Admin\AdminPriceController::class, 'update'])->name('prices.update');
+    Route::delete('/prices/{id}', [\App\Http\Controllers\Admin\AdminPriceController::class, 'destroy'])->name('prices.destroy');
+
     // Categories
     Route::get('/categories', [\App\Http\Controllers\Admin\AdminCategoryController::class, 'index'])->name('categories');
     Route::post('/categories', [\App\Http\Controllers\Admin\AdminCategoryController::class, 'store'])->name('categories.store');
@@ -69,11 +104,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\AdminCategoryController::class, 'destroy'])->name('categories.destroy');
     Route::post('/categories/{id}/toggle-status', [\App\Http\Controllers\Admin\AdminCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
 
-    // Recipe Types (Types de plats)
-    Route::get('/recipe-types', [\App\Http\Controllers\Admin\AdminRecipeTypeController::class, 'index'])->name('recipe-types');
-    Route::post('/recipe-types', [\App\Http\Controllers\Admin\AdminRecipeTypeController::class, 'store'])->name('recipe-types.store');
-    Route::put('/recipe-types/{id}', [\App\Http\Controllers\Admin\AdminRecipeTypeController::class, 'update'])->name('recipe-types.update');
-    Route::delete('/recipe-types/{id}', [\App\Http\Controllers\Admin\AdminRecipeTypeController::class, 'destroy'])->name('recipe-types.destroy');
+
 
     // Ingredients
     Route::get('/ingredients', [\App\Http\Controllers\Admin\AdminIngredientController::class, 'index'])->name('ingredients');
@@ -95,19 +126,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/measurements/{id}', [\App\Http\Controllers\Admin\AdminMeasurementController::class, 'update'])->name('measurements.update');
     Route::delete('/measurements/{id}', [\App\Http\Controllers\Admin\AdminMeasurementController::class, 'destroy'])->name('measurements.destroy');
 
-    // Cooking Types
-    Route::get('/cooking-types', [\App\Http\Controllers\Admin\AdminTypeCuissonController::class, 'index'])->name('cooking-types');
-    Route::post('/cooking-types', [\App\Http\Controllers\Admin\AdminTypeCuissonController::class, 'store'])->name('cooking-types.store');
-    Route::put('/cooking-types/{id}', [\App\Http\Controllers\Admin\AdminTypeCuissonController::class, 'update'])->name('cooking-types.update');
-    Route::delete('/cooking-types/{id}', [\App\Http\Controllers\Admin\AdminTypeCuissonController::class, 'destroy'])->name('cooking-types.destroy');
+
 
     // Users
     Route::get('/users', [\App\Http\Controllers\Admin\AdminUserController::class, 'index'])->name('users');
+    Route::post('/users', [\App\Http\Controllers\Admin\AdminUserController::class, 'store'])->name('users.store');
+    Route::put('/users/{id}', [\App\Http\Controllers\Admin\AdminUserController::class, 'update'])->name('users.update');
     Route::post('/users/{id}/toggle-admin', [\App\Http\Controllers\Admin\AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
     Route::delete('/users/{id}', [\App\Http\Controllers\Admin\AdminUserController::class, 'destroy'])->name('users.destroy');
 
     // Settings
     Route::get('/settings', [\App\Http\Controllers\Admin\AdminSettingController::class, 'index'])->name('settings');
+    Route::post('/settings', [\App\Http\Controllers\Admin\AdminSettingController::class, 'update'])->name('settings.update');
 });
 
 // Mail Previews (Local Only)

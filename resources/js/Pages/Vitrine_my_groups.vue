@@ -218,16 +218,10 @@
                                 class="text-sm text-gray-500 mb-4 flex items-center gap-1.5"
                             >
                                 Créé par
-                                <img
-                                    :src="
-                                        'https://ui-avatars.com/api/?name=' +
-                                        encodeURIComponent(
-                                            group.owner?.username || 'User',
-                                        ) +
-                                        '&background=e5e7eb&color=374151'
-                                    "
-                                    class="w-5 h-5 rounded-full"
-                                />
+                                    <img
+                                        :src="group.owner?.avatar"
+                                        class="w-5 h-5 rounded-full object-cover"
+                                    />
                                 <span class="font-medium text-gray-700">{{
                                     group.owner?.username || "Inconnu"
                                 }}</span>
@@ -339,47 +333,29 @@
         <!-- Create Group Modal -->
         <div
             v-if="showCreateModal"
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            class="premium-modal-backdrop"
+            @click.self="showCreateModal = false"
         >
             <div
-                class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"
-                @click="showCreateModal = false"
-            ></div>
-            <div
-                class="bg-white rounded-2xl w-full max-w-md relative z-10 shadow-2xl p-6"
+                class="premium-modal-content max-w-md p-6 bg-white relative"
             >
                 <button
                     @click="showCreateModal = false"
-                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-900"
+                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                    <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        ></path>
-                    </svg>
+                    <i class="fas fa-times text-lg"></i>
                 </button>
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                <h3 class="text-2xl font-black text-slate-900 mb-6">
                     Nouveau Groupe
                 </h3>
 
                 <form @submit.prevent="submitCreate">
                     <div class="mb-6">
-                        <label
-                            class="block text-sm font-bold text-gray-700 mb-2"
-                            >Nom du groupe</label
-                        >
+                        <label class="premium-label">Nom du groupe</label>
                         <input
                             v-model="createForm.nom"
                             type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all"
+                            class="premium-input"
                             required
                             placeholder="Ex: Recettes de Famille"
                         />
@@ -388,7 +364,7 @@
                     <button
                         type="submit"
                         :disabled="createForm.processing"
-                        class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition-colors shadow-sm disabled:opacity-50"
+                        class="w-full premium-button-primary disabled:opacity-50"
                     >
                         Créer le groupe
                     </button>
@@ -399,47 +375,29 @@
         <!-- Edit Group Modal -->
         <div
             v-if="showEditModal"
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            class="premium-modal-backdrop"
+            @click.self="showEditModal = false"
         >
             <div
-                class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"
-                @click="showEditModal = false"
-            ></div>
-            <div
-                class="bg-white rounded-2xl w-full max-w-md relative z-10 shadow-2xl p-6"
+                class="premium-modal-content max-w-md p-6 bg-white relative"
             >
                 <button
                     @click="showEditModal = false"
-                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-900"
+                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                    <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        ></path>
-                    </svg>
+                    <i class="fas fa-times text-lg"></i>
                 </button>
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                <h3 class="text-2xl font-black text-slate-900 mb-6">
                     Modifier le Groupe
                 </h3>
 
                 <form @submit.prevent="submitEdit">
                     <div class="mb-6">
-                        <label
-                            class="block text-sm font-bold text-gray-700 mb-2"
-                            >Nouveau nom</label
-                        >
+                        <label class="premium-label">Nouveau nom</label>
                         <input
                             v-model="editForm.nom"
                             type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all"
+                            class="premium-input"
                             required
                         />
                     </div>
@@ -447,20 +405,38 @@
                     <button
                         type="submit"
                         :disabled="editForm.processing"
-                        class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition-colors shadow-sm disabled:opacity-50"
+                        class="w-full premium-button-primary disabled:opacity-50"
                     >
                         Mettre à jour
                     </button>
                 </form>
             </div>
         </div>
+
+        <!-- Confirm Modals -->
+        <PremiumConfirmModal 
+            :show="showConfirmDelete"
+            title="Supprimer le groupe"
+            :message="'Voulez-vous vraiment supprimer DÉFINITIVEMENT le groupe ' + selectedGroup?.nom + ' ?'"
+            @confirm="executeDelete"
+            @close="showConfirmDelete = false"
+        />
+
+        <PremiumConfirmModal 
+            :show="showConfirmLeave"
+            title="Quitter le groupe"
+            :message="'Voulez-vous vraiment quitter le groupe ' + selectedGroup?.nom + ' ?'"
+            @confirm="executeLeave"
+            @close="showConfirmLeave = false"
+        />
     </VitrineLayout>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useForm, Link, Head } from "@inertiajs/vue3";
+import { useForm, Link, Head, router } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
+import PremiumConfirmModal from "@/Components/PremiumConfirmModal.vue";
 
 const props = defineProps({
     ownedGroups: {
@@ -476,6 +452,9 @@ const props = defineProps({
 // Modals State
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
+const showConfirmDelete = ref(false);
+const showConfirmLeave = ref(false);
+const selectedGroup = ref(null);
 
 // Forms
 const createForm = useForm({
@@ -514,22 +493,30 @@ const submitEdit = () => {
 };
 
 const confirmDelete = (group) => {
-    if (
-        confirm(
-            `Êtes-vous sûr de vouloir supprimer le groupe "${group.nom}" définitivement ?`,
-        )
-    ) {
-        useForm().delete(route("groups.destroy", { id: group.id }), {
-            preserveScroll: true,
-        });
-    }
+    selectedGroup.value = group;
+    showConfirmDelete.value = true;
+};
+
+const executeDelete = () => {
+    router.delete(route("groups.destroy", { id: selectedGroup.value.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmDelete.value = false;
+        }
+    });
 };
 
 const confirmLeave = (group) => {
-    if (confirm(`Voulez-vous vraiment quitter le groupe "${group.nom}" ?`)) {
-        useForm().post(route("groups.leave", { id: group.id }), {
-            preserveScroll: true,
-        });
-    }
+    selectedGroup.value = group;
+    showConfirmLeave.value = true;
+};
+
+const executeLeave = () => {
+    router.post(route("groups.leave", { id: selectedGroup.value.id }), {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmLeave.value = false;
+        }
+    });
 };
 </script>

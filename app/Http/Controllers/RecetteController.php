@@ -13,7 +13,7 @@ class RecetteController extends Controller
      */
     public function index()
     {
-        $recettes = Recette::with(['user', 'RecetteType', 'prix', 'difficulte', 'recettePhotos.photo'])
+        $recettes = Recette::with(['user', 'categories', 'prix', 'difficulte', 'recettePhotos.photo'])
             ->where('is_supprimer', false)
             ->whereNull('groupe_id') // Exclure les recettes privées de groupe
             ->latest()
@@ -31,7 +31,7 @@ class RecetteController extends Controller
     {
         $recette = Recette::with([
             'user',
-            'RecetteType',
+            'categories',
             'prix',
             'difficulte',
             'recetteIngredients.aliment',
@@ -101,7 +101,7 @@ class RecetteController extends Controller
         return Inertia::render('Vitrine_recipe_create', [
             'difficultes' => \App\Models\Difficulte::all(),
             'prix' => \App\Models\Prix::all(),
-            'types' => \App\Models\RecetteType::all(),
+            'types' => \App\Models\RecetteCategorie::all(),
             'aliments' => \App\Models\Aliment::orderBy('nom')->get(),
             'unites' => \App\Models\Unite::all(),
             'ustensiles' => \App\Models\Ustensile::orderBy('nom')->get(),
@@ -117,7 +117,8 @@ class RecetteController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'recette_type_id' => 'required|exists:recette_type,id',
+            'category_ids' => 'required|array|min:1|max:3',
+            'category_ids.*' => 'exists:recette_categorie,id',
             'portions' => 'required|integer|min:1',
             'difficulte_id' => 'required|exists:difficulte,id',
             'prix_id' => 'required|exists:prix,id',
@@ -149,10 +150,12 @@ class RecetteController extends Controller
                 'is_supprimer' => false,
                 'users_id' => \Illuminate\Support\Facades\Auth::id(),
                 'groupe_id' => $request->groupe_id ?? null,
-                'recette_type_id' => $validated['recette_type_id'],
                 'difficulte_id' => $validated['difficulte_id'],
                 'prix_id' => $validated['prix_id'],
             ]);
+
+            // Sync categories (max 3)
+            $recette->categories()->sync($validated['category_ids']);
 
             // 2. Handle Photo Upload if exists
             if ($request->hasFile('photo')) {
@@ -267,6 +270,7 @@ class RecetteController extends Controller
     {
         $recette = Recette::with([
             'temps',
+            'categories',
             'recetteIngredients.aliment',
             'recetteIngredients.unite',
             'recetteEtapes.ingredients',
@@ -290,7 +294,7 @@ class RecetteController extends Controller
             'recipe' => $recette,
             'difficultes' => \App\Models\Difficulte::all(),
             'prix' => \App\Models\Prix::all(),
-            'types' => \App\Models\RecetteType::all(),
+            'types' => \App\Models\RecetteCategorie::all(),
             'aliments' => \App\Models\Aliment::orderBy('nom')->get(),
             'unites' => \App\Models\Unite::all(),
             'ustensiles' => \App\Models\Ustensile::orderBy('nom')->get(),
@@ -308,7 +312,8 @@ class RecetteController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'recette_type_id' => 'required|exists:recette_type,id',
+            'category_ids' => 'required|array|min:1|max:3',
+            'category_ids.*' => 'exists:recette_categorie,id',
             'portions' => 'required|integer|min:1',
             'difficulte_id' => 'required|exists:difficulte,id',
             'prix_id' => 'required|exists:prix,id',
@@ -337,10 +342,12 @@ class RecetteController extends Controller
                 'title' => $validated['title'],
                 'portions' => $validated['portions'],
                 'groupe_id' => $validated['groupe_id'] ?? null,
-                'recette_type_id' => $validated['recette_type_id'],
                 'difficulte_id' => $validated['difficulte_id'],
                 'prix_id' => $validated['prix_id'],
             ]);
+
+            // Sync categories (max 3)
+            $recette->categories()->sync($validated['category_ids']);
 
             // 2. Handle Photo Upload
             if ($request->hasFile('photo')) {
@@ -469,6 +476,6 @@ class RecetteController extends Controller
 
         $recette->update(['is_supprimer' => true]);
 
-        return redirect()->route('home')->with('success', 'La recette a été supprimée.');
+        return redirect()->route('home')->with('success', 'Recette supprimée avec succès.');
     }
 }

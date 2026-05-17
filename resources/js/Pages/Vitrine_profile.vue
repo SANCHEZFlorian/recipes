@@ -17,12 +17,27 @@
                 >
                     <!-- Avatar -->
                     <div
-                        class="relative w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0"
+                        class="relative w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0 group"
                     >
                         <img
-                            :src="user.avatar"
+                            :src="avatarPreview || user.avatar"
                             class="w-full h-full rounded-2xl border-4 border-white shadow-xl object-cover"
                         />
+                        <input
+                            type="file"
+                            ref="avatarInput"
+                            class="hidden"
+                            accept="image/*"
+                            @change="onAvatarChange"
+                        />
+                        <div
+                            v-if="isEditing"
+                            @click="$refs.avatarInput.click()"
+                            class="absolute inset-0 bg-black/50 hover:bg-black/60 rounded-2xl border-4 border-white flex flex-col items-center justify-center cursor-pointer transition-all shadow-xl"
+                        >
+                            <i class="fas fa-camera text-white text-2xl mb-1.5 transition-transform group-hover:scale-110"></i>
+                            <span class="text-white text-xs font-bold">Changer</span>
+                        </div>
                     </div>
 
                     <!-- User Info -->
@@ -81,24 +96,24 @@
                                 </h3>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nom d'utilisateur</label>
-                                        <input v-model="form.username" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
-                                        <p v-if="form.errors.username" class="mt-1 text-sm text-red-600">{{ form.errors.username }}</p>
+                                        <label class="premium-label">Nom d'utilisateur</label>
+                                        <input v-model="form.username" type="text" class="premium-input" />
+                                        <p v-if="form.errors.username" class="mt-1 text-sm text-red-600 ml-1">{{ form.errors.username }}</p>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Prénom</label>
-                                            <input v-model="form.firstname" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                            <label class="premium-label">Prénom</label>
+                                            <input v-model="form.firstname" type="text" class="premium-input" />
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Nom</label>
-                                            <input v-model="form.lastname" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                            <label class="premium-label">Nom</label>
+                                            <input v-model="form.lastname" type="text" class="premium-input" />
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                                        <input v-model="form.email" type="email" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
-                                        <p v-if="form.errors.email" class="mt-1 text-sm text-red-600">{{ form.errors.email }}</p>
+                                        <label class="premium-label">Email</label>
+                                        <input v-model="form.email" type="email" class="premium-input" />
+                                        <p v-if="form.errors.email" class="mt-1 text-sm text-red-600 ml-1">{{ form.errors.email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -110,23 +125,30 @@
                                 </h3>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-1">À propos de moi</label>
-                                        <textarea v-model="form.about" rows="3" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all"></textarea>
+                                        <label class="premium-label">À propos de moi</label>
+                                        <textarea v-model="form.about" rows="3" class="premium-input"></textarea>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Ville</label>
-                                            <input v-model="form.city" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                            <label class="premium-label">Ville</label>
+                                            <input v-model="form.city" type="text" class="premium-input" />
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-1">Pays</label>
-                                            <input v-model="form.country" type="text" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
+                                            <label class="premium-label">Pays</label>
+                                            <input v-model="form.country" type="text" class="premium-input" />
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nouveau mot de passe (optionnel)</label>
-                                        <input v-model="form.password" type="password" class="w-full bg-gray-50 border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all" />
-                                        <p v-if="form.errors.password" class="mt-1 text-sm text-red-600">{{ form.errors.password }}</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="premium-label">Nouveau mot de passe (optionnel)</label>
+                                            <input v-model="form.password" type="password" class="premium-input" placeholder="••••••••" />
+                                            <p v-if="form.errors.password" class="mt-1 text-sm text-red-600 ml-1">{{ form.errors.password }}</p>
+                                        </div>
+                                        <div>
+                                            <label class="premium-label">Confirmer le mot de passe</label>
+                                            <input v-model="form.password_confirmation" type="password" class="premium-input" placeholder="••••••••" />
+                                            <p v-if="form.errors.password_confirmation" class="mt-1 text-sm text-red-600 ml-1">{{ form.errors.password_confirmation }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -136,14 +158,14 @@
                             <button
                                 type="button"
                                 @click="isEditing = false"
-                                class="px-6 py-2.5 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors"
+                                class="premium-button-secondary"
                             >
                                 Annuler
                             </button>
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="bg-emerald-600 text-white px-8 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                                class="premium-button-primary disabled:opacity-50"
                             >
                                 {{ form.processing ? 'Enregistrement...' : 'Enregistrer les modifications' }}
                             </button>
@@ -343,6 +365,15 @@ const props = defineProps({
 });
 
 const isEditing = ref(false);
+const avatarPreview = ref(null);
+
+const onAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        form.avatar = file;
+        avatarPreview.value = URL.createObjectURL(file);
+    }
+};
 
 const form = useForm({
     username: props.user.username,
@@ -354,13 +385,19 @@ const form = useForm({
     country: props.user.location.split(', ')[1] || '',
     password: '',
     password_confirmation: '',
+    avatar: null,
 });
 
 const submitProfile = () => {
-    form.put(route('profile.update'), {
+    // In Laravel/Inertia, file uploads are only supported via POST requests.
+    // We spoof the PUT request using _method: 'PUT'.
+    form.post(route('profile.update', { _method: 'PUT' }), {
         preserveScroll: true,
         onSuccess: () => {
             isEditing.value = false;
+            form.password = '';
+            form.password_confirmation = '';
+            avatarPreview.value = null;
         },
     });
 };

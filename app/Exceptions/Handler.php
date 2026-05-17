@@ -27,4 +27,31 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     */
+    public function render($request, Throwable $e)
+    {
+        $response = parent::render($request, $e);
+
+        if (!app()->environment('local') && in_array($response->status(), [500, 503, 404, 403])) {
+            return \Inertia\Inertia::render('Error', ['status' => $response->status()])
+                ->toResponse($request)
+                ->setStatusCode($response->status());
+        } elseif ($response->status() === 419) {
+            return back()->with([
+                'message' => 'La page a expiré, veuillez réessayer.',
+            ]);
+        }
+
+        // En local, on veut quand même voir la 404 personnalisée si c'est une 404
+        if ($response->status() === 404) {
+             return \Inertia\Inertia::render('Error', ['status' => 404])
+                ->toResponse($request)
+                ->setStatusCode(404);
+        }
+
+        return $response;
+    }
 }

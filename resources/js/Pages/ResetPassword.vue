@@ -34,15 +34,15 @@
 
                         <!-- Email (read-only display) -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Compte</label>
-                            <div class="px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 text-sm text-gray-600 font-medium">
+                            <label class="premium-label">Compte</label>
+                            <div class="premium-input bg-gray-50 border-gray-100 text-gray-500 cursor-not-allowed">
                                 {{ form.email }}
                             </div>
                         </div>
 
                         <!-- New Password -->
                         <div>
-                            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <label for="password" class="premium-label">
                                 Nouveau mot de passe
                             </label>
                             <div class="relative">
@@ -53,8 +53,8 @@
                                     required
                                     autofocus
                                     placeholder="Minimum 8 caractères"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all text-sm pr-12"
-                                    :class="{ 'border-red-400 ring-2 ring-red-400/20': form.errors.password }"
+                                    class="premium-input pr-12"
+                                    :class="{ 'border-red-400 ring-4 ring-red-500/10': form.errors.password }"
                                 />
                                 <button
                                     type="button"
@@ -70,14 +70,14 @@
                                     </svg>
                                 </button>
                             </div>
-                            <p v-if="form.errors.password" class="mt-1.5 text-xs text-red-500 font-medium">
+                            <p v-if="form.errors.password" class="mt-1.5 text-xs text-red-500 font-medium ml-1">
                                 {{ form.errors.password }}
                             </p>
                         </div>
 
                         <!-- Confirm Password -->
                         <div>
-                            <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <label for="password_confirmation" class="premium-label">
                                 Confirmer le mot de passe
                             </label>
                             <input
@@ -86,10 +86,10 @@
                                 v-model="form.password_confirmation"
                                 required
                                 placeholder="Retapez votre mot de passe"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all text-sm"
-                                :class="{ 'border-red-400 ring-2 ring-red-400/20': form.errors.password_confirmation }"
+                                class="premium-input"
+                                :class="{ 'border-red-400 ring-4 ring-red-500/10': form.errors.password_confirmation }"
                             />
-                            <p v-if="form.errors.password_confirmation" class="mt-1.5 text-xs text-red-500 font-medium">
+                            <p v-if="form.errors.password_confirmation" class="mt-1.5 text-xs text-red-500 font-medium ml-1">
                                 {{ form.errors.password_confirmation }}
                             </p>
                         </div>
@@ -106,7 +106,7 @@
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2"
+                            class="w-full premium-button-primary flex items-center justify-center gap-2"
                         >
                             <svg v-if="form.processing" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

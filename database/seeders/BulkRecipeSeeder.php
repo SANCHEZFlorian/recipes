@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Recette;
-use App\Models\RecetteType;
 use App\Models\RecetteCategorie;
 use App\Models\Prix;
 use App\Models\Difficulte;
@@ -22,7 +21,7 @@ class BulkRecipeSeeder extends Seeder
     public function run()
     {
         $users = User::pluck('id')->toArray();
-        $types = RecetteType::pluck('id')->toArray();
+        $categories = RecetteCategorie::pluck('id')->toArray();
         $prices = Prix::pluck('id')->toArray();
         $difficulties = Difficulte::pluck('id')->toArray();
         $aliments = Aliment::pluck('id')->toArray();
@@ -42,11 +41,15 @@ class BulkRecipeSeeder extends Seeder
                 'is_visible' => 1,
                 'is_supprimer' => 0,
                 'users_id' => $users[array_rand($users)],
-                'recette_type_id' => $types[array_rand($types)],
                 'prix_id' => $prices[array_rand($prices)],
                 'difficulte_id' => $difficulties[array_rand($difficulties)],
                 'portions' => rand(1, 6),
             ]);
+
+            // Attach 1 to 3 random categories
+            $numCats = rand(1, 3);
+            $selectedCats = (array)array_rand(array_flip($categories), $numCats);
+            $recette->categories()->attach($selectedCats);
 
             Temps::create([
                 'recette_id' => $recette->id,

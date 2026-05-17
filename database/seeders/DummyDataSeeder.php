@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Recette;
-use App\Models\RecetteType;
 use App\Models\RecetteCategorie;
 use App\Models\Prix;
 use App\Models\Difficulte;
@@ -31,8 +30,8 @@ class DummyDataSeeder extends Seeder
         DB::table('recette_ingredient')->truncate();
         DB::table('recette_photo')->truncate();
         DB::table('recette_ustensile')->truncate();
+        DB::table('recette_recette_categorie')->truncate();
         DB::table('recette')->truncate();
-        DB::table('recette_type')->truncate();
         DB::table('recette_categorie')->truncate();
         DB::table('aliment')->truncate();
         DB::table('aliment_type')->truncate();
@@ -106,36 +105,6 @@ class DummyDataSeeder extends Seeder
         $catEte = RecetteCategorie::create(['nom' => 'Plat d\'été', 'icone' => 'fi fi-rr-sun']);
         $catRegion = RecetteCategorie::create(['nom' => 'Régionale', 'icone' => 'fi fi-rr-map-marker']);
 
-        // --- Types de Recettes ---
-        // Sous Entrée
-        $typeAperitif = RecetteType::create(['nom' => 'Apéritif', 'icone' => 'fi fi-rr-cocktail', 'recette_categorie_id' => $catEntree->id]);
-        $typeEntree = RecetteType::create(['nom' => 'Entrée', 'icone' => 'fi fi-rr-salad', 'recette_categorie_id' => $catEntree->id]);
-        $typeSalade = RecetteType::create(['nom' => 'Salade', 'icone' => 'fi fi-rr-salad', 'recette_categorie_id' => $catEntree->id]);
-        $typeSoupe = RecetteType::create(['nom' => 'Soupe', 'icone' => 'fi fi-rr-bowl-hot', 'recette_categorie_id' => $catEntree->id]);
-        
-        // Sous Plat
-        $typePlat = RecetteType::create(['nom' => 'Plat principal', 'icone' => 'fi fi-rr-restaurant', 'recette_categorie_id' => $catPlat->id]);
-        $typeAccompagnement = RecetteType::create(['nom' => 'Accompagnement', 'icone' => 'fi fi-rr-french-fries', 'recette_categorie_id' => $catPlat->id]);
-        $typeViande = RecetteType::create(['nom' => 'Viande', 'icone' => 'fi fi-rr-meat', 'recette_categorie_id' => $catPlat->id]);
-        $typeGratin = RecetteType::create(['nom' => 'Gratin', 'icone' => 'fi fi-rr-pan', 'recette_categorie_id' => $catPlat->id]);
-        $typeChaud = RecetteType::create(['nom' => 'Plat chaud', 'icone' => 'fi fi-rr-flame', 'recette_categorie_id' => $catPlat->id]);
-        $typeFroid = RecetteType::create(['nom' => 'Plat froid', 'icone' => 'fi fi-rr-snowflake', 'recette_categorie_id' => $catPlat->id]);
-        $typeSauce = RecetteType::create(['nom' => 'Sauce', 'icone' => 'fi fi-rr-sauce', 'recette_categorie_id' => $catPlat->id]);
-        $typeDiner = RecetteType::create(['nom' => 'Dîner', 'icone' => 'fi fi-rr-moon-stars', 'recette_categorie_id' => $catPlat->id]);
-
-        // Sous Dessert
-        $typeDessert = RecetteType::create(['nom' => 'Dessert', 'icone' => 'fi fi-rr-ice-cream', 'recette_categorie_id' => $catDessert->id]);
-        $typeGateau = RecetteType::create(['nom' => 'Gâteau', 'icone' => 'fi fi-rr-cake-birthday', 'recette_categorie_id' => $catDessert->id]);
-        $typeGouter = RecetteType::create(['nom' => 'Goûter', 'icone' => 'fi fi-rr-cookie', 'recette_categorie_id' => $catDessert->id]);
-
-        // Sous Boisson
-        $typeBoissonChaude = RecetteType::create(['nom' => 'Boisson chaude', 'icone' => 'fi fi-rr-mug-hot', 'recette_categorie_id' => $catBoisson->id]);
-        $typeBoissonFroide = RecetteType::create(['nom' => 'Boisson froide', 'icone' => 'fi fi-rr-glass', 'recette_categorie_id' => $catBoisson->id]);
-        $typeAlcool = RecetteType::create(['nom' => 'Alcool', 'icone' => 'fi fi-rr-glass-cheers', 'recette_categorie_id' => $catBoisson->id]);
-        
-        // Autres
-        $typeFacile = RecetteType::create(['nom' => 'Facile à faire', 'icone' => 'fi fi-rr-time-fast', 'recette_categorie_id' => $catPlat->id]);
-
         // --- Unités (Mesures Culinaires) ---
         $unitG = Unite::create(['nom' => 'Gramme', 'abreviation' => 'g', 'icone' => 'fi fi-rr-scale-balanced']);
         $unitKg = Unite::create(['nom' => 'Kilogramme', 'abreviation' => 'kg', 'icone' => 'fi fi-rr-weight']);
@@ -168,16 +137,18 @@ class DummyDataSeeder extends Seeder
         $beurre = Aliment::create(['nom' => 'Beurre', 'icone' => 'fi fi-rr-cheese', 'aliment_type_id' => $atLaitier->id, 'is_certified' => true]);
         $saumon = Aliment::create(['nom' => 'Pavé de Saumon', 'icone' => 'fi fi-rr-fish', 'aliment_type_id' => $atViande->id, 'is_certified' => true]);
         $avocat = Aliment::create(['nom' => 'Avocat', 'icone' => 'fi fi-rr-leaf', 'aliment_type_id' => $atLegumes->id, 'is_certified' => true]);
+
+        // --- RECETTE 1: Chili con Carne ---
         $rChili = Recette::create([
             'title' => 'Chili con Carne Express',
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $student->id,
-            'recette_type_id' => $typePlat->id,
             'prix_id' => $prixCheap->id,
             'difficulte_id' => $diffEasy->id,
             'portions' => 4,
         ]);
+        $rChili->categories()->attach($catPlat->id);
         Temps::create(['recette_id' => $rChili->id, 'preparation' => 10, 'cuisson' => 20]);
         $ingChiliBoeuf = RecetteIngredient::create(['recette_id' => $rChili->id, 'aliment_id' => $boeuf->id, 'unite_id' => $unitG->id, 'quantite' => 500]);
         $ingChiliOignon = RecetteIngredient::create(['recette_id' => $rChili->id, 'aliment_id' => $oignon->id, 'unite_id' => $unitUnit->id, 'quantite' => 1]);
@@ -195,11 +166,11 @@ class DummyDataSeeder extends Seeder
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $chef->id,
-            'recette_type_id' => $typePlat->id,
             'prix_id' => $prixMid->id,
             'difficulte_id' => $diffHard->id,
             'portions' => 2,
         ]);
+        $rRisotto->categories()->attach($catPlat->id);
         Temps::create(['recette_id' => $rRisotto->id, 'preparation' => 15, 'cuisson' => 25]);
         $ingRisottoRiz = RecetteIngredient::create(['recette_id' => $rRisotto->id, 'aliment_id' => $riz->id, 'unite_id' => $unitG->id, 'quantite' => 200]);
         $ingRisottoBeurre = RecetteIngredient::create(['recette_id' => $rRisotto->id, 'aliment_id' => $beurre->id, 'unite_id' => $unitG->id, 'quantite' => 30]);
@@ -220,11 +191,11 @@ class DummyDataSeeder extends Seeder
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $healthy->id,
-            'recette_type_id' => $typeSalade->id,
             'prix_id' => $prixExpensive->id,
             'difficulte_id' => $diffMed->id,
             'portions' => 1,
         ]);
+        $rPoke->categories()->attach($catEntree->id);
         Temps::create(['recette_id' => $rPoke->id, 'preparation' => 20, 'cuisson' => 0]);
         $ingPokeSaumon = RecetteIngredient::create(['recette_id' => $rPoke->id, 'aliment_id' => $saumon->id, 'unite_id' => $unitG->id, 'quantite' => 120]);
         $ingPokeAvocat = RecetteIngredient::create(['recette_id' => $rPoke->id, 'aliment_id' => $avocat->id, 'unite_id' => $unitUnit->id, 'quantite' => 1]);
@@ -244,11 +215,11 @@ class DummyDataSeeder extends Seeder
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $chef->id,
-            'recette_type_id' => $typeDessert->id,
             'prix_id' => $prixCheap->id,
             'difficulte_id' => $diffMed->id,
             'portions' => 6,
         ]);
+        $rFondant->categories()->attach($catDessert->id);
         Temps::create(['recette_id' => $rFondant->id, 'preparation' => 15, 'cuisson' => 10]);
         $ingFondantChoco = RecetteIngredient::create(['recette_id' => $rFondant->id, 'aliment_id' => $chocolat->id, 'unite_id' => $unitG->id, 'quantite' => 200]);
         $ingFondantBeurre = RecetteIngredient::create(['recette_id' => $rFondant->id, 'aliment_id' => $beurre->id, 'unite_id' => $unitG->id, 'quantite' => 100]);
@@ -268,11 +239,11 @@ class DummyDataSeeder extends Seeder
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $chef->id,
-            'recette_type_id' => $typePlat->id,
             'prix_id' => $prixMid->id,
             'difficulte_id' => $diffHard->id,
             'portions' => 2,
         ]);
+        $rRamen->categories()->attach($catPlat->id);
         Temps::create(['recette_id' => $rRamen->id, 'preparation' => 45, 'cuisson' => 600, 'repos' => 60]);
         $ingRamenRiz = RecetteIngredient::create(['recette_id' => $rRamen->id, 'aliment_id' => $riz->id, 'unite_id' => $unitG->id, 'quantite' => 150]);
         
@@ -289,11 +260,11 @@ class DummyDataSeeder extends Seeder
             'is_visible' => 1,
             'is_supprimer' => 0,
             'users_id' => $healthy->id,
-            'recette_type_id' => $typePlat->id,
             'prix_id' => $prixExpensive->id,
             'difficulte_id' => $diffEasy->id,
             'portions' => 2,
         ]);
+        $rSaumon->categories()->attach($catPlat->id);
         Temps::create(['recette_id' => $rSaumon->id, 'preparation' => 10, 'cuisson' => 15]);
         $ingSaumonFilet = RecetteIngredient::create(['recette_id' => $rSaumon->id, 'aliment_id' => $saumon->id, 'unite_id' => $unitUnit->id, 'quantite' => 2]);
         

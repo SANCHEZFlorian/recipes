@@ -1,3 +1,125 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Premium Form Elements */
+    .premium-input {
+        @apply w-full rounded-xl border-slate-200 bg-white/70 px-4 py-3 text-sm transition-all duration-200 backdrop-blur-sm;
+        @apply shadow-sm placeholder:text-slate-400 hover:border-emerald-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none;
+    }
+
+    .premium-label {
+        @apply block text-sm font-semibold text-slate-700 mb-1.5 ml-0.5;
+    }
+
+    .premium-select {
+        @apply appearance-none w-full rounded-xl border-slate-200 bg-white/70 px-4 py-3 text-sm transition-all duration-200 backdrop-blur-sm;
+        @apply shadow-sm hover:border-emerald-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 1rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
+
+    /* Buttons */
+    .premium-button-primary {
+        @apply bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-emerald-600/20;
+        @apply hover:bg-emerald-700 hover:shadow-emerald-700/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0;
+    }
+
+    .premium-button-secondary {
+        @apply bg-white text-slate-700 px-6 py-2.5 rounded-xl font-bold border border-slate-200 transition-all duration-300 shadow-sm;
+        @apply hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 active:scale-95 active:translate-y-0;
+    }
+
+    .premium-button-danger {
+        @apply bg-rose-500 text-white px-6 py-2.5 rounded-xl font-bold transition-all duration-300 shadow-lg shadow-rose-500/20;
+        @apply hover:bg-rose-600 hover:shadow-rose-600/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0;
+    }
+
+    /* Modals */
+    .premium-modal-backdrop {
+        @apply fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md transition-all duration-300;
+    }
+
+    .premium-modal-content {
+        @apply bg-white rounded-[2rem] shadow-2xl overflow-visible transform transition-all max-w-2xl w-full border border-white/20;
+        animation: modalAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Auto-round bottom corners of modal content children to prevent bleeding with overflow-visible */
+    .premium-modal-content > *:last-child,
+    .premium-modal-content form > *:last-child {
+        @apply rounded-b-[2rem];
+    }
+
+    @keyframes modalAppear {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Responsive Tables */
+    .premium-table-container {
+        @apply overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-sm;
+    }
+
+    .premium-table {
+        @apply min-w-full divide-y divide-slate-100;
+    }
+
+    .premium-table thead {
+        @apply bg-slate-50/50;
+    }
+
+    .premium-table th {
+        @apply px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider;
+    }
+
+    .premium-table td {
+        @apply px-6 py-4 text-sm text-slate-600 whitespace-nowrap;
+    }
+
+    .premium-table tbody tr {
+        @apply transition-colors duration-150 hover:bg-slate-50/50;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        @apply w-1.5;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+    }
+
+    /* Responsive Card Transformation for Tables on Mobile */
+    @media (max-width: 768px) {
+        .mobile-cards thead {
+            @apply hidden;
+        }
+        .mobile-cards tbody tr {
+            @apply block mb-6 rounded-3xl border border-slate-100 p-6 shadow-sm bg-white;
+        }
+        .mobile-cards td {
+            @apply flex justify-between items-center px-0 py-3 border-none whitespace-normal;
+        }
+        .mobile-cards td::before {
+            content: attr(data-label);
+            @apply font-bold text-slate-500 text-[10px] uppercase tracking-widest mr-2;
+        }
+    }
+}
+
+/* Hide HTML5 number spinner arrows globally */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}

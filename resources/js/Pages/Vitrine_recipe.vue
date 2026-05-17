@@ -26,8 +26,19 @@
             >
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-4">
+                        <!-- Categories / Types -->
+                        <template v-if="recipe.categories && recipe.categories.length > 0">
+                            <span
+                                v-for="cat in recipe.categories"
+                                :key="cat.id"
+                                class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1.5"
+                            >
+                                <i v-if="cat.icone" :class="cat.icone" class="text-[10px]"></i>
+                                {{ cat.nom }}
+                            </span>
+                        </template>
                         <span
-                            v-if="recipe.recette_type?.nom"
+                            v-else-if="recipe.recette_type?.nom"
                             class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm"
                         >
                             {{ recipe.recette_type?.nom }}
@@ -475,14 +486,8 @@
                     >
                         <div class="flex items-center gap-4">
                             <img
-                                :src="
-                                    'https://ui-avatars.com/api/?name=' +
-                                    encodeURIComponent(
-                                        recipe.user?.name || 'Chef',
-                                    ) +
-                                    '&background=f3f4f6&color=374151'
-                                "
-                                class="w-12 h-12 rounded-full"
+                                :src="recipe.user?.avatar"
+                                class="w-12 h-12 rounded-full object-cover"
                             />
                             <div>
                                 <p class="text-sm text-gray-400 font-medium">
@@ -517,7 +522,7 @@
                     <!-- Liste des Avis -->
                     <div class="lg:w-2/3 space-y-6">
                         <div v-for="avis in recipe.avis" :key="avis.id" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex gap-4">
-                            <img :src="'https://ui-avatars.com/api/?name=' + encodeURIComponent(avis.user?.username || 'User') + '&background=f3f4f6&color=374151'" class="w-12 h-12 rounded-full shrink-0" />
+                            <img :src="avis.user?.avatar" class="w-12 h-12 rounded-full shrink-0 object-cover" />
                             <div class="flex-1">
                                 <div class="flex items-start justify-between mb-2">
                                     <div>
@@ -564,11 +569,11 @@
                                     </div>
                                     
                                     <div>
-                                        <label class="block text-sm font-bold text-gray-700 mb-2">Un petit mot ? <span class="text-gray-400 font-normal">(Optionnel)</span></label>
+                                        <label class="premium-label">Un petit mot ? <span class="text-slate-400 font-normal">(Optionnel)</span></label>
                                         <textarea 
                                             v-model="formAvis.commentaire"
                                             rows="4" 
-                                            class="w-full rounded-xl border-gray-200 focus:ring-emerald-500 focus:border-emerald-500 text-sm shadow-sm resize-none"
+                                            class="premium-input bg-white resize-none"
                                             placeholder="Qu'avez-vous pensé de cette recette ?"
                                         ></textarea>
                                         <p v-if="formAvis.errors.commentaire" class="text-red-500 text-xs mt-1">{{ formAvis.errors.commentaire }}</p>
@@ -592,6 +597,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- Confirm Modals -->
+        <PremiumConfirmModal 
+            :show="showConfirmDeleteRecipe"
+            title="Supprimer la recette"
+            :message="'Voulez-vous vraiment supprimer DÉFINITIVEMENT la recette ' + recipe.title + ' ? Cette action est irréversible.'"
+            @confirm="confirmDeleteRecipe"
+            @close="showConfirmDeleteRecipe = false"
+        />
+
+        <PremiumConfirmModal 
+            :show="showConfirmDeleteAvis"
+            title="Supprimer l'avis"
+            message="Voulez-vous vraiment supprimer votre avis sur cette recette ?"
+            @confirm="confirmDeleteAvis"
+            @close="showConfirmDeleteAvis = false"
+        />
     </VitrineLayout>
 </template>
 
@@ -599,6 +621,7 @@
 import { ref, computed } from "vue";
 import { Link, router, useForm, Head } from "@inertiajs/vue3";
 import VitrineLayout from "@/Layouts/VitrineLayout.vue";
+import PremiumConfirmModal from "@/Components/PremiumConfirmModal.vue";
 
 const props = defineProps({
     recipe: {
@@ -651,6 +674,10 @@ const formAvis = useForm({
     commentaire: '',
 });
 
+const showConfirmDeleteRecipe = ref(false);
+const showConfirmDeleteAvis = ref(false);
+const selectedAvisId = ref(null);
+
 const submitAvis = () => {
     formAvis.post(route('recipe.review', props.recipe.id), {
         preserveScroll: true,
@@ -659,9 +686,17 @@ const submitAvis = () => {
 };
 
 const deleteAvis = (id) => {
-    if (confirm("Supprimer cet avis ?")) {
-        router.delete(route('recipe.review.destroy', id), { preserveScroll: true });
-    }
+    selectedAvisId.value = id;
+    showConfirmDeleteAvis.value = true;
+};
+
+const confirmDeleteAvis = () => {
+    router.delete(route('recipe.review.destroy', selectedAvisId.value), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmDeleteAvis.value = false;
+        }
+    });
 };
 
 const toggleFavorite = () => {
@@ -673,11 +708,16 @@ const printRecipe = () => {
 };
 
 const deleteRecipe = () => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette recette ? Cette action est irréversible.")) {
-        router.delete(route('recipe.destroy', props.recipe.id), {
-            preserveScroll: true
-        });
-    }
+    showConfirmDeleteRecipe.value = true;
+};
+
+const confirmDeleteRecipe = () => {
+    router.delete(route('recipe.destroy', props.recipe.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmDeleteRecipe.value = false;
+        }
+    });
 };
 
 const getDifficultyColorClass = (difficulty) => {

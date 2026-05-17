@@ -106,9 +106,20 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 mb-1">
+                    <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1 mb-1">
+                        <template v-if="recipe.categories && recipe.categories.length > 0">
+                            <span
+                                v-for="(cat, cidx) in recipe.categories"
+                                :key="cat.id"
+                                class="text-xs font-bold text-emerald-600 tracking-wide uppercase flex items-center gap-1.5"
+                            >
+                                <span v-if="cidx > 0" class="text-gray-300 font-normal">•</span>
+                                <i v-if="cat.icone" :class="cat.icone" class="text-[9px]"></i>
+                                {{ cat.nom }}
+                            </span>
+                        </template>
                         <span
-                            v-if="recipe.recette_type?.nom"
+                            v-else-if="recipe.recette_type?.nom"
                             class="text-xs font-bold text-emerald-600 tracking-wide uppercase"
                             >{{ recipe.recette_type?.nom }}</span
                         >
