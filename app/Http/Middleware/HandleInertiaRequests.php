@@ -41,7 +41,6 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user() ? $request->user()->load('photo') : null,
             ],
             'categories' => fn () => \App\Models\RecetteCategorie::orderBy('nom')->get(),
-            'types' => fn () => \App\Models\RecetteCategorie::orderBy('nom')->get(),
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'success' => fn () => $request->session()->get('success'),

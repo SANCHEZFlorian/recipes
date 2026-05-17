@@ -88,14 +88,6 @@
                                             >
                                                 {{ category.name }}
                                             </div>
-                                            <div class="text-xs text-gray-500">
-                                                {{
-                                                    category.description?.substring(
-                                                        0,
-                                                        30,
-                                                    )
-                                                }}...
-                                            </div>
                                         </div>
                                     </div>
                                 </td>

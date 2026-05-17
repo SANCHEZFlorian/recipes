@@ -26,42 +26,31 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Icône
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nom
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Abréviation
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unité</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abréviation</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="unit in measurements" :key="unit.id">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ unit.id }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                                    #{{ unit.id }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center justify-center h-10 w-10 bg-emerald-100 rounded-full text-emerald-600">
-                                        <i :class="[unit.icon, 'text-lg']"></i>
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-emerald-100 rounded-full text-emerald-600">
+                                            <i :class="[unit.icon || 'fi fi-rr-scale', 'text-lg']"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ unit.name }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ unit.name }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500">
-                                        {{ unit.abbreviation }}
-                                    </div>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                                    {{ unit.abbreviation }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <button @click="editUnit(unit)" class="text-emerald-600 hover:text-emerald-900 mr-3 cursor-pointer">
@@ -73,7 +62,7 @@
                                 </td>
                             </tr>
                             <tr v-if="measurements.length === 0">
-                                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                <td colspan="4" class="px-6 py-12 text-center text-gray-500">
                                     Aucune unité de mesure trouvée.
                                 </td>
                             </tr>
@@ -103,8 +92,8 @@
                                 <div v-if="form.errors.abreviation" class="text-red-500 text-xs mt-1 ml-1">{{ form.errors.abreviation }}</div>
                             </div>
                             <div>
-                                <label for="icone" class="premium-label">Icône (FontAwesome class)</label>
-                                <input type="text" id="icone" v-model="form.icone" placeholder="ex: fas fa-balance-scale" class="premium-input" />
+                                <label for="icone" class="premium-label">Icône (classe Flaticon)</label>
+                                <input type="text" id="icone" v-model="form.icone" placeholder="ex: fi fi-rr-scale" class="premium-input" />
                                 <p class="mt-1 text-xs text-gray-500">Laissez vide pour l'icône par défaut.</p>
                                 <div v-if="form.errors.icone" class="text-red-500 text-xs mt-1 ml-1">{{ form.errors.icone }}</div>
                             </div>
@@ -166,7 +155,7 @@ const editUnit = (unit) => {
     form.id = unit.id;
     form.nom = unit.name;
     form.abreviation = unit.abbreviation;
-    form.icone = unit.icon === 'fas fa-balance-scale' ? '' : unit.icon;
+    form.icone = unit.icon === 'fi fi-rr-scale' ? '' : unit.icon;
     showModal.value = true;
 };
 

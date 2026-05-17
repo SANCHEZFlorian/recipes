@@ -98,15 +98,15 @@ class DatabaseSeeder extends Seeder
 
         // 5. Default Units (Mesures)
         $units = [
-            ['nom' => 'Gramme', 'abreviation' => 'g', 'icone' => 'fi fi-rr-scale-balanced'],
-            ['nom' => 'Kilogramme', 'abreviation' => 'kg', 'icone' => 'fi fi-rr-weight'],
-            ['nom' => 'Millilitre', 'abreviation' => 'ml', 'icone' => 'fi fi-rr-fill-drip'],
-            ['nom' => 'Centilitre', 'abreviation' => 'cl', 'icone' => 'fi fi-rr-glass-water'],
+            ['nom' => 'Gramme', 'abreviation' => 'g', 'icone' => 'fi fi-rr-scale'],
+            ['nom' => 'Kilogramme', 'abreviation' => 'kg', 'icone' => 'fi fi-rr-sack'],
+            ['nom' => 'Millilitre', 'abreviation' => 'ml', 'icone' => 'fi fi-rr-bottle-droplet'],
+            ['nom' => 'Centilitre', 'abreviation' => 'cl', 'icone' => 'fi fi-rr-glass'],
             ['nom' => 'Litre', 'abreviation' => 'L', 'icone' => 'fi fi-rr-jug'],
             ['nom' => 'Unité', 'abreviation' => 'u', 'icone' => 'fi fi-rr-box-open'],
-            ['nom' => 'Cuillère à soupe', 'abreviation' => 'CàS', 'icone' => 'fi fi-rr-utensil-spoon'],
-            ['nom' => 'Cuillère à café', 'abreviation' => 'CàC', 'icone' => 'fi fi-rr-spoon'],
-            ['nom' => 'Pincée', 'abreviation' => 'pincée', 'icone' => 'fi fi-rr-hand-holding-seedling'],
+            ['nom' => 'Cuillère à soupe', 'abreviation' => 'CàS', 'icone' => 'fi fi-rr-spoon'],
+            ['nom' => 'Cuillère à café', 'abreviation' => 'CàC', 'icone' => 'fi fi-rr-bowl-spoon'],
+            ['nom' => 'Pincée', 'abreviation' => 'pincée', 'icone' => 'fi fi-rr-leaf'],
         ];
         foreach ($units as $u) {
             Unite::create($u);

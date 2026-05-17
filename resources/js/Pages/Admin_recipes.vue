@@ -11,41 +11,41 @@
                 </div>
 
                 <!-- Recipes Table -->
-                <div class="premium-table-container">
-                    <table class="premium-table">
-                        <thead>
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th>Recette</th>
-                                <th>Auteur</th>
-                                <th>Type</th>
-                                <th>Statut</th>
-                                <th>Date</th>
-                                <th class="text-right">Actions</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recette</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auteur</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="recipe in recipes.data" :key="recipe.id" :class="{'opacity-50 grayscale bg-slate-50/50': recipe.is_supprimer}">
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="h-12 w-12 rounded-xl bg-emerald-50 flex-shrink-0 flex items-center justify-center text-emerald-600 shadow-inner">
+                                        <div class="h-10 w-10 rounded-full bg-emerald-100 flex-shrink-0 flex items-center justify-center text-emerald-600">
                                             <i class="fas fa-utensils text-lg"></i>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-black text-slate-900">{{ recipe.title }}</div>
+                                            <div class="text-sm font-medium text-gray-900">{{ recipe.title }}</div>
                                             <div class="text-xs text-slate-500 font-medium">{{ recipe.portions }} portions</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <img :src="recipe.user?.avatar" class="w-6 h-6 rounded-full object-cover" />
                                         <span class="text-sm font-bold text-slate-600">{{ recipe.user?.username || 'Anonyme' }}</span>
                                     </div>
                                 </td>
-                                <td class="text-sm font-medium text-slate-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
                                     {{ recipe.recette_type?.nom || 'N/A' }}
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <span v-if="recipe.is_supprimer" class="px-2.5 py-1 inline-flex text-[10px] font-black uppercase tracking-wider rounded-lg bg-rose-100 text-rose-700">
                                         Supprimée
                                     </span>
@@ -54,27 +54,25 @@
                                         {{ recipe.is_visible ? 'Publique' : 'Privée' }}
                                     </span>
                                 </td>
-                                <td class="text-sm font-medium text-slate-400">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-400">
                                     {{ new Date(recipe.created_at).toLocaleDateString() }}
                                 </td>
-                                <td class="text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button @click="toggleVisibility(recipe)" 
-                                                class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-emerald-600 cursor-pointer"
-                                                :title="recipe.is_visible ? 'Rendre privée' : 'Rendre publique'">
-                                            <i :class="recipe.is_visible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                                        </button>
-                                        <button v-if="!recipe.is_supprimer" @click="confirmDelete(recipe)" 
-                                                class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-50 text-slate-400 hover:text-rose-600 cursor-pointer"
-                                                title="Supprimer">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button @click="toggleVisibility(recipe)" 
+                                            class="text-emerald-600 hover:text-emerald-900 mr-3 cursor-pointer"
+                                            :title="recipe.is_visible ? 'Rendre privée' : 'Rendre publique'">
+                                        <i :class="recipe.is_visible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                                    </button>
+                                    <button v-if="!recipe.is_supprimer" @click="confirmDelete(recipe)" 
+                                            class="text-red-600 hover:text-red-900 cursor-pointer"
+                                            title="Supprimer">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <tr v-if="recipes.data.length === 0">
-                                <td colspan="6" class="px-6 py-16 text-center text-slate-400 font-medium">
-                                    Aucune recette trouvée dans la base de données.
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                    Aucune recette trouvée.
                                 </td>
                             </tr>
                         </tbody>

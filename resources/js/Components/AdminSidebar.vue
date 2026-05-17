@@ -8,8 +8,12 @@
                 :href="route('home')"
                 class="flex items-center h-24 px-8 mb-4 group"
             >
-                <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 transition-transform group-hover:scale-110">
-                    <i class="fas fa-hat-chef text-white text-xl"></i>
+                <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center shadow-md border border-slate-100/50 transition-transform group-hover:scale-110 p-2 shrink-0">
+                    <img
+                        src="/images/logo.png"
+                        alt="Family Recipe Logo"
+                        class="w-full h-full object-contain"
+                    />
                 </div>
                 <div class="ml-4">
                     <h1 class="text-xl font-black text-slate-900 tracking-tighter">
@@ -20,12 +24,16 @@
             </Link>
 
             <!-- Navigation Menu -->
-            <nav class="flex-1 px-4 pb-8 space-y-1.5 overflow-y-auto custom-scrollbar">
+            <nav 
+                ref="sidebarNav"
+                @scroll="handleScroll"
+                class="flex-1 px-4 pb-8 space-y-1 overflow-y-auto custom-scrollbar"
+            >
                 <div v-for="(item, idx) in menuItems" :key="item.name">
                     <!-- Separator for logical groups -->
-                    <div v-if="idx === 1" class="px-4 mt-8 mb-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Navigation</div>
-                    <div v-if="idx === 11" class="px-4 mt-8 mb-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Utilisateurs</div>
-                    <div v-if="idx === 14" class="px-4 mt-8 mb-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Système</div>
+                    <div v-if="idx === 1" class="px-4 mt-5 mb-1.5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Navigation</div>
+                    <div v-if="idx === 11" class="px-4 mt-5 mb-1.5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Utilisateurs</div>
+                    <div v-if="idx === 14" class="px-4 mt-5 mb-1.5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Système</div>
 
                     <Link
                         :href="item.route"
@@ -33,19 +41,19 @@
                             route().current(item.route_name)
                                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20'
                                 : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900',
-                            'flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl cursor-pointer transition-all duration-300',
+                            'flex items-center px-4 py-2.5 text-xs font-semibold rounded-xl cursor-pointer transition-all duration-300',
                         ]"
                     >
                         <div 
                             :class="[
                                 route().current(item.route_name) ? 'bg-white/20' : 'bg-slate-100',
-                                'w-8 h-8 rounded-xl flex items-center justify-center mr-3 transition-colors'
+                                'w-7 h-7 rounded-lg flex items-center justify-center mr-3 transition-colors shrink-0'
                             ]"
                         >
-                            <i :class="[item.icon, 'text-xs']"></i>
+                            <i :class="[item.icon, 'text-[10px]']"></i>
                         </div>
                         <span class="truncate">{{ item.name }}</span>
-                        <i v-if="route().current(item.route_name)" class="fas fa-chevron-right ml-auto text-[10px] opacity-50"></i>
+                        <i v-if="route().current(item.route_name)" class="fas fa-chevron-right ml-auto text-[9px] opacity-50"></i>
                     </Link>
                 </div>
             </nav>
@@ -68,8 +76,23 @@
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
+import { ref, onMounted } from "vue";
 
 const logoUrl = "/images/logo.png";
+const sidebarNav = ref(null);
+
+const handleScroll = (e) => {
+    sessionStorage.setItem("admin-sidebar-scroll", e.target.scrollTop);
+};
+
+onMounted(() => {
+    if (sidebarNav.value) {
+        const savedScroll = sessionStorage.getItem("admin-sidebar-scroll");
+        if (savedScroll) {
+            sidebarNav.value.scrollTop = parseInt(savedScroll, 10);
+        }
+    }
+});
 
 const menuItems = [
     {

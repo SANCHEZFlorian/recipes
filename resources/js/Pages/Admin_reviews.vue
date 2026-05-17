@@ -27,7 +27,7 @@
                 </div>
 
                 <!-- Content Table -->
-                <div class="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100">
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>

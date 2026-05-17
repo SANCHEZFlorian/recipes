@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Groups Table -->
-                <div class="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100">
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -25,11 +25,11 @@
                             <tr v-for="group in groups.data" :key="group.id">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="h-10 w-10 rounded-lg bg-purple-100 flex-shrink-0 flex items-center justify-center text-purple-600">
-                                            <i class="fas fa-user-friends"></i>
+                                        <div class="h-10 w-10 rounded-full bg-emerald-100 flex-shrink-0 flex items-center justify-center text-emerald-600">
+                                            <i class="fas fa-user-friends text-lg"></i>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-bold text-gray-900">{{ group.nom }}</div>
+                                            <div class="text-sm font-medium text-gray-900">{{ group.nom }}</div>
                                         </div>
                                     </div>
                                 </td>

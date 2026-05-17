@@ -22,31 +22,38 @@
                 </div>
 
                 <!-- Ingredients Table -->
-                <div class="premium-table-container">
-                    <table class="premium-table">
-                        <thead>
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th class="w-20">ID</th>
-                                <th>Nom</th>
-                                <th>Type</th>
-                                <th>Statut</th>
-                                <th class="text-right">Actions</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingrédient</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="ingredient in ingredients" :key="ingredient.id">
-                                <td class="text-xs font-black text-slate-400">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
                                     #{{ ingredient.id }}
                                 </td>
-                                <td>
-                                    <div class="text-sm font-black text-slate-900">
-                                        {{ ingredient.name }}
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-emerald-100 rounded-full text-emerald-600">
+                                            <i class="fi fi-rr-carrot text-lg"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ ingredient.name }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
-                                <td class="text-sm font-medium text-slate-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
                                     {{ ingredient.category }}
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <span :class="[ 
                                         ingredient.status === 'Certifié' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500', 
                                         'px-2.5 py-1 inline-flex text-[10px] font-black uppercase tracking-wider rounded-lg items-center gap-1.5' 
@@ -55,22 +62,20 @@
                                         {{ ingredient.status }}
                                     </span>
                                 </td>
-                                <td class="text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <button @click="toggleCertification(ingredient)" title="Basculer la certification" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-amber-500 cursor-pointer">
-                                            <i class="fas fa-award"></i>
-                                        </button>
-                                        <button @click="editIngredient(ingredient)" title="Modifier" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-emerald-600 cursor-pointer">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button @click="confirmDelete(ingredient)" title="Supprimer" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-50 text-slate-400 hover:text-rose-600 cursor-pointer">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button @click="toggleCertification(ingredient)" title="Basculer la certification" class="text-amber-600 hover:text-amber-900 mr-3 cursor-pointer">
+                                        <i class="fas fa-award"></i>
+                                    </button>
+                                    <button @click="editIngredient(ingredient)" title="Modifier" class="text-emerald-600 hover:text-emerald-900 mr-3 cursor-pointer">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button @click="confirmDelete(ingredient)" title="Supprimer" class="text-red-600 hover:text-red-900 cursor-pointer">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <tr v-if="ingredients.length === 0">
-                                <td colspan="5" class="px-6 py-16 text-center text-slate-400 font-medium">
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
                                     Aucun ingrédient trouvé dans la base.
                                 </td>
                             </tr>

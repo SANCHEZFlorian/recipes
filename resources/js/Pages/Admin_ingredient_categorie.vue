@@ -14,7 +14,7 @@
                     </div>
                     <button
                         @click="openAddModal"
-                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer whitespace-nowrap !rounded-button"
+                        class="premium-button-primary"
                     >
                         <i class="fas fa-plus mr-2"></i>
                         Ajouter un Type
@@ -48,19 +48,19 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="category in categories" :key="category.id">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ category.id }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                                    #{{ category.id }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="h-10 w-10 flex-shrink-0">
                                             <template v-if="category.image && (category.image.includes('fa-') || category.image.includes('fi-') || category.image.includes('fi '))">
-                                                <div class="h-10 w-10 rounded-full flex items-center justify-center bg-gray-100 text-emerald-600 text-lg">
+                                                <div class="h-10 w-10 rounded-full flex items-center justify-center bg-emerald-100 text-emerald-600 text-lg">
                                                     <i :class="category.image"></i>
                                                 </div>
                                             </template>
                                             <template v-else-if="category.image && !category.image.includes('f')">
-                                                <div class="h-10 w-10 rounded-full flex items-center justify-center bg-gray-100 text-emerald-600 text-xl font-medium">
+                                                <div class="h-10 w-10 rounded-full flex items-center justify-center bg-emerald-100 text-emerald-600 text-xl font-medium">
                                                     {{ category.image }}
                                                 </div>
                                             </template>
@@ -71,9 +71,6 @@
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
                                                 {{ category.name }}
-                                            </div>
-                                            <div class="text-xs text-gray-500">
-                                                {{ category.description?.substring(0, 30) }}...
                                             </div>
                                         </div>
                                     </div>

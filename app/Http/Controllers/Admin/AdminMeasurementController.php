@@ -16,7 +16,7 @@ class AdminMeasurementController extends Controller
                 'id' => $unit->id,
                 'name' => $unit->nom,
                 'abbreviation' => $unit->abreviation,
-                'icon' => $unit->icone ?? 'fas fa-balance-scale',
+                'icon' => $unit->icone ?? 'fi fi-rr-scale',
             ];
         });
 
@@ -35,7 +35,7 @@ class AdminMeasurementController extends Controller
 
         Unite::create([
             ...$validated,
-            'icone' => $validated['icone'] ?? 'fas fa-balance-scale',
+            'icone' => $validated['icone'] ?? 'fi fi-rr-scale',
         ]);
 
         return back()->with('success', 'Unité de mesure créée avec succès.');

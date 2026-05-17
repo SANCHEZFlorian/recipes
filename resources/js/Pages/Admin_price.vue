@@ -8,27 +8,40 @@
                         <h1 class="text-3xl font-bold text-gray-900">Gestion des Budgets</h1>
                         <p class="mt-1 text-sm text-gray-500">Gérez les différentes fourchettes de prix des recettes.</p>
                     </div>
-                    <button @click="openCreateModal" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center">
+                    <button @click="openCreateModal" class="premium-button-primary">
                         <i class="fas fa-plus mr-2"></i> Nouveau Niveau de Prix
                     </button>
                 </div>
 
                 <!-- Content Table -->
-                <div class="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100">
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">ID</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Budget / Prix</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="price in prices" :key="price.id">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ price.nom }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                                    #{{ price.id }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-emerald-100 rounded-full text-emerald-600">
+                                            <i class="fi fi-rr-coins text-lg"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ price.nom }}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button @click="openEditModal(price)" class="text-indigo-600 hover:text-indigo-900 mr-4 cursor-pointer">
+                                    <button @click="openEditModal(price)" class="text-emerald-600 hover:text-emerald-950 mr-4 cursor-pointer">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button @click="confirmDelete(price)" class="text-red-600 hover:text-red-900 cursor-pointer">
@@ -37,7 +50,7 @@
                                 </td>
                             </tr>
                             <tr v-if="prices.length === 0">
-                                <td colspan="2" class="px-6 py-12 text-center text-gray-500">
+                                <td colspan="3" class="px-6 py-12 text-center text-gray-500">
                                     Aucun niveau de prix trouvé.
                                 </td>
                             </tr>

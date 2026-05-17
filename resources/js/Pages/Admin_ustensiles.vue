@@ -8,33 +8,40 @@
                         <h1 class="text-3xl font-bold text-gray-900">Gestion des Ustensiles</h1>
                         <p class="mt-1 text-sm text-gray-500">Gérez la liste des outils de cuisine disponibles.</p>
                     </div>
-                    <button @click="openCreateModal" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center">
+                    <button @click="openCreateModal" class="premium-button-primary">
                         <i class="fas fa-plus mr-2"></i> Nouvel Ustensile
                     </button>
                 </div>
 
                 <!-- Ustensiles Table -->
-                <div class="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100">
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Icône</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ustensile</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="ustensile in ustensiles" :key="ustensile.id">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
+                                    #{{ ustensile.id }}
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="h-10 w-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                                        <i :class="ustensile.icone || 'fas fa-blender'"></i>
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-emerald-100 rounded-full text-emerald-600">
+                                            <i :class="[ustensile.icone || 'fas fa-blender', 'text-lg']"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ ustensile.nom }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ ustensile.nom }}
-                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button @click="openEditModal(ustensile)" class="text-indigo-600 hover:text-indigo-900 mr-4 cursor-pointer">
+                                    <button @click="openEditModal(ustensile)" class="text-emerald-600 hover:text-emerald-950 mr-4 cursor-pointer">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button @click="confirmDelete(ustensile)" class="text-red-600 hover:text-red-900 cursor-pointer">

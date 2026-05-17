@@ -18,31 +18,31 @@
                 </div>
 
                 <!-- Users Table -->
-                <div class="premium-table-container">
-                    <table class="premium-table">
-                        <thead>
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th>Utilisateur</th>
-                                <th>Rôle</th>
-                                <th>Inscription</th>
-                                <th>Dernière Connexion</th>
-                                <th class="text-right">Actions</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisateur</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rôle</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscription</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dernière Connexion</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="user in users" :key="user.id">
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 font-black shadow-inner">
+                                        <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 font-black">
                                             {{ user.username.charAt(0).toUpperCase() }}
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-black text-slate-900">{{ user.username }}</div>
+                                            <div class="text-sm font-medium text-gray-900">{{ user.username }}</div>
                                             <div class="text-xs text-slate-500 font-medium">{{ user.email }}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <span :class="[
                                         user.is_admin ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-700',
                                         'px-2.5 py-1 inline-flex text-[10px] font-black uppercase tracking-wider rounded-lg'
@@ -50,21 +50,21 @@
                                         {{ user.is_admin ? 'Administrateur' : 'Membre' }}
                                     </span>
                                 </td>
-                                <td class="text-sm font-medium text-slate-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-500">
                                     {{ user.registered_at }}
                                 </td>
-                                <td class="text-sm font-medium text-slate-400">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-400">
                                     {{ user.last_login }}
                                 </td>
-                                <td class="text-right">
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end gap-2">
-                                        <button @click="openEditModal(user)" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-emerald-600 cursor-pointer" title="Modifier">
+                                        <button @click="openEditModal(user)" class="text-emerald-600 hover:text-emerald-900 mr-3 cursor-pointer" title="Modifier">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button @click="toggleRole(user)" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-slate-100 text-slate-400 hover:text-indigo-600 cursor-pointer" :title="user.is_admin ? 'Rétrograder en membre' : 'Promouvoir administrateur'">
+                                        <button @click="toggleRole(user)" class="text-indigo-600 hover:text-indigo-900 mr-3 cursor-pointer" :title="user.is_admin ? 'Rétrograder en membre' : 'Promouvoir administrateur'">
                                             <i :class="user.is_admin ? 'fas fa-arrow-down' : 'fas fa-arrow-up'"></i>
                                         </button>
-                                        <button @click="confirmDelete(user)" class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-50 text-slate-400 hover:text-rose-600 cursor-pointer" title="Supprimer">
+                                        <button @click="confirmDelete(user)" class="text-red-600 hover:text-red-900 cursor-pointer" title="Supprimer">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>

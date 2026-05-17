@@ -68,65 +68,31 @@
 
                     <!-- Mega Menu Dropdown -->
                     <div
-                        class="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white rounded-2xl shadow-2xl shadow-emerald-900/10 border border-gray-100 opacity-0 invisible group-hover/recipes:opacity-100 group-hover/recipes:visible transition-all duration-300 origin-top overflow-hidden grid grid-cols-2 pt-2"
+                        class="absolute top-full left-1/2 -translate-x-1/2 w-[480px] bg-white rounded-2xl shadow-2xl shadow-emerald-900/10 border border-gray-100 opacity-0 invisible group-hover/recipes:opacity-100 group-hover/recipes:visible transition-all duration-300 origin-top overflow-hidden z-50 p-6"
                     >
-                        <!-- Categories Column -->
-                        <div class="p-6 bg-gray-50/50 border-r border-gray-100">
-                            <h3
-                                class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                            Parcourir par Catégorie
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <Link
+                                v-for="cat in $page.props.categories"
+                                :key="cat.id"
+                                :href="route('category.show', { id: cat.id })"
+                                class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50 text-gray-700 hover:text-emerald-700 font-medium transition-all group/cat"
                             >
-                                Catégories
-                            </h3>
-                            <ul class="space-y-3">
-                                <li
-                                    v-for="cat in sliceCategories(0, 5)"
-                                    :key="cat.id"
-                                >
-                                    <Link
-                                        :href="
-                                            route('category.show', {
-                                                id: cat.id,
-                                            })
-                                        "
-                                        class="text-sm font-medium text-gray-700 hover:text-emerald-600 flex items-center gap-2 group/link"
-                                    >
-                                        <span
-                                            class="w-1.5 h-1.5 rounded-full bg-emerald-200 group-hover/link:bg-emerald-500 transition-colors"
-                                        ></span>
-                                        {{ cat.nom }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        :href="route('categories.list')"
-                                        class="text-sm font-bold text-emerald-600 hover:text-emerald-700 mt-2 inline-block"
-                                    >
-                                        Voir toutes les catégories &rarr;
-                                    </Link>
-                                </li>
-                            </ul>
+                                <div class="w-8 h-8 rounded-lg bg-slate-50 group-hover/cat:bg-emerald-100 flex items-center justify-center text-gray-500 group-hover/cat:text-emerald-600 transition-colors">
+                                    <i :class="cat.icone || 'fi fi-rr-leaf'"></i>
+                                </div>
+                                <span class="text-sm">{{ cat.nom }}</span>
+                            </Link>
                         </div>
-
-                        <!-- Types Column -->
-                        <div class="p-6">
-                            <h3
-                                class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                            <Link
+                                :href="route('categories.list')"
+                                class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-1"
                             >
-                                Types de plats
-                            </h3>
-                            <ul class="space-y-3">
-                                <li
-                                    v-for="type in sliceTypes(0, 5)"
-                                    :key="type.id"
-                                >
-                                    <Link
-                                        href="#"
-                                        class="text-sm font-medium text-gray-700 hover:text-emerald-600 flex items-center gap-2 group/link"
-                                    >
-                                        {{ type.nom }}
-                                    </Link>
-                                </li>
-                            </ul>
+                                Voir toutes les catégories &rarr;
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -326,18 +292,8 @@
 
 <script setup>
 import { Link, usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
 
 defineEmits(["toggle-mobile-menu", "open-login", "open-register", "logout"]);
 
 const page = usePage();
-
-// Helper functions for safe slice
-const sliceCategories = (start, end) => {
-    return page.props.categories ? page.props.categories.slice(start, end) : [];
-};
-
-const sliceTypes = (start, end) => {
-    return page.props.types ? page.props.types.slice(start, end) : [];
-};
 </script>
